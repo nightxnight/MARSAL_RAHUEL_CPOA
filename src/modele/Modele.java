@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entities.client.Client;
 import entities.produit.Produit;
 
 public abstract class Modele {
@@ -202,6 +203,105 @@ public abstract class Modele {
 			System.out.println("logs : " + sqle.getMessage());	
 		}
 		return listeProduit;
+	}
+
+	public static void ajouterClient(String nomClient, String prenomClient) {
+		try {
+		PreparedStatement query = connexion.prepareStatement("INSERT INTO CLient (nom, prenom) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+		query.setString(1, nomClient);
+		query.setString(2, prenomClient);
+		
+		int nbLigne = query.executeUpdate();
+		System.out.println(nbLigne + " ligne(s) ajoutée(s)");
+		
+		ResultSet res = query.getGeneratedKeys();
+		while(res.next()) {
+			System.out.println("Clé générée : " + res.getInt(1));
+		}
+		
+		if(res != null) res.close();
+		if(query != null) query.close();
+		
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"ajouterClient\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}		
+	}
+	
+	public static void modifierClient(String nomClientModifie, String nouveauNomClient, String nouveauPrenomClient) {
+		try {
+			PreparedStatement query = connexion.prepareStatement("UPDATE Client SET nom = ?, prenom = ? WHERE nom = ?");
+			query.setString(1, nouveauNomClient);
+			query.setString(2, nouveauPrenomClient);
+			query.setString(3, nomClientModifie);
+		
+		int nbLigne = query.executeUpdate();
+		System.out.println(nbLigne + " ligne(s) modifiée(s)");
+		
+		if(query != null) query.close();
+		
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"modifierCategorie\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}		
+	}
+
+	public static void modifierClient(Client client, String nouveauNomClient, String nouveauPrenomClient) {
+		try {
+			PreparedStatement query = connexion.prepareStatement("UPDATE Client SET nom = ?, prenom = ? WHERE nom = ? AND prenom = ?");
+			query.setString(1, nouveauNomClient);
+			query.setString(2, nouveauPrenomClient);
+			query.setString(3, client.getNom());
+			query.setString(4, client.getPrenom());
+		
+		int nbLigne = query.executeUpdate();
+		System.out.println(nbLigne + " ligne(s) modifiée(s)");
+		
+		if(query != null) query.close();
+		
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"modifierClient\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}		
+	}
+	
+	public static void supprimerClient(String nomClientSupprime) {
+		try {
+		PreparedStatement query = connexion.prepareStatement("DELETE FROM Client WHERE nom = ?");
+		query.setString(1, nomClientSupprime);
+		
+		int nbLigne = query.executeUpdate();
+		System.out.println(nbLigne + " ligne(s) supprimée(s)");
+		
+		if(query != null) query.close();
+		
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"supprimerCategorie\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}	
+	}
+	
+	public static ArrayList<Client> obtenirTousClients() {
+		ArrayList<Client> listeClient = null;
+		
+		try {
+			PreparedStatement query = connexion.prepareStatement("SELECT nom, prenom FROM Client");
+			ResultSet res = query.executeQuery();
+			
+			listeClient = new ArrayList<Client>();
+			while(res.next()) {
+				listeClient.add(new Client(res.getString(1), res.getString(2)));
+			}
+			
+			if(res != null ) res.close();
+			if(query != null) query.close();
+			
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"obtenirTousClients\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}
+		
+		return listeClient;
 	}
 	
 	public static Connection getConnexion() {
