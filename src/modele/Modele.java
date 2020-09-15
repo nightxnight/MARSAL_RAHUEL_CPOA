@@ -26,16 +26,16 @@ public abstract class Modele {
 		try {
 			String url = dbURL + dbName + "?serverTimezone=Europe/Paris";
 			connexion = DriverManager.getConnection(url, login, password);
-			System.out.println("Connexion à " + dbName + " établie.");
+			System.out.println("Connexion ï¿½ " + dbName + " ï¿½tablie.");
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la connexion à " + dbName);
+			System.out.println("Erreur lors de la connexion ï¿½ " + dbName);
 			System.out.println(sqle.getMessage());
 			connexionCree = false;
 		}
 		return connexionCree;
 	}
 	
-	//Requête catégorie
+	//Requï¿½te catï¿½gorie
 	public static void ajouterCategorie(String nomCategorie, String fichierVisuel) {
 		try {
 		PreparedStatement query = connexion.prepareStatement("INSERT INTO Categorie (titre, visuel) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -43,18 +43,18 @@ public abstract class Modele {
 		query.setString(2, fichierVisuel);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) ajoutée(s)");
+		System.out.println(nbLigne + " ligne(s) ajoutï¿½e(s)");
 		
 		ResultSet res = query.getGeneratedKeys();
 		while(res.next()) {
-			System.out.println("Clé générée : " + res.getInt(1));
+			System.out.println("Clï¿½ gï¿½nï¿½rï¿½e : " + res.getInt(1));
 		}
 		
 		if(res != null) res.close();
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"ajouterCategorie\".");
+			System.out.println("Erreur lors de la requï¿½te \"ajouterCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 	}
@@ -68,12 +68,12 @@ public abstract class Modele {
 			query.setString(3, nomCategorieModifiee);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifiée(s)");
+		System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
 		
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"modifierCategorie\".");
+			System.out.println("Erreur lors de la requï¿½te \"modifierCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 	}
@@ -85,12 +85,12 @@ public abstract class Modele {
 		query.setString(1, nomCategorieSupprimee);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) supprimée(s)");
+		System.out.println(nbLigne + " ligne(s) supprimï¿½e(s)");
 		
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"supprimerCategorie\".");
+			System.out.println("Erreur lors de la requï¿½te \"supprimerCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}	
 	}
@@ -112,7 +112,7 @@ public abstract class Modele {
 			if(query != null) query.close();
 			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"obtenirToutesCategories\".");
+			System.out.println("Erreur lors de la requï¿½te \"obtenirToutesCategories\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}
 		
@@ -130,11 +130,11 @@ public abstract class Modele {
 			query.setInt(5, produitAjoute.getIdCategorie());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) ajoutée(s)");
+			System.out.println(nbLigne + " ligne(s) ajoutï¿½e(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Clé générée : " + res.getInt(1));
+				System.out.println("Clï¿½ gï¿½nï¿½rï¿½e : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -142,7 +142,7 @@ public abstract class Modele {
 			
 			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"ajouterProduit\".");
+			System.out.println("Erreur lors de la requï¿½te \"ajouterProduit\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}
 	}
@@ -158,13 +158,13 @@ public abstract class Modele {
 			query.setInt(6, produitModifie.getId());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) modifiée(s)");
+			System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
 
 			if(query != null) query.close();
 			
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"modifierProduit\".");
+			System.out.println("Erreur lors de la requï¿½te \"modifierProduit\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}
 	}
@@ -175,11 +175,11 @@ public abstract class Modele {
 			query.setInt(1, produitSupprime.getId());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprimée(s)");
+			System.out.println(nbLigne + " ligne(s) supprimï¿½e(s)");
 			
 			if(query != null) query.close();
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"supprimerProduit\".");
+			System.out.println("Erreur lors de la requï¿½te \"supprimerProduit\".");
 			System.out.println("logs : " + sqle.getMessage());		
 		}
 	}
@@ -199,7 +199,7 @@ public abstract class Modele {
 			if(query != null) query.close();
 			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"obtenirTousProduit\".");
+			System.out.println("Erreur lors de la requï¿½te \"obtenirTousProduit\".");
 			System.out.println("logs : " + sqle.getMessage());	
 		}
 		return listeProduit;
@@ -212,18 +212,18 @@ public abstract class Modele {
 		query.setString(2, prenomClient);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) ajoutée(s)");
+		System.out.println(nbLigne + " ligne(s) ajoutï¿½e(s)");
 		
 		ResultSet res = query.getGeneratedKeys();
 		while(res.next()) {
-			System.out.println("Clé générée : " + res.getInt(1));
+			System.out.println("Clï¿½ gï¿½nï¿½rï¿½e : " + res.getInt(1));
 		}
 		
 		if(res != null) res.close();
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"ajouterClient\".");
+			System.out.println("Erreur lors de la requï¿½te \"ajouterClient\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 	}
@@ -236,12 +236,12 @@ public abstract class Modele {
 			query.setString(3, nomClientModifie);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifiée(s)");
+		System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
 		
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"modifierCategorie\".");
+			System.out.println("Erreur lors de la requï¿½te \"modifierCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 	}
@@ -255,12 +255,12 @@ public abstract class Modele {
 			query.setString(4, client.getPrenom());
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifiée(s)");
+		System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
 		
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"modifierClient\".");
+			System.out.println("Erreur lors de la requï¿½te \"modifierClient\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 	}
@@ -271,12 +271,12 @@ public abstract class Modele {
 		query.setString(1, nomClientSupprime);
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) supprimée(s)");
+		System.out.println(nbLigne + " ligne(s) supprimï¿½e(s)");
 		
 		if(query != null) query.close();
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"supprimerCategorie\".");
+			System.out.println("Erreur lors de la requï¿½te \"supprimerCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}	
 	}
@@ -285,19 +285,20 @@ public abstract class Modele {
 		ArrayList<Client> listeClient = null;
 		
 		try {
-			PreparedStatement query = connexion.prepareStatement("SELECT nom, prenom FROM Client");
+			PreparedStatement query = connexion.prepareStatement("SELECT * FROM Client");
 			ResultSet res = query.executeQuery();
 			
 			listeClient = new ArrayList<Client>();
 			while(res.next()) {
-				listeClient.add(new Client(res.getString(1), res.getString(2)));
+				listeClient.add(new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6)
+						,res.getString(7), res.getString(8), res.getString(9), res.getString(10)));
 			}
 			
 			if(res != null ) res.close();
 			if(query != null) query.close();
 			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"obtenirTousClients\".");
+			System.out.println("Erreur lors de la requï¿½te \"obtenirTousClients\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}
 		

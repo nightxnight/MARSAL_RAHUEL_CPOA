@@ -1,8 +1,8 @@
 package entities.produit;
 /*
- * On crée au préalable un package entities.produit puisque
- * nous aurons surement besoin par la suite de créer des instances de
- * différentes classes "enfant" de produit
+ * On crï¿½e au prï¿½alable un package entities.produit puisque
+ * nous aurons surement besoin par la suite de crï¿½er des instances de
+ * diffï¿½rentes classes "enfant" de produit
  * Produit deviendra alors abstraite
  */
 public class Produit {
@@ -17,8 +17,8 @@ public class Produit {
 	/*
 	 * Constructor :
 	 * On en a deux puisqu'il y a 2 cas :
-	 * 		- Soit on crée un nouveau produit et alors dans ce cas il n'y a pas encore d'id attribué
-	 * 		- Soit le produit existe déjà et par conséquent un id lui est déjà attribué
+	 * 		- Soit on crï¿½e un nouveau produit et alors dans ce cas il n'y a pas encore d'id attribuï¿½
+	 * 		- Soit le produit existe dï¿½jï¿½ et par consï¿½quent un id lui est dï¿½jï¿½ attribuï¿½
 	 */
 	public Produit(String nom, String description, double tarif, String visuel, int idCategorie) {
 		this.nom = nom;
@@ -81,6 +81,58 @@ public class Produit {
 	public void setIdCategorie(int idCategorie) {
 		this.idCategorie = idCategorie;
 	}
+
+	//ToString
+	@Override
+	public String toString() {
+		return "Produit [id=" + id + ", nom=" + nom + ", description=" + description + ", tarif=" + tarif + ", visuel="
+				+ visuel + ", idCategorie=" + idCategorie + "]";
+	}
+
+	//Equals
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Produit)) {
+			return false;
+		}
+		Produit other = (Produit) obj;
+		if (description == null) {
+			if (other.description != null) {
+				return false;
+			}
+		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (id != other.id) {
+			return false;
+		}
+		if (idCategorie != other.idCategorie) {
+			return false;
+		}
+		if (nom == null) {
+			if (other.nom != null) {
+				return false;
+			}
+		} else if (!nom.equals(other.nom)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(tarif) != Double.doubleToLongBits(other.tarif)) {
+			return false;
+		}
+		if (visuel == null) {
+			if (other.visuel != null) {
+				return false;
+			}
+		} else if (!visuel.equals(other.visuel)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 	
 	
