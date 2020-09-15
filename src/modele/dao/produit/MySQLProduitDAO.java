@@ -8,9 +8,18 @@ import java.sql.Statement;
 import entities.produit.Produit;
 import modele.ModeleSQL;
 import modele.dao.DAO;
+import modele.dao.ligneCommande.MySQLLigneCommandeDAO;
 
 public class MySQLProduitDAO implements DAO<Produit>{
-
+	
+	private static MySQLProduitDAO instance;
+	
+	private MySQLProduitDAO() { }
+	
+	public static MySQLProduitDAO getInstance() {
+		if(instance==null) instance = new MySQLProduitDAO();
+		return instance;
+	}
 
 	@Override
 	public boolean create(Produit objet) {

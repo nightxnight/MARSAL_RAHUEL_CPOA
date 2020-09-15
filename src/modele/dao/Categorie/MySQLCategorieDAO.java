@@ -8,9 +8,19 @@ import java.sql.Statement;
 import entities.categorie.Categorie;
 import modele.ModeleSQL;
 import modele.dao.DAO;
+import modele.dao.produit.MySQLProduitDAO;
 
 public class MySQLCategorieDAO implements DAO<Categorie> {
-
+	
+	private static MySQLCategorieDAO instance;
+	
+	private MySQLCategorieDAO() { }
+	
+	public static MySQLCategorieDAO getInstance() {
+		if(instance==null) instance = new MySQLCategorieDAO();
+		return instance;
+	}
+	
 	@Override
 	public boolean create(Categorie objet) {
 		try {
