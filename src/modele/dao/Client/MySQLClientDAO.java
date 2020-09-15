@@ -103,5 +103,6 @@ private static MySQLClientDAO instance;
 				System.out.println("logs : " + sqle.getMessage());
 			}			return false;
 	}
+	//kekeekekek
 
 }
