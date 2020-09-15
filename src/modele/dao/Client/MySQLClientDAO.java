@@ -7,9 +7,20 @@ import java.sql.Statement;
 
 import entities.client.Client;
 import modele.ModeleSQL;
-import modele.dao.DAO;
+import modele.dao.DAO; 
 
 public class MySQLClientDAO implements DAO<Client>{
+	
+private static MySQLClientDAO instance;
+	
+	private MySQLClientDAO() {}
+	
+	public static MySQLClientDAO getInstance() {
+		if (instance == null) {
+			instance = new MySQLClientDAO();
+		}
+		return instance;
+	}
 
 	@Override
 	public boolean create(Client objet) {
