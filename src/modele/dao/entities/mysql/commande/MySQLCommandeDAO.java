@@ -9,7 +9,6 @@ import java.sql.Statement;
 import entities.commande.Commande;
 import modele.ModeleSQL;
 import modele.dao.DAO;
-import modele.dao.Categorie.MySQLCategorieDAO;
 
 public class MySQLCommandeDAO implements DAO<Commande>{
 	

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import entities.categorie.Categorie;
 import modele.ModeleSQL;
 import modele.dao.DAO;
-import modele.dao.produit.MySQLProduitDAO;
 
 public class MySQLCategorieDAO implements DAO<Categorie> {
 	
