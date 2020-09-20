@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import entities.commande.Commande;
-import modele.ModeleSQL;
 import modele.dao.entities.CommandeDAO;
+import modele.dao.entities.mysql.MySQLDAOFactory;
 
 public class MySQLCommandeDAO implements CommandeDAO{
 	
@@ -26,7 +26,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean create(Commande objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("INSERT INTO Commande (id_commande, date_commande, id_client) VALUES (?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Commande (id_commande, date_commande, id_client) VALUES (?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
 			query.setInt(1, objet.getIdCommande());
 			query.setDate(2, Date.valueOf(objet.getDateCommande()));
 			query.setInt(3, objet.getIdClient());
@@ -54,7 +54,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean update(Commande objetModife, Commande objetRemplacant) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("UPDATE Commande SET date_commande = ?, id_client = ?  WHERE id_commande = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Commande SET date_commande = ?, id_client = ?  WHERE id_commande = ?");
 			query.setDate(1, Date.valueOf(objetRemplacant.getDateCommande()));
 			query.setInt(2, objetRemplacant.getIdClient());
 			query.setInt(3, objetModife.getIdCommande());
@@ -78,7 +78,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean delete(Commande objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("DELETE FROM Commande WHERE id_commande = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Commande WHERE id_commande = ?");
 			query.setInt(1, objet.getIdCommande());
 			
 			int nbLigne = query.executeUpdate();

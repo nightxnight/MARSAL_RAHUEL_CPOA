@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import entities.produit.Produit;
-import modele.ModeleSQL;
 import modele.dao.entities.ProduitDAO;
+import modele.dao.entities.mysql.MySQLDAOFactory;
 
 public class MySQLProduitDAO implements ProduitDAO{
 	
@@ -23,7 +23,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	@Override
 	public boolean create(Produit objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("INSERT INTO Produit (nom, description, tarif, visuel, id_categorie) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Produit (nom, description, tarif, visuel, id_categorie) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getNom());
 			query.setString(2, objet.getDescription());
 			query.setDouble(3, objet.getTarif());
@@ -54,7 +54,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	@Override
 	public boolean update(Produit objetModifie, Produit objetRemplacant) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("UPDATE Produit SET nom = ?, description = ?, tarif = ?, visuel = ?, id_categorie = ? WHERE id_produit = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Produit SET nom = ?, description = ?, tarif = ?, visuel = ?, id_categorie = ? WHERE id_produit = ?");
 			query.setString(1, objetRemplacant.getNom());
 			query.setString(2, objetRemplacant.getDescription());
 			query.setDouble(3, objetRemplacant.getTarif());
@@ -79,7 +79,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	@Override
 	public boolean delete(Produit objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("DELETE FROM Produit WHERE id_produit = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Produit WHERE id_produit = ?");
 			query.setInt(1, objet.getId());
 			
 			int nbLigne = query.executeUpdate();

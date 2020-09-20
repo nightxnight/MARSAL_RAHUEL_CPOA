@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import entities.categorie.Categorie;
-import modele.ModeleSQL;
 import modele.dao.entities.CategorieDAO;
+import modele.dao.entities.mysql.MySQLDAOFactory;
 
 public class MySQLCategorieDAO implements CategorieDAO {
 	
@@ -23,7 +23,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	@Override
 	public boolean create(Categorie objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("INSERT INTO Categorie (titre, visuel) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Categorie (titre, visuel) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getTitre());
 			query.setString(2, objet.getVisuel());
 			
@@ -50,7 +50,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	@Override
 	public boolean update(Categorie objetModife, Categorie objetRemplacant) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("UPDATE Categorie SET titre = ?, visuel = ? WHERE id_categorie = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Categorie SET titre = ?, visuel = ? WHERE id_categorie = ?");
 			query.setString(1, objetRemplacant.getTitre());
 			query.setString(2, objetRemplacant.getVisuel());
 			query.setInt(3, objetModife.getIdCategorie());
@@ -72,7 +72,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	@Override
 	public boolean delete(Categorie objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("DELETE FROM Categorie WHERE id_categorie = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Categorie WHERE id_categorie = ?");
 			query.setInt(1, objet.getIdCategorie());
 			
 			int nbLigne = query.executeUpdate();

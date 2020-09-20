@@ -2,6 +2,11 @@ package modele.dao.entities.mysql;
 
 import modele.dao.entities.ClientDAO;
 import modele.dao.entities.CommandeDAO;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import modele.dao.DAOFactory;
 import modele.dao.entities.LigneCommandeDAO;
 import modele.dao.entities.ProduitDAO;
@@ -13,6 +18,39 @@ import modele.dao.entities.mysql.ligneCommande.MySQLLigneCommandeDAO;
 import modele.dao.entities.mysql.produit.MySQLProduitDAO;
 
 public class MySQLDAOFactory extends DAOFactory{
+	
+	private final static String dbURL = "jdbc:mysql://devbdd.iutmetz.univ-lorraine.fr:3306/";
+	private final static String dbName = "marsal15u_cpoa";
+	private final static String login = "marsal15u_appli";
+	private final static String password = "vincentseum01";
+	
+	private static Connection connexion;
+	
+	public static boolean creerConnexion() {
+		boolean connexionCree = true;
+		connexion = null;
+		try {
+			String url = dbURL + dbName + "?serverTimezone=Europe/Paris";
+			connexion = DriverManager.getConnection(url, login, password);
+			System.out.println("Connexion à " + dbName + " établie.");
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la connexion à " + dbName);
+			System.out.println(sqle.getMessage());
+			connexionCree = false;
+		}
+		return connexionCree;
+	}
+	
+	public static boolean fermerConnexion() {
+		boolean connexionFerme = false;
+		try {
+			connexion.close();
+			connexionFerme = true;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la fermeture de la connexion à " + dbName + ".");
+		}
+		return connexionFerme;
+	}
 
 	@Override
 	public CategorieDAO getCategorieDAO() {
@@ -37,6 +75,10 @@ public class MySQLDAOFactory extends DAOFactory{
 	@Override
 	public LigneCommandeDAO getLigneCommandeDAO() {
 		return MySQLLigneCommandeDAO.getInstance();
+	}
+	
+	public static Connection getConnexion() {
+		return connexion;
 	}
 	
 }

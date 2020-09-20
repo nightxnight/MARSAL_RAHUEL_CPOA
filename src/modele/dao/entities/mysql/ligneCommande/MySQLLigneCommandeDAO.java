@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import entities.ligneCommande.LigneCommande;
-import modele.ModeleSQL;
 import modele.dao.entities.LigneCommandeDAO;
+import modele.dao.entities.mysql.MySQLDAOFactory;
 
 public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	
@@ -23,7 +23,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public boolean create(LigneCommande objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("INSERT INTO Ligne_commande (id_commande, id_produit, quantite, tarif_unitaire) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Ligne_commande (id_commande, id_produit, quantite, tarif_unitaire) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setInt(1, objet.getIdCommande());
 			query.setInt(2, objet.getIdProduit());
 			query.setInt(3, objet.getQuantite());
@@ -52,7 +52,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public boolean update(LigneCommande objetModife, LigneCommande objetRemplacant) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("UPDATE Ligne_commande SET id_produit = ?, quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET id_produit = ?, quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
 			query.setInt(1, objetRemplacant.getIdProduit());
 			query.setInt(2, objetRemplacant.getQuantite());
 			query.setDouble(3, objetRemplacant.getTarifUnitaire());
@@ -76,7 +76,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public boolean delete(LigneCommande objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("DELETE FROM Ligne_commande WHERE id_commande = ? AND id_produit = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Ligne_commande WHERE id_commande = ? AND id_produit = ?");
 			query.setInt(1, objet.getIdCommande());
 			query.setInt(2, objet.getIdProduit());
 			

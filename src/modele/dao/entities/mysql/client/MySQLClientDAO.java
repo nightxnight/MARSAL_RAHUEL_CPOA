@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import entities.client.Client;
-import modele.ModeleSQL;
-import modele.dao.entities.ClientDAO; 
+import modele.dao.entities.ClientDAO;
+import modele.dao.entities.mysql.MySQLDAOFactory; 
 
 public class MySQLClientDAO implements ClientDAO{
 	
@@ -25,7 +25,7 @@ private static MySQLClientDAO instance;
 	@Override
 	public boolean create(Client objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("INSERT INTO CLient (nom, prenom, identifiant, mot_de_passe, adr_numero, adr_voie, adr_code_postal, adr_ville, adr_pays) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO CLient (nom, prenom, identifiant, mot_de_passe, adr_numero, adr_voie, adr_code_postal, adr_ville, adr_pays) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getNom());
 			query.setString(2, objet.getPrenom());
 			query.setString(3, objet.getIdentifiant());
@@ -59,7 +59,7 @@ private static MySQLClientDAO instance;
 	@Override
 	public boolean update(Client objetModife, Client objetRemplacant) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? , WHERE id_client = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? , WHERE id_client = ?");
 			query.setString(1, objetRemplacant.getNom());
 			query.setString(2, objetRemplacant.getPrenom());
 			query.setString(3, objetRemplacant.getIdentifiant());
@@ -88,7 +88,7 @@ private static MySQLClientDAO instance;
 	@Override
 	public boolean delete(Client objet) {
 		try {
-			PreparedStatement query = ModeleSQL.getConnexion().prepareStatement("DELETE FROM Client WHERE id_client = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Client WHERE id_client = ?");
 			query.setInt(1, objet.getIdClient());
 			
 			int nbLigne = query.executeUpdate();
