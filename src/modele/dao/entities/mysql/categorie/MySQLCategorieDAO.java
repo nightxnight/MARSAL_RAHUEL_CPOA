@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import entities.categorie.Categorie;
 import modele.ModeleSQL;
-import modele.dao.DAO;
+import modele.dao.entities.CategorieDAO;
 
-public class MySQLCategorieDAO implements DAO<Categorie> {
+public class MySQLCategorieDAO implements CategorieDAO {
 	
 	private static MySQLCategorieDAO instance;
 	

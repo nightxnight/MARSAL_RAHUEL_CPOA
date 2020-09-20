@@ -8,9 +8,9 @@ import java.sql.Statement;
 
 import entities.commande.Commande;
 import modele.ModeleSQL;
-import modele.dao.DAO;
+import modele.dao.entities.CommandeDAO;
 
-public class MySQLCommandeDAO implements DAO<Commande>{
+public class MySQLCommandeDAO implements CommandeDAO{
 	
 	private static MySQLCommandeDAO instance;
 	

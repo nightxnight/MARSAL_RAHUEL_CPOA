@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import entities.ligneCommande.LigneCommande;
 import modele.ModeleSQL;
-import modele.dao.DAO;
+import modele.dao.entities.LigneCommandeDAO;
 
-public class MySQLLigneCommandeDAO implements DAO<LigneCommande>{
+public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	
 	private static MySQLLigneCommandeDAO instance;
 	

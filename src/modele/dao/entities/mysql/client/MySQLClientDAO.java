@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import entities.client.Client;
 import modele.ModeleSQL;
-import modele.dao.DAO; 
+import modele.dao.entities.ClientDAO; 
 
-public class MySQLClientDAO implements DAO<Client>{
+public class MySQLClientDAO implements ClientDAO{
 	
 private static MySQLClientDAO instance;
 	

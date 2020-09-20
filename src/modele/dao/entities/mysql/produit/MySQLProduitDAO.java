@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import entities.produit.Produit;
 import modele.ModeleSQL;
-import modele.dao.DAO;
+import modele.dao.entities.ProduitDAO;
 
-public class MySQLProduitDAO implements DAO<Produit>{
+public class MySQLProduitDAO implements ProduitDAO{
 	
 	private static MySQLProduitDAO instance;
 	
