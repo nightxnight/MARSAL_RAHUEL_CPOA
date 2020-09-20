@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import modele.dao.DAOFactory;
+
 public class MenuCategorie extends Menu{
 	
 	//Constantes de messages :
@@ -83,7 +85,7 @@ public class MenuCategorie extends Menu{
 		fichierVisuel = sc.nextLine();
 		if(fichierVisuel.equals("CANCEL")) return;
 		
-		Modele.ajouterCategorie(nomCategorie, fichierVisuel);
+		.ajouterCategorie(nomCategorie, fichierVisuel);
 	}
 	
 	private void afficherModif() {
