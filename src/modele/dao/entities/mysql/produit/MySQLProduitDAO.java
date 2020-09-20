@@ -100,7 +100,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	public ArrayList<Produit> getAll() {
 		ArrayList<Produit> listeProduit = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Produit");
 			ResultSet res = query.executeQuery();
 			
 			listeProduit = new ArrayList<Produit>();	
@@ -110,6 +110,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			return listeProduit;
 		} catch (SQLException sqle) {
 			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Produit.getAll");
+			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeProduit;
 	}

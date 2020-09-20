@@ -15,10 +15,10 @@ public abstract class DAOFactory {
 		
 		switch(cible) {
 		case MYSQL:
-			daoF = new MySQLDAOFactory(); break;
+			daoF = MySQLDAOFactory.getInstance(); break;
 		
 		case LISTEMEMOIRE:
-			daoF = new ListeMemoireDAOFactory(); break;
+			daoF = ListeMemoireDAOFactory.getInstance(); break;
 		}
 		
 		return daoF;

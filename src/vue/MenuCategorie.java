@@ -1,11 +1,10 @@
 package vue;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import entities.categorie.Categorie;
 import modele.dao.DAOFactory;
 
 public class MenuCategorie extends Menu{
@@ -85,19 +84,27 @@ public class MenuCategorie extends Menu{
 		fichierVisuel = sc.nextLine();
 		if(fichierVisuel.equals("CANCEL")) return;
 		
-		.ajouterCategorie(nomCategorie, fichierVisuel);
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().create(new Categorie(nomCategorie, fichierVisuel));
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 		
-		String  nomCategorieModifiee;
+		int idCategorieModifie = -1;
 		String nouveauNomCateg;
 		String nouveauFichierVisuel;
 		Scanner sc = new Scanner(System.in);
 		
-		nomCategorieModifiee = sc.nextLine();
-		if(nomCategorieModifiee.equals("CANCEL")) return;
+		do {
+			try {
+				idCategorieModifie = sc.nextInt();
+			} catch (InputMismatchException nfe) {
+				System.out.println("Entrez un nombre positif.");
+				idCategorieModifie = -1;
+			} finally {
+				sc.next();
+			}
+		} while(idCategorieModifie < 0);
 		
 		nouveauNomCateg = sc.nextLine();
 		if(nouveauNomCateg.equals("CANCEL")) return;
@@ -105,33 +112,37 @@ public class MenuCategorie extends Menu{
 		nouveauFichierVisuel = sc.nextLine();
 		if(nouveauFichierVisuel.equals("CANCEL")) return;
 		
-		Modele.modifierCategorie(nomCategorieModifiee, nouveauNomCateg, nouveauFichierVisuel);
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(new Categorie(idCategorieModifie, "", ""), new Categorie(nouveauNomCateg, nouveauFichierVisuel));
+	
 	}
 	
 	private void afficherSupp() {
 		System.out.println(messageIndicSupp);
 		
-		String nomCategorieSupprimee;
+		int idCategorie;
 		Scanner sc = new Scanner(System.in);
 		
-		nomCategorieSupprimee = sc.nextLine();
-		if(nomCategorieSupprimee.equals("CANCEL")) return;
+		try {
+			idCategorie = sc.nextInt();
+		} catch (InputMismatchException nfe) {
+			return;
+		}
 		
-		Modele.supprimerCategorie(nomCategorieSupprimee);
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(new Categorie(idCategorie, "", ""));
 	}
 	
 	private void afficherToutesCateg() {
 		System.out.println(messageToutesCateg + "\n");
 		
-		ArrayList<String> listeCateg = Modele.obtenirToutesCategories();
+		ArrayList<Categorie> listeCategorie = DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getAll();
 		
-		if(listeCateg==null || listeCateg.size()==0) {
+		if(listeCategorie==null || listeCategorie.size()==0) {
 			System.out.println("\tEt bien il semblerait que la boutique ne dispose pas encore de cat�gorie.");
 			return;
 		}
 		
-		for (int i = 0; i < listeCateg.size(); i++) {
-			System.out.println("\t- " + listeCateg.get(i));
+		for (int i = 0; i < listeCategorie.size(); i++) {
+			System.out.println("\t- " + listeCategorie.toString());
 		}
 	}	
 }

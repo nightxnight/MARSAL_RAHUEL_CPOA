@@ -1,10 +1,11 @@
 package vue;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import entities.client.Client;;
+import entities.client.Client;
+import modele.dao.DAOFactory;;
 
 public class MenuClient extends Menu {
 	
@@ -68,46 +69,14 @@ public class MenuClient extends Menu {
 		
 		String nomClient;
 		String prenomClient;
-		Scanner sc = new Scanner(System.in);
+		String identifiant;
+		String motDePasse;
+		String adrNumero;
+		String adrVoie;
+		String adrCodePostal;
+		String adrVille;
+		String adrPays;
 		
-		nomClient = sc.nextLine();
-		if(nomClient.contentEquals("CANCEL")) return;
-		
-		prenomClient = sc.nextLine();
-		if(prenomClient.equals("CANCEL")) return;
-		
-		Modele.ajouterClient(nomClient, prenomClient);
-	}
-	
-	private void afficherModif() {
-		System.out.println(messageIndicModif);
-
-		String  nomClientModifie;
-		String prenomClientModifie;
-		String nouveauNomClient;
-		String nouveauPrenomClient;
-		Scanner sc = new Scanner(System.in);
-		
-		nomClientModifie = sc.nextLine();
-		if(nomClientModifie.equals("CANCEL")) return;
-		
-		prenomClientModifie = sc.nextLine();
-		if(prenomClientModifie.equals("CANCEL")) return;
-		
-		nouveauNomClient = sc.nextLine();
-		if(nouveauNomClient.equals("CANCEL")) return;
-		
-		nouveauPrenomClient = sc.nextLine();
-		if(nouveauPrenomClient.equals("CANCEL")) return;
-		
-		Modele.modifierClient(new Client(nomClientModifie, prenomClientModifie), new Client(nouveauNomClient, nouveauPrenomClient));
-	}
-	
-	private void afficherSupp() {
-		System.out.println(messageIndicSupp);
-		
-		String nomClient;
-		String prenomClient;
 		Scanner sc = new Scanner(System.in);
 		
 		nomClient = sc.nextLine();
@@ -116,13 +85,108 @@ public class MenuClient extends Menu {
 		prenomClient = sc.nextLine();
 		if(prenomClient.equals("CANCEL")) return;
 		
-		Modele.supprimerClient(nomClient, prenomClient);
+		identifiant = sc.nextLine();
+		if(identifiant.equals("CANCEL")) return;
+		
+		motDePasse = sc.nextLine();
+		if(motDePasse.equals("CANCEL")) return;
+		
+		adrNumero = sc.nextLine();
+		if(adrNumero.equals("CANCEL")) return;
+		
+		adrVoie = sc.nextLine();
+		if(adrVoie.equals("CANCEL")) return;
+		
+		adrCodePostal = sc.nextLine();
+		if(adrCodePostal.equals("CANCEL")) return;
+		
+		adrVille = sc.nextLine();
+		if(adrVille.equals("CANCEL")) return;
+		
+		adrPays = sc.nextLine();
+		if(adrPays.equals("CANCEL")) return;
+		
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().create(new Client(nomClient, prenomClient, identifiant, motDePasse, adrNumero, adrVoie, adrCodePostal, adrVille, adrPays));
+	}
+	
+	private void afficherModif() {
+		System.out.println(messageIndicModif);
+
+		int idClientModifie = -1;
+		String nouveauNomClient;
+		String nouveauPrenomClient;
+		String nouveauIdentifiant;
+		String nouveauMotDePasse;
+		String nouveauAdrNumero;
+		String nouveauAdrVoie;
+		String nouveauAdrCodePostal;
+		String nouveauAdrVille;
+		String nouveauAdrPays;
+		
+		Scanner sc = new Scanner(System.in);
+		
+		do {
+			try {
+				idClientModifie = sc.nextInt();
+			} catch (InputMismatchException nfe) {
+				System.out.println("Entrez un nombre positif.");
+				idClientModifie = -1;
+			} finally {
+				sc.next();
+			}
+		} while(idClientModifie < 0);
+		
+		
+		nouveauNomClient = sc.nextLine();
+		if(nouveauNomClient.equals("CANCEL")) return;
+		
+		nouveauPrenomClient = sc.nextLine();
+		if(nouveauPrenomClient.equals("CANCEL")) return;
+		
+		nouveauIdentifiant = sc.nextLine();
+		if(nouveauIdentifiant.equals("CANCEL")) return;
+		
+		nouveauMotDePasse = sc.nextLine();
+		if(nouveauMotDePasse.equals("CANCEL")) return;
+		
+		nouveauAdrNumero = sc.nextLine();
+		if(nouveauAdrNumero.equals("CANCEL")) return;
+		
+		nouveauAdrVoie = sc.nextLine();
+		if(nouveauAdrVoie.equals("CANCEL")) return;
+		
+		nouveauAdrCodePostal = sc.nextLine();
+		if(nouveauAdrCodePostal.equals("CANCEL")) return;
+		
+		nouveauAdrVille = sc.nextLine();
+		if(nouveauAdrVille.equals("CANCEL")) return;
+		
+		nouveauAdrPays = sc.nextLine();
+		if(nouveauAdrPays.equals("CANCEL")) return;
+		
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(new Client(idClientModifie, "", "", "", "", "", "", "", "", "")
+				, new Client(nouveauNomClient, nouveauPrenomClient, nouveauIdentifiant, nouveauMotDePasse, nouveauAdrNumero, nouveauAdrVoie, nouveauAdrCodePostal, nouveauAdrVille, nouveauAdrPays));
+	}
+	
+	private void afficherSupp() {
+		System.out.println(messageIndicSupp);
+		
+		int id;
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+			id = sc.nextInt();
+		} catch (InputMismatchException nfe) {
+			return;
+		}
+		
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(new Client(1, "", "", "", "", "", "", "", "", ""));
 	}
 	
 	private void afficherTousClient() {
 		System.out.println(messageTousClient + "\n");
 		
-		ArrayList<Client> listeClient = Modele.obtenirTousClients();
+		ArrayList<Client> listeClient = DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getAll();
 		
 		if(listeClient==null || listeClient.size()==0) {
 			System.out.println("\tEt bien il semblerait qu'il n'y ait pas de client sur la boutique.");
@@ -130,7 +194,7 @@ public class MenuClient extends Menu {
 		}
 		
 		for (int i = 0; i < listeClient.size(); i++) {
-			System.out.println("\t- " + listeClient.get(i).getNom() + " " + listeClient.get(i).getPrenom());
+			System.out.println("\t- " + listeClient.get(i).toString());
 		}
 	}
 }

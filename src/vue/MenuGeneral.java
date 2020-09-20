@@ -2,6 +2,9 @@ package vue;
 
 import java.util.HashMap;
 
+import modele.dao.DAOFactory;
+import modele.dao.Persistance;
+
 public class MenuGeneral extends Menu {
 	
 	
@@ -21,8 +24,8 @@ public class MenuGeneral extends Menu {
 		
 	public MenuGeneral() {
 		super();
-		if(!Modele.creerConnexion())
-			return;
+		PERSISTANCE = Persistance.MYSQL;
+		DAOFactory.getDAOFactory(PERSISTANCE);
 		menuMap = new HashMap<Integer, Menu>();
 		menuMap.put(ETAT_CATEG, new MenuCategorie());
 		menuMap.put(ETAT_CLIENT, new MenuClient());

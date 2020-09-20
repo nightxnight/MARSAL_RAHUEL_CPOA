@@ -14,9 +14,8 @@ public class Client {
 	private String adrPays;
 	
 	//Constructor
-	public Client(int idClient, String nom, String prenom, String identifiant, String motDePasse, String adrNumero,
+	public Client(String nom, String prenom, String identifiant, String motDePasse, String adrNumero,
 			String adrVoie, String adrCodePostal, String adrVille, String adrPays) {
-		this.idClient = idClient;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.identifiant = identifiant;
@@ -26,6 +25,13 @@ public class Client {
 		this.adrCodePostal = adrCodePostal;
 		this.adrVille = adrVille;
 		this.adrPays = adrPays;
+	}
+	
+	public Client(int idClient, String nom, String prenom, String identifiant, String motDePasse, String adrNumero,
+			String adrVoie, String adrCodePostal, String adrVille, String adrPays) {
+		this(nom, prenom, identifiant, motDePasse, adrNumero, adrVoie, adrCodePostal, adrVille, adrPays);
+		this.idClient = idClient;
+		
 	}
 
 	//Getters and Setters

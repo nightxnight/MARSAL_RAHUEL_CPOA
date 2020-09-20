@@ -13,7 +13,16 @@ import modele.dao.entities.listeMemoire.ligneCommande.ListeMemoireLigneCommandeD
 import modele.dao.entities.listeMemoire.produit.ListeMemoireProduitDAO;
 
 public class ListeMemoireDAOFactory extends DAOFactory {
-
+	
+	private static ListeMemoireDAOFactory instance;
+	
+	private ListeMemoireDAOFactory() { }
+	
+	public static ListeMemoireDAOFactory getInstance() {
+		if(instance==null) instance = new ListeMemoireDAOFactory();
+		return instance;
+	}
+	
 	@Override
 	public CategorieDAO getCategorieDAO() {
 		return ListeMemoireCategorieDAO.getInstance();

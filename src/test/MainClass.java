@@ -1,11 +1,14 @@
 package test;
 
 import java.util.Scanner;
-import vue.Menu;
+import vue.MenuGeneral;
 
 public class MainClass {
 
 	public static void main(String[] args) {
-		
+		MenuGeneral m = new MenuGeneral();
+		while(m.isRunning()) {
+			m.boucle();
+		}
 	}
 }

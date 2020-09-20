@@ -19,6 +19,17 @@ import modele.dao.entities.mysql.produit.MySQLProduitDAO;
 
 public class MySQLDAOFactory extends DAOFactory{
 	
+	private static MySQLDAOFactory instance;
+	
+	private MySQLDAOFactory() { 
+		creerConnexion();
+	}
+	
+	public static MySQLDAOFactory getInstance() {
+		if(instance==null) instance = new MySQLDAOFactory();
+		return instance;
+	}
+	
 	private final static String dbURL = "jdbc:mysql://devbdd.iutmetz.univ-lorraine.fr:3306/";
 	private final static String dbName = "marsal15u_cpoa";
 	private final static String login = "marsal15u_appli";

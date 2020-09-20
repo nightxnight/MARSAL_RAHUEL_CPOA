@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.produit.Produit;
-import modele.Modele;
+import modele.dao.DAOFactory;
 
 public class MenuProduit extends Menu{
 	
@@ -72,7 +72,7 @@ public class MenuProduit extends Menu{
 		double tarif;
 		String visuel;
 		int idCategorie;
-		Scanner sc = new Scanner(System.in).useLocale(Locale.FRANCE); //les chiffres de type s'�crivent comme en france avec une ,
+		Scanner sc = new Scanner(System.in).useLocale(Locale.FRANCE); //les chiffres de type s'écrivent comme en france avec une ,
 		
 		nom = sc.nextLine();
 		if(nom.contentEquals("CANCEL")) return;
@@ -97,13 +97,13 @@ public class MenuProduit extends Menu{
 			return;
 		}		
 		
-		Modele.ajouterProduit(new Produit(nom, description, tarif, visuel, idCategorie));
+		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().create(new Produit(nom, description, tarif, visuel, idCategorie));
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 		
-		int idProduitModifie;
+		int idProduitModifie = -1;
 		String nom;
 		String description;
 		double tarif;
@@ -111,11 +111,16 @@ public class MenuProduit extends Menu{
 		int idCategorie;
 		Scanner sc = new Scanner(System.in);
 		
-		try {
-			idProduitModifie = sc.nextInt();
-		} catch(InputMismatchException ime) {
-			return;
-		}	
+		do {
+			try {
+				idProduitModifie = sc.nextInt();
+			} catch (InputMismatchException nfe) {
+				System.out.println("Entrez un nombre positif.");
+				idProduitModifie = -1;
+			} finally {
+				sc.next();
+			}
+		} while(idProduitModifie < 0);
 		
 		nom = sc.nextLine();
 		if(nom.contentEquals("CANCEL")) return;
@@ -140,7 +145,7 @@ public class MenuProduit extends Menu{
 			return;
 		}		
 		
-		Modele.modifierProduit(idProduitModifie, new Produit(nom, description, tarif, visuel, idCategorie));
+		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(new Produit(idProduitModifie, "", "", 0, "", 0), new Produit(nom, description, tarif, visuel, idCategorie));
 	}
 	
 	private void afficherSupp() {
@@ -155,13 +160,13 @@ public class MenuProduit extends Menu{
 			return;
 		}	
 
-		Modele.supprimerProduit(idProduitSupprime);
+		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(new Produit(idProduitSupprime, "", "", 0, "", 0));
 	}
 	
 	private void afficherTousProduit() {
 		System.out.println(messageTousProduit + "\n");
 		
-		ArrayList<Produit> listeProduit = Modele.obtenirTousProduit();
+		ArrayList<Produit> listeProduit = DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getAll();
 		
 		if(listeProduit==null || listeProduit.size()==0) {
 			System.out.println("\tEt bien il semblerait que la boutique ne dispose pas encore de produit.");
@@ -169,7 +174,7 @@ public class MenuProduit extends Menu{
 		}
 		
 		for (int i = 0; i < listeProduit.size(); i++) {
-			System.out.println("\t- id : " + listeProduit.get(i).getId() + " / nom  : " + listeProduit.get(i).getNom() + " / " + listeProduit.get(i).getTarif());
+			System.out.println("\t- " + listeProduit.get(i).toString());
 		}
 	}	
 }

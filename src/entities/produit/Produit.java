@@ -1,10 +1,5 @@
 package entities.produit;
-/*
- * On cr�e au pr�alable un package entities.produit puisque
- * nous aurons surement besoin par la suite de cr�er des instances de
- * diff�rentes classes "enfant" de produit
- * Produit deviendra alors abstraite
- */
+
 public class Produit {
 	
 	private int id;

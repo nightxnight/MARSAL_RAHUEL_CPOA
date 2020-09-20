@@ -6,11 +6,16 @@ public class Categorie {
 	private String titre;
 	private String visuel;
 	
-	//Constructor
-	public Categorie(int idCategorie, String titre, String visuel) {
-		this.idCategorie = idCategorie;
+	public Categorie(String titre, String visuel) {
 		this.titre = titre;
 		this.visuel = visuel;
+	}
+	
+	//Constructor
+	public Categorie(int idCategorie, String titre, String visuel) {
+		this(titre, visuel);
+		this.idCategorie = idCategorie;
+
 	}
 
 	//Getters and Setters!
