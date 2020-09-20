@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import entities.commande.Commande;
 import modele.dao.entities.CommandeDAO;
@@ -93,6 +94,24 @@ public class MySQLCommandeDAO implements CommandeDAO{
 				System.out.println("logs : " + sqle.getMessage());
 			}
 		return false;
+	}
+	
+	@Override
+	public ArrayList<Commande> getAll() {
+		ArrayList<Commande> listeCommande = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie");
+			ResultSet res = query.executeQuery();
+			
+			listeCommande = new ArrayList<Commande>();	
+			while(res.next()) {
+				listeCommande.add(new Commande(res.getInt(1), res.getDate(2), res.getInt(3)));
+			}
+			return listeCommande;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Commande.getAll");
+		}
+		return listeCommande;
 	}
 
 }

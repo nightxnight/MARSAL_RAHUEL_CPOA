@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import entities.categorie.Categorie;
 import entities.produit.Produit;
 import modele.dao.entities.ProduitDAO;
 import modele.dao.entities.mysql.MySQLDAOFactory;
@@ -92,6 +94,24 @@ public class MySQLProduitDAO implements ProduitDAO{
 			System.out.println("Erreur lors de la requï¿½te \"supprimerProduit\".");
 			System.out.println("logs : " + sqle.getMessage());		
 		}		return false;
+	}
+	
+	@Override
+	public ArrayList<Produit> getAll() {
+		ArrayList<Produit> listeProduit = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie");
+			ResultSet res = query.executeQuery();
+			
+			listeProduit = new ArrayList<Produit>();	
+			while(res.next()) {
+				listeProduit.add(new Produit(res.getInt(1), res.getString(2), res.getString(3), res.getDouble(4), res.getString(5), res.getInt(6)));
+			}
+			return listeProduit;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Produit.getAll");
+		}
+		return listeProduit;
 	}
 
 }

@@ -13,7 +13,9 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	
 	private static ListeMemoireClientDAO instance;
 	
-	private ListeMemoireClientDAO() { }
+	private ListeMemoireClientDAO() { 
+		listeClient = new ArrayList<Client>();
+	}
 	
 	public static ListeMemoireClientDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireClientDAO();
@@ -47,5 +49,10 @@ public class ListeMemoireClientDAO implements ClientDAO{
 		if(listeClient.contains(objet)) {
 			return listeClient.remove(objet);
 		} return false;
+	}
+
+	@Override
+	public ArrayList<Client> getAll() {
+		return listeClient;
 	}
 }

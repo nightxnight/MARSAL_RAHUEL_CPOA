@@ -13,7 +13,9 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	
 	private static ListeMemoireCategorieDAO instance;
 	
-	private ListeMemoireCategorieDAO() { }
+	private ListeMemoireCategorieDAO() { 
+		listeCategorie = new ArrayList<Categorie>();
+	}
 	
 	public static ListeMemoireCategorieDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireCategorieDAO();
@@ -40,6 +42,11 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 		if(listeCategorie.contains(objet)) {
 			return listeCategorie.remove(objet);
 		} else return false;
+	}
+
+	@Override
+	public ArrayList<Categorie> getAll() {
+		return listeCategorie;
 	}
 	
 }

@@ -12,7 +12,9 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	
 	private static ListeMemoireCommandeDAO instance;
 	
-	private ListeMemoireCommandeDAO() { }
+	private ListeMemoireCommandeDAO() {
+		listeCommande = new ArrayList<Commande>();
+	}
 	
 	public static ListeMemoireCommandeDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireCommandeDAO();
@@ -38,5 +40,10 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 		if(listeCommande.contains(objet)) {
 			return listeCommande.remove(objet);
 		} return false;
+	}
+
+	@Override
+	public ArrayList<Commande> getAll() {
+		return listeCommande;
 	}
 }

@@ -11,7 +11,9 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	
 	private static ListeMemoireLigneCommandeDAO instance;
 	
-	private ListeMemoireLigneCommandeDAO() { }
+	private ListeMemoireLigneCommandeDAO() { 
+		listeLigneCommande = new ArrayList<LigneCommande>();
+	}
 	
 	public static ListeMemoireLigneCommandeDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireLigneCommandeDAO();
@@ -38,5 +40,10 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		if(listeLigneCommande.contains(objet)) {
 			return listeLigneCommande.remove(objet);
 		} else return false;
+	}
+
+	@Override
+	public ArrayList<LigneCommande> getAll() {
+		return listeLigneCommande;
 	}
 }

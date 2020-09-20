@@ -11,7 +11,9 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	
 	private static ListeMemoireProduitDAO instance;
 	
-	private ListeMemoireProduitDAO() { }
+	private ListeMemoireProduitDAO() { 
+		listeProduit = new ArrayList<Produit>();
+	}
 	
 	public static ListeMemoireProduitDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireProduitDAO();
@@ -40,5 +42,10 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 		if(listeProduit.contains(objet)) {
 			return listeProduit.remove(objet);
 		} else return false;
+	}
+
+	@Override
+	public ArrayList<Produit> getAll() {
+		return listeProduit;
 	}
 }

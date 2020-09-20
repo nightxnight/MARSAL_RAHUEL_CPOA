@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import entities.client.Client;
 import modele.dao.entities.ClientDAO;
@@ -104,5 +105,24 @@ private static MySQLClientDAO instance;
 			}			return false;
 	}
 	
+	@Override
+	public ArrayList<Client> getAll() {
+		ArrayList<Client> listeClient = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client");
+			ResultSet res = query.executeQuery();
+			
+			listeClient = new ArrayList<Client>();	
+			while(res.next()) {
+				listeClient.add(new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6),
+						res.getString(7), res.getString(8), res.getString(9), res.getString(10)));
+			}
+			return listeClient;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Client.getAll");
+			System.out.println("logs : " + sqle.getMessage());
+		}
+		return listeClient;
+	}
 
 }
