@@ -8,7 +8,8 @@ import modele.dao.entities.ClientDAO;
 
 public class ListeMemoireClientDAO implements ClientDAO{
 
-private ArrayList<Client> listeClient;
+	private ArrayList<Client> listeClient;
+	private static int autoIncrementedId;
 	
 	private static ListeMemoireClientDAO instance;
 	
@@ -21,19 +22,30 @@ private ArrayList<Client> listeClient;
 
 	@Override
 	public boolean create(Client objet) {
-		// TODO Auto-generated method stub
-		return false;
+		return listeClient.add(new Client(++autoIncrementedId, objet.getNom(), objet.getPrenom(), objet.getIdentifiant(), objet.getMotDePasse(),
+				objet.getAdrNumero(), objet.getAdrVoie(), objet.getAdrCodePostal(), objet.getAdrVille(), objet.getAdrPays()));
 	}
 
 	@Override
-	public boolean update(Client objetModife, Client objetRemplacant) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Client objetModifie, Client objetRemplacant) {
+		if(listeClient.contains(objetModifie)) {
+			listeClient.get(listeClient.indexOf(objetModifie)).setNom(objetRemplacant.getNom());
+			listeClient.get(listeClient.indexOf(objetModifie)).setPrenom(objetRemplacant.getPrenom());
+			listeClient.get(listeClient.indexOf(objetModifie)).setIdentifiant(objetRemplacant.getIdentifiant());
+			listeClient.get(listeClient.indexOf(objetModifie)).setMotDePasse(objetRemplacant.getMotDePasse());
+			listeClient.get(listeClient.indexOf(objetModifie)).setAdrNumero(objetRemplacant.getAdrNumero());
+			listeClient.get(listeClient.indexOf(objetModifie)).setAdrVoie(objetRemplacant.getAdrVoie());
+			listeClient.get(listeClient.indexOf(objetModifie)).setAdrCodePostal(objetRemplacant.getAdrCodePostal());
+			listeClient.get(listeClient.indexOf(objetModifie)).setAdrVille(objetRemplacant.getAdrVille());
+			listeClient.get(listeClient.indexOf(objetModifie)).setAdrPays(objetRemplacant.getAdrPays());
+			return true;
+		} else return false;
 	}
 
 	@Override
 	public boolean delete(Client objet) {
-		// TODO Auto-generated method stub
-		return false;
+		if(listeClient.contains(objet)) {
+			return listeClient.remove(objet);
+		} return false;
 	}
 }

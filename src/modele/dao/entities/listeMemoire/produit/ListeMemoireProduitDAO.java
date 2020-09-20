@@ -7,6 +7,7 @@ import modele.dao.entities.ProduitDAO;
 public class ListeMemoireProduitDAO  implements ProduitDAO{
 
 	private ArrayList<Produit> listeProduit;
+	private static int autoIncrementedId;
 	
 	private static ListeMemoireProduitDAO instance;
 	
@@ -19,19 +20,25 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 
 	@Override
 	public boolean create(Produit objet) {
-		// TODO Auto-generated method stub
-		return false;
+		return listeProduit.add(new Produit(++autoIncrementedId, objet.getNom(), objet.getDescription(), objet.getTarif(), objet.getVisuel(), objet.getIdCategorie()));
 	}
 
 	@Override
-	public boolean update(Produit objetModife, Produit objetRemplacant) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Produit objetModifie, Produit objetRemplacant) {
+		if(listeProduit.contains(objetModifie)) {
+			listeProduit.get(listeProduit.indexOf(objetModifie)).setNom(objetRemplacant.getNom());
+			listeProduit.get(listeProduit.indexOf(objetModifie)).setDescription(objetRemplacant.getDescription());
+			listeProduit.get(listeProduit.indexOf(objetModifie)).setTarif(objetRemplacant.getTarif());
+			listeProduit.get(listeProduit.indexOf(objetModifie)).setVisuel(objetRemplacant.getVisuel());
+			listeProduit.get(listeProduit.indexOf(objetModifie)).setIdCategorie(objetRemplacant.getIdCategorie());
+			return true;
+		} return false;
 	}
 
 	@Override
 	public boolean delete(Produit objet) {
-		// TODO Auto-generated method stub
-		return false;
+		if(listeProduit.contains(objet)) {
+			return listeProduit.remove(objet);
+		} else return false;
 	}
 }

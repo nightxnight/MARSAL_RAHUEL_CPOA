@@ -9,6 +9,7 @@ import modele.dao.entities.CategorieDAO;
 public class ListeMemoireCategorieDAO implements CategorieDAO{
 	
 	private ArrayList<Categorie> listeCategorie;
+	private static int autoIncrementedId = 0;
 	
 	private static ListeMemoireCategorieDAO instance;
 	
@@ -21,18 +22,24 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 
 	@Override
 	public boolean create(Categorie objet) {
-		return false;
+		return listeCategorie.add(new Categorie(++autoIncrementedId, objet.getTitre(), objet.getVisuel()));
 	}
 
+	//A améliorer puisque peut devenir très lent si la liste contient un énorme nombre d'élément
 	@Override
-	public boolean update(Categorie objetModife, Categorie objetRemplacant) {
-		return false;
+	public boolean update(Categorie objetModifie, Categorie objetRemplacant) {
+		if(listeCategorie.contains(objetModifie)) {
+			listeCategorie.get(listeCategorie.indexOf(objetModifie)).setTitre(objetRemplacant.getTitre());
+			listeCategorie.get(listeCategorie.indexOf(objetModifie)).setVisuel(objetRemplacant.getVisuel());
+			return true;
+		} else return false;
 	}
 
 	@Override
 	public boolean delete(Categorie objet) {
-		// TODO Auto-generated method stub
-		return false;
+		if(listeCategorie.contains(objet)) {
+			return listeCategorie.remove(objet);
+		} else return false;
 	}
 	
 }
