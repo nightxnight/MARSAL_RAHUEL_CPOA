@@ -19,20 +19,16 @@ public class MenuCategorie extends Menu{
 	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous désirez continuer la naviguation";
 	
 	//Ajouter une catégorie
-	private final String messageIndicAjout = "Afin d'ajouter une nouvelle catégorie entrez successivement, le titre ainsi que le fichier visuel de votre catégorie."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicAjout = "--AJOUT DE CATEGORIE--";
 	
 	//Modifier une catégorie
-	private final String messageIndicModif = "Afin de modifier une catégorie entrez successivement, le nom de la catégorie à modifier, le nouveau nom de cette catégorie puis le fichier visuel correspondant."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
-	
+	private final String messageIndicModif = "--MODIFICATION D'UNE CATEGORIE--";
 	//Supprimer une catégorie
-	private final String messageIndicSupp = "Afin de supprimer une cat�gorie tapez le titre de la catégorie que vous souhaitez faire disparaître."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicSupp = "--SUPPRESSION D'UN PRODUIT";
 	
 	
 	//Obtenir toutes les catégories
-	private final String messageToutesCateg = "Voici ci-dessous, toutes les catégories que vous pourrez retrouver au sein de notre boutique";
+	private final String messageToutesCateg = "--AFFICHAGE DE TOUTES LES CATEGORIES : --";
 
 	
 	//Constantes d'�tat
@@ -73,28 +69,18 @@ public class MenuCategorie extends Menu{
 	
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
+		Categorie categ = lireCategorie();
 		
-		String nomCategorie;
-		String fichierVisuel;
-		Scanner sc = new Scanner(System.in);
-		
-		nomCategorie = sc.nextLine();
-		if(nomCategorie.contentEquals("CANCEL")) return;
-		
-		fichierVisuel = sc.nextLine();
-		if(fichierVisuel.equals("CANCEL")) return;
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().create(new Categorie(nomCategorie, fichierVisuel));
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().create(categ);
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 		
 		int idCategorieModifie = -1;
-		String nouveauNomCateg;
-		String nouveauFichierVisuel;
+		Categorie nouvelleCateg;
 		Scanner sc = new Scanner(System.in);
-		
+		System.out.println("Entrez l'id de la categorie qui va etre modfiee");
 		do {
 			try {
 				idCategorieModifie = sc.nextInt();
@@ -106,14 +92,32 @@ public class MenuCategorie extends Menu{
 			}
 		} while(idCategorieModifie < 0);
 		
-		nouveauNomCateg = sc.nextLine();
-		if(nouveauNomCateg.equals("CANCEL")) return;
+		System.out.println("Entrez les nouveaux attributs de la categorie");
+		nouvelleCateg = lireCategorie();
 		
-		nouveauFichierVisuel = sc.nextLine();
-		if(nouveauFichierVisuel.equals("CANCEL")) return;
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(new Categorie(idCategorieModifie, "", ""), new Categorie(nouveauNomCateg, nouveauFichierVisuel));
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(new Categorie(idCategorieModifie, "", ""), nouvelleCateg);
 	
+	}
+	
+	private Categorie lireCategorie(int idCategorie) {
+		Categorie C = lireCategorie();
+		C.setIdCategorie(idCategorie);
+		return C;
+	}
+	
+	private Categorie lireCategorie() {
+		String titre;
+		String visuel;
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Entrez le titre de la categorie");
+		titre = sc.nextLine();
+		
+		System.out.println("Entrez le nom du visuel de la carégorie");
+		visuel = sc.nextLine();
+		
+		return new Categorie(titre.trim(), visuel.trim());
 	}
 	
 	private void afficherSupp() {
@@ -121,6 +125,8 @@ public class MenuCategorie extends Menu{
 		
 		int idCategorie;
 		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Entrez l'id de la categorie que vous voulez supprimer");
 		
 		try {
 			idCategorie = sc.nextInt();
@@ -137,7 +143,7 @@ public class MenuCategorie extends Menu{
 		ArrayList<Categorie> listeCategorie = DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getAll();
 		
 		if(listeCategorie==null || listeCategorie.size()==0) {
-			System.out.println("\tEt bien il semblerait que la boutique ne dispose pas encore de cat�gorie.");
+			System.out.println("\tEt bien il semblerait que la boutique ne dispose pas encore de categories.");
 			return;
 		}
 		

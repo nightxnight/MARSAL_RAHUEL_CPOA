@@ -15,24 +15,21 @@ public class MenuClient extends Menu {
 	private final String messageBienvenue = "\nGESTION DES CLIENTS";
 	private final String messageOption = "\t1. Ajouter un client.\n\t2. Modifier un client.\n\t3. Supprimer un client."
 			+ "\n\t4. Afficher tous les clients\n\t5. Retour";
-	private final String messageIndicAccueil = "Entrez le numéro correspondant à l'option désir�e pour y accéder.";
+	private final String messageIndicAccueil = "Entrez le numéro correspondant à l'option désiree pour y accéder.";
 	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous souhaitez poursuivre la naviguation";
 	
 	//Ajouter un client
-	private final String messageIndicAjout = "Afin d'ajouter un nouveau client entrez successivement son nom puis son prénom."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicAjout = "--AJOUT D'UN CLIENT--";
 	
 	//Modifier un client
-	private final String messageIndicModif = "Afin de modifier un client, entrez successivement le nom puis le prenom du client modifie, apres entrez son nouveau nom et prénom."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicModif = "--MODIFICATION D'UN CLIENT--";
 	
 	//Supprimer un client
-	private final String messageIndicSupp = "Afin de supprimer un client entrez successivement son nom puis son prénom."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicSupp = "--SUPPRESSION D'UN CLIENT--";
 	
 	
 	//Obtenir toutes les clients
-	private final String messageTousClient = "Ci-dessous se trouve la liste de tous les clients utilisant la boutique :";
+	private final String messageTousClient = "--AFFICHAGE DE TOUS LES CLIENTS--";
 	
 	//Constantes d'�tat
 	private final int ETAT_AJOUTER = 1;
@@ -67,61 +64,16 @@ public class MenuClient extends Menu {
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
 		
-		String nomClient;
-		String prenomClient;
-		String identifiant;
-		String motDePasse;
-		String adrNumero;
-		String adrVoie;
-		String adrCodePostal;
-		String adrVille;
-		String adrPays;
+		Client c = lireClient();
 		
-		Scanner sc = new Scanner(System.in);
-		
-		nomClient = sc.nextLine();
-		if(nomClient.equals("CANCEL")) return;
-		
-		prenomClient = sc.nextLine();
-		if(prenomClient.equals("CANCEL")) return;
-		
-		identifiant = sc.nextLine();
-		if(identifiant.equals("CANCEL")) return;
-		
-		motDePasse = sc.nextLine();
-		if(motDePasse.equals("CANCEL")) return;
-		
-		adrNumero = sc.nextLine();
-		if(adrNumero.equals("CANCEL")) return;
-		
-		adrVoie = sc.nextLine();
-		if(adrVoie.equals("CANCEL")) return;
-		
-		adrCodePostal = sc.nextLine();
-		if(adrCodePostal.equals("CANCEL")) return;
-		
-		adrVille = sc.nextLine();
-		if(adrVille.equals("CANCEL")) return;
-		
-		adrPays = sc.nextLine();
-		if(adrPays.equals("CANCEL")) return;
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().create(new Client(nomClient, prenomClient, identifiant, motDePasse, adrNumero, adrVoie, adrCodePostal, adrVille, adrPays));
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().create(c);
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 
 		int idClientModifie = -1;
-		String nouveauNomClient;
-		String nouveauPrenomClient;
-		String nouveauIdentifiant;
-		String nouveauMotDePasse;
-		String nouveauAdrNumero;
-		String nouveauAdrVoie;
-		String nouveauAdrCodePostal;
-		String nouveauAdrVille;
-		String nouveauAdrPays;
+		Client nouveauClient;
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -137,35 +89,59 @@ public class MenuClient extends Menu {
 		} while(idClientModifie < 0);
 		
 		
-		nouveauNomClient = sc.nextLine();
-		if(nouveauNomClient.equals("CANCEL")) return;
+		System.out.println("Entrez les nouveaux attributs du client");
+		nouveauClient  = lireClient();
 		
-		nouveauPrenomClient = sc.nextLine();
-		if(nouveauPrenomClient.equals("CANCEL")) return;
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(new Client(idClientModifie, "", "", "", "", "", "", "", "", ""), nouveauClient);
+	}
+	
+	private Client lireClient(int idClient) {
+		Client C = lireClient();
+		C.setIdClient(idClient);
+		return C;
+	}
+	
+	private Client lireClient() {
+		String nom ;
+		String prenom;
+		String identifiant;
+		String mdp;
+		String adrNumero;
+		String adrVoie;
+		String adrCodePostal;
+		String adrVille;
+		String adrPays;
 		
-		nouveauIdentifiant = sc.nextLine();
-		if(nouveauIdentifiant.equals("CANCEL")) return;
+		Scanner sc = new Scanner(System.in);
 		
-		nouveauMotDePasse = sc.nextLine();
-		if(nouveauMotDePasse.equals("CANCEL")) return;
+		System.out.println("Entrez le nom");
+		nom = sc.nextLine();
 		
-		nouveauAdrNumero = sc.nextLine();
-		if(nouveauAdrNumero.equals("CANCEL")) return;
+		System.out.println("Entrez le prenom");
+		prenom = sc.nextLine();
 		
-		nouveauAdrVoie = sc.nextLine();
-		if(nouveauAdrVoie.equals("CANCEL")) return;
+		System.out.println("Entrez l'identifiant du client");
+		identifiant = sc.nextLine();
 		
-		nouveauAdrCodePostal = sc.nextLine();
-		if(nouveauAdrCodePostal.equals("CANCEL")) return;
+		System.out.println("Entrez le mot de passe");
+		mdp = sc.nextLine();
 		
-		nouveauAdrVille = sc.nextLine();
-		if(nouveauAdrVille.equals("CANCEL")) return;
+		System.out.println("Entrez le numéro de l'adresse");
+		adrNumero = sc.nextLine();
 		
-		nouveauAdrPays = sc.nextLine();
-		if(nouveauAdrPays.equals("CANCEL")) return;
+		System.out.println("Entrez la voie de l'adresse");
+		adrVoie = sc.nextLine();
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(new Client(idClientModifie, "", "", "", "", "", "", "", "", "")
-				, new Client(nouveauNomClient, nouveauPrenomClient, nouveauIdentifiant, nouveauMotDePasse, nouveauAdrNumero, nouveauAdrVoie, nouveauAdrCodePostal, nouveauAdrVille, nouveauAdrPays));
+		System.out.println("Entrez le code postal");
+		adrCodePostal = sc.nextLine();
+		
+		System.out.println("Entrez la ville");
+		adrVille = sc.nextLine();
+		
+		System.out.println("Entrez le pays");
+		adrPays = sc.nextLine();
+		
+		return new Client(nom.trim(), prenom.trim(), identifiant.trim(), mdp.trim(), adrNumero.trim(), adrVoie.trim(), adrCodePostal.trim(), adrVille.trim(), adrPays.trim());
 	}
 	
 	private void afficherSupp() {

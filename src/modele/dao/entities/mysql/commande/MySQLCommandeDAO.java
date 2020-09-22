@@ -100,7 +100,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	public ArrayList<Commande> getAll() {
 		ArrayList<Commande> listeCommande = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande");
 			ResultSet res = query.executeQuery();
 			
 			listeCommande = new ArrayList<Commande>();	
@@ -109,7 +109,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			}
 			return listeCommande;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Commande.getAll");
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Commande.getAll");
 		}
 		return listeCommande;
 	}
