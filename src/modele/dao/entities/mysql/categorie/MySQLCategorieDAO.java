@@ -56,12 +56,12 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			query.setString(2, objetRemplacant.getVisuel());
 			query.setInt(3, objetModife.getIdCategorie());
 		
-		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
-		
-		if(query != null) query.close();
-		
-		return nbLigne == 1;
+			int nbLigne = query.executeUpdate();
+			System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
+			
+			if(query != null) query.close();
+			
+			return nbLigne == 1;
 		
 		} catch (SQLException sqle) {
 			System.out.println("Erreur lors de la requï¿½te \"modifierCategorie\".");
@@ -103,7 +103,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			}
 			return listeCategorie;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Categorie.getAll");
+			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_Categorie.getAll");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeCategorie;

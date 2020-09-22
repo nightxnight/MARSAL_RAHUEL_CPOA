@@ -1,5 +1,5 @@
 package modele.dao;
 
 public enum Persistance {
-	MYSQL, LISTEMEMOIRE;
+	MYSQL, LISTEMEMOIRE, NOSQL, XML;
 }

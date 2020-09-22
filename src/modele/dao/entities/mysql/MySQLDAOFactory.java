@@ -20,6 +20,13 @@ import modele.dao.entities.mysql.produit.MySQLProduitDAO;
 public class MySQLDAOFactory extends DAOFactory{
 	
 	private static MySQLDAOFactory instance;
+	private final static String dbURL = "jdbc:mysql://devbdd.iutmetz.univ-lorraine.fr:3306/";
+	private final static String dbName = "marsal15u_cpoa";
+	private final static String login = "marsal15u_appli";
+	private final static String password = "vincentseum01";
+	
+	private static Connection connexion;
+	
 	
 	private MySQLDAOFactory() { 
 		creerConnexion();
@@ -30,22 +37,15 @@ public class MySQLDAOFactory extends DAOFactory{
 		return instance;
 	}
 	
-	private final static String dbURL = "jdbc:mysql://devbdd.iutmetz.univ-lorraine.fr:3306/";
-	private final static String dbName = "marsal15u_cpoa";
-	private final static String login = "marsal15u_appli";
-	private final static String password = "vincentseum01";
-	
-	private static Connection connexion;
-	
 	public static boolean creerConnexion() {
 		boolean connexionCree = true;
 		connexion = null;
 		try {
 			String url = dbURL + dbName + "?serverTimezone=Europe/Paris";
 			connexion = DriverManager.getConnection(url, login, password);
-			System.out.println("Connexion à " + dbName + " établie.");
+			System.out.println("Connexion ï¿½ " + dbName + " ï¿½tablie.");
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la connexion à " + dbName);
+			System.out.println("Erreur lors de la connexion ï¿½ " + dbName);
 			System.out.println(sqle.getMessage());
 			connexionCree = false;
 		}
@@ -58,7 +58,7 @@ public class MySQLDAOFactory extends DAOFactory{
 			connexion.close();
 			connexionFerme = true;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la fermeture de la connexion à " + dbName + ".");
+			System.out.println("Erreur lors de la fermeture de la connexion ï¿½ " + dbName + ".");
 		}
 		return connexionFerme;
 	}

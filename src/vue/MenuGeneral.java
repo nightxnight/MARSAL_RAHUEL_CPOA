@@ -25,6 +25,7 @@ public class MenuGeneral extends Menu {
 	public MenuGeneral() {
 		super();
 		PERSISTANCE = Persistance.MYSQL;
+		//Permet d'appeller le constructeur lier pour créer l'instance.
 		DAOFactory.getDAOFactory(PERSISTANCE);
 		menuMap = new HashMap<Integer, Menu>();
 		menuMap.put(ETAT_CATEG, new MenuCategorie());

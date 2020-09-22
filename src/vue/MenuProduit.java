@@ -1,5 +1,6 @@
 package vue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -13,27 +14,24 @@ public class MenuProduit extends Menu{
 	//Constantes de messages :
 	
 	//Accueil 
-	private final String messageBienvenue = "\nGESTION DES PRODUITS";
+	private final String messageBienvenue = "\n--GESTION DES PRODUITS--";
 	private final String messageOption = "\t1. Ajouter un produit\n\t2. Modifier un produit.\n\t3. Supprimer un produit."
 			+ "\n\t4. Afficher tous les produits.\n\t5. Retour";
-	private final String messageIndicAccueil = "Entrez le num�ro correspondant � l'option d�sir�e pour y accéder.";
-	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous désirez poursuivre la naviguation";
+	private final String messageIndicAccueil = "Entrez le numero correspondant a l'option desiree pour y acceder.";
+	private final String messageNavig = "Pressez la touche \"entree\" des lors que vous désirez poursuivre la naviguation";
 	
 	//Ajouter un produit
-	private final String messageIndicAjout = "Afin d'ajouter un nouveau produit entrez successivement nom, description, tarif, visuel et le numero de categorie."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicAjout = "--AJOUT DE PRODUIT--";
 	
 	//Modifier un produit
-	private final String messageIndicModif = "Afin de modifier un produit, entrez l'id du produit à modifié puis entrez successivement nom, description, tarif, visuel et le numero de categorie à changer."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicModif = "--MODIFICATION DE PRODUIT--";
 	
 	//Supprimer une produit
-	private final String messageIndicSupp = "Afin de supprimer un produit entrez son id."
-			+ "\n\tTaper \"CANCEL\" pour revenir à l'accueil.";
+	private final String messageIndicSupp = "--SUPPRESSION DE PRODUIT--";
 	
 	
 	//Obtenir toutes les produits
-	private final String messageTousProduit = "Voici ci-dessous, tous les produits que vous pourrez retrouver au sein de notre boutique";
+	private final String messageTousProduit = "--LISTE DES PRODUITS--";
 
 	//Constantes d'�tat
 	private final int ETAT_AJOUTER = 1;
@@ -56,7 +54,6 @@ public class MenuProduit extends Menu{
 		etat = ETAT_ACCUEIL;
 	}
 	
-	//Ci-dessous toutes les m�thodes d'affichages dans la console
 	private void afficherAccueil() {
 		System.out.println(messageBienvenue + "\n");
 		System.out.println(messageOption + "\n");
@@ -67,100 +64,104 @@ public class MenuProduit extends Menu{
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
 		
-		String nom;
-		String description;
-		double tarif;
-		String visuel;
-		int idCategorie;
-		Scanner sc = new Scanner(System.in).useLocale(Locale.FRANCE); //les chiffres de type s'écrivent comme en france avec une ,
-		
-		nom = sc.nextLine();
-		if(nom.contentEquals("CANCEL")) return;
-		
-		description = sc.nextLine();
-		if(description.equals("CANCEL")) return;
-		
-		try {
-			tarif = sc.nextDouble();
-		} catch(InputMismatchException ime) {
-			return;
-		}		
-		
-		sc = new Scanner(System.in);
-		
-		visuel = sc.nextLine();
-		if(visuel.equals("CANCEL")) return;
-		
-		try {
-			idCategorie = sc.nextInt();
-		} catch(InputMismatchException ime) {
-			return;
-		}		
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().create(new Produit(nom, description, tarif, visuel, idCategorie));
+		System.out.println("Nous allons entrez les informations concernant le produit qui va etre ajouter : ");
+		Produit produit;
+		produit = lireProduit();
+		if(confirmRequest())
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().create(produit);
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 		
 		int idProduitModifie = -1;
-		String nom;
-		String description;
-		double tarif;
-		String visuel;
-		int idCategorie;
-		Scanner sc = new Scanner(System.in);
+		Produit nouveauProduit;		
 		
+		System.out.println("id du produit qui va etre modifie : ");
 		do {
 			try {
-				idProduitModifie = sc.nextInt();
-			} catch (InputMismatchException nfe) {
-				System.out.println("Entrez un nombre positif.");
+				idProduitModifie = readId();
+			} catch (IOException ioe) {
+				System.out.println("Un id de produit est un entier positif");
 				idProduitModifie = -1;
-			} finally {
-				sc.next();
 			}
 		} while(idProduitModifie < 0);
 		
-		nom = sc.nextLine();
-		if(nom.contentEquals("CANCEL")) return;
-		
-		description = sc.nextLine();
-		if(description.equals("CANCEL")) return;
-		
-		try {
-			tarif = sc.nextDouble();
-		} catch(InputMismatchException ime) {
-			return;
-		}		
-		
-		sc = new Scanner(System.in);
-		
-		visuel = sc.nextLine();
-		if(visuel.equals("CANCEL")) return;
-		
-		try {
-			idCategorie = sc.nextInt();
-		} catch(InputMismatchException ime) {
-			return;
-		}		
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(new Produit(idProduitModifie, "", "", 0, "", 0), new Produit(nom, description, tarif, visuel, idCategorie));
+		System.out.println("Desormais, entrez les nouveaux attributs de ce produit : ");
+		nouveauProduit = lireProduit();
+		if(confirmRequest())
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(new Produit(idProduitModifie, "", "", 0, "", 0), nouveauProduit);
 	}
 	
+	private Produit lireProduit(int idProduit) {
+		Produit produit;
+		produit = lireProduit();
+		produit.setId(idProduit);
+		return produit;
+	}
+	
+	private Produit lireProduit() {
+		String nom;
+		String description;
+		double tarif = -1;
+		String visuel;
+		int idCategorie = -1;
+		
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in).useLocale(Locale.FRANCE); //les chiffres de type double s'écrivent comme en france avec une ,
+
+		System.out.println("Entrez le nom du produit : ");
+		nom = sc.nextLine();
+		
+		System.out.println("Entrez la description du produit : ");
+		description = sc.nextLine();
+		
+		System.out.println("Entrez le tarif unitaire : ");
+		do {
+			try {
+				tarif = sc.nextDouble();
+			} catch(InputMismatchException ime) {
+				System.out.println("Un prix est un réel positif.");
+				tarif = -1;
+			} finally {
+				sc.next();
+			}
+		} while(tarif < 0); 
+		
+		System.out.println("Entrez le nom du fichier visuel associé : ");
+		visuel = sc.nextLine();
+		
+		System.out.println("Entrez le numéro de la catégorie associé à votre produit : ");
+		do {
+			try {
+				idCategorie = sc.nextInt();
+			} catch(InputMismatchException ime) {
+				System.out.println("Un numéro de catégorie est un entier positif.");
+			}
+		} while(idCategorie < 0);
+		
+		if(sc != null) sc.close();
+		
+		return new Produit(nom.trim(), description.trim(), tarif, visuel.trim(), idCategorie);
+	}
+
 	private void afficherSupp() {
 		System.out.println(messageIndicSupp);
 		
-		int idProduitSupprime;
-		Scanner sc = new Scanner(System.in);
+		int idProduitSupprime = -1;
 		
-		try {
-			idProduitSupprime = sc.nextInt();
-		} catch(InputMismatchException ime) {
-			return;
-		}	
-
-		DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(new Produit(idProduitSupprime, "", "", 0, "", 0));
+		System.out.println("id du produit qui va etre supprime : ");
+		do {
+			try {
+				idProduitSupprime = readId();
+			} catch(IOException ioe) {
+				idProduitSupprime = -1;
+				System.out.println("Un id de produit est un entier positif.");
+			}
+		} while(idProduitSupprime < 0);
+		
+		if(confirmRequest())
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(new Produit(idProduitSupprime, "", "", 0, "", 0));
 	}
 	
 	private void afficherTousProduit() {
