@@ -32,7 +32,6 @@ public abstract class Menu {
 			inputEtat = ETAT_ACCUEIL;
 		}		
 		
-		if(sc != null) sc.close();
 		etat = inputEtat;
 	}
 	

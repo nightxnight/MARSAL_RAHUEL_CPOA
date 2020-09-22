@@ -3,6 +3,7 @@ package modele.dao.entities.listeMemoire.ligneCommande;
 import java.util.ArrayList;
 
 import entities.ligneCommande.LigneCommande;
+import entities.produit.Produit;
 import modele.dao.entities.LigneCommandeDAO;
 
 public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
@@ -45,5 +46,15 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public ArrayList<LigneCommande> getAll() {
 		return listeLigneCommande;
+	}
+	
+	private int positionById(int idCommande) {
+		int position = -1;
+		for(Ligne produit : listeProduit) {
+			if(produit.getId()==idProduit) {
+				position = listeProduit.indexOf(produit);
+			}
+		}
+		return position;
 	}
 }

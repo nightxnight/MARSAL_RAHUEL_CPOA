@@ -2,12 +2,17 @@ package entities.commande;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import entities.ligneCommande.LigneCommande;
 
 public class Commande {
 	
 	private int idCommande;
 	private LocalDate dateCommande;
 	private int idClient;
+	private HashMap<Integer, ArrayList<LigneCommande>> mapLigneCommande;
 	
 	//Constructor
 	public Commande(int idCommande, Date dateCommandeSQL, int idClient) {
