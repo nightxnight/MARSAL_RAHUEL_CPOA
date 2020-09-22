@@ -58,7 +58,7 @@ private static MySQLClientDAO instance;
 	}
 
 	@Override
-	public boolean update(Client objetModife, Client objetRemplacant) {
+	public boolean update(int idObjetModifie, Client objetRemplacant) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? , WHERE id_client = ?");
 			query.setString(1, objetRemplacant.getNom());
@@ -71,7 +71,7 @@ private static MySQLClientDAO instance;
 			query.setString(8, objetRemplacant.getAdrVille());
 			query.setString(9, objetRemplacant.getAdrPays());
 			
-			query.setInt(10, objetModife.getIdClient());
+			query.setInt(10, idObjetModifie);
 		
 		int nbLigne = query.executeUpdate();
 		System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
@@ -119,7 +119,7 @@ private static MySQLClientDAO instance;
 			}
 			return listeClient;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Client.getAll");
+			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_Client.getAll");
 			System.out.println("logs : " + sqle.getMessage());
 		}
 		return listeClient;

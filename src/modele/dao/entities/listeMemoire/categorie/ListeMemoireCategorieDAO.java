@@ -3,6 +3,7 @@ package modele.dao.entities.listeMemoire.categorie;
 import java.util.ArrayList;
 
 import entities.categorie.Categorie;
+import entities.produit.Produit;
 import modele.dao.DAO;
 import modele.dao.entities.CategorieDAO;
 
@@ -27,14 +28,16 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 		return listeCategorie.add(new Categorie(++autoIncrementedId, objet.getTitre(), objet.getVisuel()));
 	}
 
-	//A améliorer puisque peut devenir très lent si la liste contient un énorme nombre d'élément
+	//A amï¿½liorer puisque peut devenir trï¿½s lent si la liste contient un ï¿½norme nombre d'ï¿½lï¿½ment
 	@Override
-	public boolean update(Categorie objetModifie, Categorie objetRemplacant) {
-		if(listeCategorie.contains(objetModifie)) {
-			listeCategorie.get(listeCategorie.indexOf(objetModifie)).setTitre(objetRemplacant.getTitre());
-			listeCategorie.get(listeCategorie.indexOf(objetModifie)).setVisuel(objetRemplacant.getVisuel());
+	public boolean update(int idObjetModifie, Categorie objetRemplacant) {
+		int idx = positionById(idObjetModifie);
+		if(idx == -1) return false;
+		else {
+			listeCategorie.get(idx).setTitre(objetRemplacant.getTitre());
+			listeCategorie.get(idx).setVisuel(objetRemplacant.getVisuel());
 			return true;
-		} else return false;
+		}
 	}
 
 	@Override
@@ -47,6 +50,16 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	@Override
 	public ArrayList<Categorie> getAll() {
 		return listeCategorie;
+	}
+	
+	private int positionById(int idCategorie) {
+		int position = -1;
+		for(Categorie categorie : listeCategorie) {
+			if(categorie.getIdCategorie()==idCategorie) {
+				position = listeCategorie.indexOf(categorie);
+			}
+		}
+		return position;
 	}
 	
 }

@@ -26,7 +26,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	}
 
 	@Override
-	public boolean update(LigneCommande objetModifie, LigneCommande objetRemplacant) {
+	public boolean update(int idObjetModifie, LigneCommande objetRemplacant) {
 		if(listeLigneCommande.contains(objetModifie)) {
 			listeLigneCommande.get(listeLigneCommande.indexOf(objetModifie)).setIdProduit(objetRemplacant.getIdProduit());
 			listeLigneCommande.get(listeLigneCommande.indexOf(objetModifie)).setQuantite(objetRemplacant.getQuantite());

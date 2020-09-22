@@ -26,26 +26,43 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	}
 
 	@Override
-	public boolean update(Produit objetModifie, Produit objetRemplacant) {
-		if(listeProduit.contains(objetModifie)) {
-			listeProduit.get(listeProduit.indexOf(objetModifie)).setNom(objetRemplacant.getNom());
-			listeProduit.get(listeProduit.indexOf(objetModifie)).setDescription(objetRemplacant.getDescription());
-			listeProduit.get(listeProduit.indexOf(objetModifie)).setTarif(objetRemplacant.getTarif());
-			listeProduit.get(listeProduit.indexOf(objetModifie)).setVisuel(objetRemplacant.getVisuel());
-			listeProduit.get(listeProduit.indexOf(objetModifie)).setIdCategorie(objetRemplacant.getIdCategorie());
+	public boolean update(int idObjetModifie, Produit objetRemplacant) {
+		int idx = positionById(idObjetModifie);
+		if(idx == -1) 
+			return false;
+		else {
+			listeProduit.get(idx).setNom(objetRemplacant.getNom());
+			listeProduit.get(idx).setDescription(objetRemplacant.getDescription());
+			listeProduit.get(idx).setTarif(objetRemplacant.getTarif());
+			listeProduit.get(idx).setVisuel(objetRemplacant.getVisuel());
+			listeProduit.get(idx).setIdCategorie(objetRemplacant.getIdCategorie());
 			return true;
-		} return false;
+		}
 	}
 
 	@Override
 	public boolean delete(Produit objet) {
-		if(listeProduit.contains(objet)) {
-			return listeProduit.remove(objet);
-		} else return false;
+		int idx = positionById(objet.getId());
+		if(idx == -1) 
+			return false;
+		else {
+			listeProduit.remove(idx);
+			return true;
+		}
 	}
 
 	@Override
 	public ArrayList<Produit> getAll() {
 		return listeProduit;
+	}
+	
+	private int positionById(int idProduit) {
+		int position = -1;
+		for(Produit produit : listeProduit) {
+			if(produit.getId()==idProduit) {
+				position = listeProduit.indexOf(produit);
+			}
+		}
+		return position;
 	}
 }

@@ -3,6 +3,7 @@ package modele.dao.entities.listeMemoire.commande;
 import java.sql.Date;
 import java.util.ArrayList;
 import entities.commande.Commande;
+import entities.produit.Produit;
 import modele.dao.entities.CommandeDAO;
 
 public class ListeMemoireCommandeDAO implements CommandeDAO{
@@ -27,23 +28,37 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public boolean update(Commande objetModifie, Commande objetRemplacant) {
-		if(listeCommande.contains(objetModifie)) {
-			listeCommande.get(listeCommande.indexOf(objetModifie)).setDateCommande(objetRemplacant.getDateCommande());
-			listeCommande.get(listeCommande.indexOf(objetModifie)).setIdClient(objetRemplacant.getIdClient());
+	public boolean update(int idObjetModifie, Commande objetRemplacant) {
+		int idx = positionById(idObjetModifie);
+		if(idx == -1) {
+			return false;
+		} else {
+			listeCommande.get(idx).setIdClient(objetRemplacant.getIdClient());
+			listeCommande.get(idx).setDateCommande(objetRemplacant.getDateCommande());
 			return true;
-		} return false;
+		}
 	}
 
 	@Override
 	public boolean delete(Commande objet) {
-		if(listeCommande.contains(objet)) {
-			return listeCommande.remove(objet);
-		} return false;
+		int idx = positionById(objet.getIdCommande());
+		if(idx == -1) {
+			return false;
+		} else return listeCommande.remove(objet);
 	}
 
 	@Override
 	public ArrayList<Commande> getAll() {
 		return listeCommande;
+	}
+	
+	private int positionById(int idCommande) {
+		int position = -1;
+		for(Commande commande : listeCommande) {
+			if(commande.getIdCommande()==idCommande) {
+				position = listeCommande.indexOf(commande);
+			}
+		}
+		return position;
 	}
 }

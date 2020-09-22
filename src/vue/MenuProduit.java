@@ -90,7 +90,7 @@ public class MenuProduit extends Menu{
 		System.out.println("Desormais, entrez les nouveaux attributs de ce produit : ");
 		nouveauProduit = lireProduit();
 		if(confirmRequest())
-			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(new Produit(idProduitModifie, "", "", 0, "", 0), nouveauProduit);
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(idProduitModifie, nouveauProduit);
 	}
 	
 	private Produit lireProduit(int idProduit) {

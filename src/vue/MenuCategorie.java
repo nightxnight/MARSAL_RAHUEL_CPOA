@@ -95,7 +95,7 @@ public class MenuCategorie extends Menu{
 		System.out.println("Entrez les nouveaux attributs de la categorie");
 		nouvelleCateg = lireCategorie();
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(new Categorie(idCategorieModifie, "", ""), nouvelleCateg);
+		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(idCategorieModifie, nouvelleCateg);
 	
 	}
 	

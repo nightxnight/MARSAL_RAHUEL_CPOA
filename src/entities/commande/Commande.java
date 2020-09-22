@@ -16,6 +16,12 @@ public class Commande {
 		this.dateCommande = dateCommandeSQL.toLocalDate();
 		this.idClient = idClient;
 	}
+	
+	public Commande(int idCommande, LocalDate dateCommande, int idClient) {
+		this.idCommande = idCommande;
+		this.dateCommande = dateCommande;
+		this.idClient = idClient;
+	}
 
 	
 	//Getters and Setters

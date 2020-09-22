@@ -3,6 +3,7 @@ package modele.dao.entities.listeMemoire.client;
 import java.util.ArrayList;
 
 import entities.client.Client;
+import entities.produit.Produit;
 import modele.dao.DAO;
 import modele.dao.entities.ClientDAO;
 
@@ -29,19 +30,21 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public boolean update(Client objetModifie, Client objetRemplacant) {
-		if(listeClient.contains(objetModifie)) {
-			listeClient.get(listeClient.indexOf(objetModifie)).setNom(objetRemplacant.getNom());
-			listeClient.get(listeClient.indexOf(objetModifie)).setPrenom(objetRemplacant.getPrenom());
-			listeClient.get(listeClient.indexOf(objetModifie)).setIdentifiant(objetRemplacant.getIdentifiant());
-			listeClient.get(listeClient.indexOf(objetModifie)).setMotDePasse(objetRemplacant.getMotDePasse());
-			listeClient.get(listeClient.indexOf(objetModifie)).setAdrNumero(objetRemplacant.getAdrNumero());
-			listeClient.get(listeClient.indexOf(objetModifie)).setAdrVoie(objetRemplacant.getAdrVoie());
-			listeClient.get(listeClient.indexOf(objetModifie)).setAdrCodePostal(objetRemplacant.getAdrCodePostal());
-			listeClient.get(listeClient.indexOf(objetModifie)).setAdrVille(objetRemplacant.getAdrVille());
-			listeClient.get(listeClient.indexOf(objetModifie)).setAdrPays(objetRemplacant.getAdrPays());
+	public boolean update(int idObjetModifie, Client objetRemplacant) {
+		int idx = positionById(idObjetModifie);
+		if(idx == -1) return false;
+		else {
+			listeClient.get(idx).setNom(objetRemplacant.getNom());
+			listeClient.get(idx).setPrenom(objetRemplacant.getPrenom());
+			listeClient.get(idx).setIdentifiant(objetRemplacant.getIdentifiant());
+			listeClient.get(idx).setMotDePasse(objetRemplacant.getMotDePasse());
+			listeClient.get(idx).setAdrNumero(objetRemplacant.getAdrNumero());
+			listeClient.get(idx).setAdrVoie(objetRemplacant.getAdrVoie());
+			listeClient.get(idx).setAdrCodePostal(objetRemplacant.getAdrCodePostal());
+			listeClient.get(idx).setAdrVille(objetRemplacant.getAdrVille());
+			listeClient.get(idx).setAdrPays(objetRemplacant.getAdrPays());
 			return true;
-		} else return false;
+		}
 	}
 
 	@Override
@@ -54,5 +57,15 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	@Override
 	public ArrayList<Client> getAll() {
 		return listeClient;
+	}
+	
+	private int positionById(int idClient) {
+		int position = -1;
+		for(Client client : listeClient) {
+			if(client.getIdClient()==idClient) {
+				position = listeClient.indexOf(client);
+			}
+		}
+		return position;
 	}
 }

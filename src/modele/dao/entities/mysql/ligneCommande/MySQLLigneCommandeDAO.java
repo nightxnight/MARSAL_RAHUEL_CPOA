@@ -51,7 +51,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	}
 
 	@Override
-	public boolean update(LigneCommande objetModife, LigneCommande objetRemplacant) {
+	public boolean update(int idObjetModifie, LigneCommande objetRemplacant) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET id_produit = ?, quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
 			query.setInt(1, objetRemplacant.getIdProduit());
@@ -108,7 +108,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 			}
 			return listeLigneCommande;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_LigneCommande.getAll");
+			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_LigneCommande.getAll");
 		}
 		return listeLigneCommande;
 	}

@@ -54,7 +54,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	}
 
 	@Override
-	public boolean update(Produit objetModifie, Produit objetRemplacant) {
+	public boolean update(int idObjetModifie, Produit objetRemplacant) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Produit SET nom = ?, description = ?, tarif = ?, visuel = ?, id_categorie = ? WHERE id_produit = ?");
 			query.setString(1, objetRemplacant.getNom());
@@ -62,7 +62,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			query.setDouble(3, objetRemplacant.getTarif());
 			query.setString(4, objetRemplacant.getVisuel());
 			query.setInt(5, objetRemplacant.getIdCategorie());
-			query.setInt(6, objetModifie.getId());
+			query.setInt(6, idObjetModifie);
 			
 			int nbLigne = query.executeUpdate();
 			System.out.println(nbLigne + " ligne(s) modifiï¿½e(s)");
@@ -109,7 +109,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			}
 			return listeProduit;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MySQLDAOFactory_Produit.getAll");
+			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_Produit.getAll");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeProduit;

@@ -92,7 +92,7 @@ public class MenuClient extends Menu {
 		System.out.println("Entrez les nouveaux attributs du client");
 		nouveauClient  = lireClient();
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(new Client(idClientModifie, "", "", "", "", "", "", "", "", ""), nouveauClient);
+		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(idClientModifie, nouveauClient);
 	}
 	
 	private Client lireClient(int idClient) {
