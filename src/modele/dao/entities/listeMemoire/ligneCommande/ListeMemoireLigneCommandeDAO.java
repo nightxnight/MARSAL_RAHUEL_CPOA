@@ -24,7 +24,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public boolean create(LigneCommande objet) {
 		int key = objet.getIdCommande();
-		if(mapLigneCommande.get(key)== null) {
+		if(!mapLigneCommande.containsKey(key)) {
 			mapLigneCommande.put(key, new ArrayList<LigneCommande>());
 		}
 		mapLigneCommande.get(key).add(objet.getIdProduit(), objet);

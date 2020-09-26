@@ -24,7 +24,7 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	public boolean create(Commande objet) {
 		++autoIncrementedId;
 		objet.setIdCommande(autoIncrementedId);
-		listeCommande.add(autoIncrementedId, objet);
+		listeCommande.add(objet);
 		return true;
 	}
 

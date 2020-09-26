@@ -23,11 +23,8 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	@Override
 	public boolean create(Produit objet) {
 		++autoIncrementedId;
-		while(listeProduit.get(autoIncrementedId)!=null) {
-			++autoIncrementedId;
-		}
 		objet.setId(autoIncrementedId);
-		listeProduit.add(autoIncrementedId, objet);
+		listeProduit.add(objet);
 		return true;
 	}
 

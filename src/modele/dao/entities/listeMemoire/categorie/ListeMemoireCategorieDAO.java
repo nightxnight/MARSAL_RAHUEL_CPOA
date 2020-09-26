@@ -25,7 +25,7 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	public boolean create(Categorie objet) {
 		++autoIncrementedId;
 		objet.setIdCategorie(autoIncrementedId);
-		listeCategorie.add(autoIncrementedId, objet);
+		listeCategorie.add(objet);
 		return true;
 	}
 

@@ -25,7 +25,7 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	public boolean create(Client objet) {
 		++autoIncrementedId;
 		objet.setIdClient(autoIncrementedId);
-		listeClient.add(autoIncrementedId, objet);
+		listeClient.add(objet);
 		return true;
 	}
 
