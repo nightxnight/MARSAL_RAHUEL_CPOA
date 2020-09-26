@@ -69,18 +69,22 @@ public class MenuCategorie extends Menu{
 	
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
+		
+		System.out.println("Entrez les attributs de la categorie qui va etre ajoutee : ");
 		Categorie categ = lireCategorie();
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().create(categ);
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().create(categ);
+		}
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 		
 		int idCategorieModifie = -1;
-		Categorie nouvelleCateg;
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Entrez l'id de la categorie qui va etre modfiee");
+		
+		System.out.println("Entrez l'id de la categorie qui va etre modifiee : ");
 		do {
 			try {
 				idCategorieModifie = sc.nextInt();
@@ -88,21 +92,17 @@ public class MenuCategorie extends Menu{
 				System.out.println("Entrez un nombre positif.");
 				idCategorieModifie = -1;
 			} finally {
-				sc.next();
+				sc = new Scanner(System.in);
 			}
 		} while(idCategorieModifie < 0);
 		
-		System.out.println("Entrez les nouveaux attributs de la categorie");
-		nouvelleCateg = lireCategorie();
+		System.out.println("Entrez les nouveaux attributs de la categorie : ");
+		Categorie categorie = lireCategorie();
+		categorie.setIdCategorie(idCategorieModifie);
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(idCategorieModifie, nouvelleCateg);
-	
-	}
-	
-	private Categorie lireCategorie(int idCategorie) {
-		Categorie C = lireCategorie();
-		C.setIdCategorie(idCategorie);
-		return C;
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie);
+		}
 	}
 	
 	private Categorie lireCategorie() {
@@ -114,7 +114,7 @@ public class MenuCategorie extends Menu{
 		System.out.println("Entrez le titre de la categorie");
 		titre = sc.nextLine();
 		
-		System.out.println("Entrez le nom du visuel de la carégorie");
+		System.out.println("Entrez le nom du visuel de la categorie");
 		visuel = sc.nextLine();
 		
 		return new Categorie(titre.trim(), visuel.trim());
@@ -123,18 +123,24 @@ public class MenuCategorie extends Menu{
 	private void afficherSupp() {
 		System.out.println(messageIndicSupp);
 		
-		int idCategorie;
+		int idCategorieSupprime;
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Entrez l'id de la categorie que vous voulez supprimer");
+		System.out.println("Entrez l'id de la categorie que vous voulez supprimer : ");
+		do {
+			try {
+				idCategorieSupprime = sc.nextInt();
+			} catch (InputMismatchException nfe) {
+				System.out.println("Un id est un nombre positif");
+				idCategorieSupprime = -1;
+			} finally {
+				sc = new Scanner(System.in);
+			} 
+		} while(idCategorieSupprime < 0);
 		
-		try {
-			idCategorie = sc.nextInt();
-		} catch (InputMismatchException nfe) {
-			return;
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(new Categorie(idCategorieSupprime, "", ""));
 		}
-		
-		DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(new Categorie(idCategorie, "", ""));
 	}
 	
 	private void afficherToutesCateg() {
@@ -148,7 +154,7 @@ public class MenuCategorie extends Menu{
 		}
 		
 		for (int i = 0; i < listeCategorie.size(); i++) {
-			System.out.println("\t- " + listeCategorie.toString());
+			System.out.println("\t- " + listeCategorie.get(i).toString());
 		}
 	}	
 }

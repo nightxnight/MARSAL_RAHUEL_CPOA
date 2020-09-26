@@ -35,19 +35,11 @@ public abstract class Menu {
 		etat = inputEtat;
 	}
 	
-	protected int readId() throws IOException {
-		BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
-		int id = br.read();
-		return id;
-	}
-	
 	protected boolean confirmRequest() {
-		BufferedReader br = new BufferedReader (new InputStreamReader (System.in));	
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Confirmer et appliquer les changements ? y/n");
 		String input = "";
-		try {
-			input = br.readLine();
-		} catch (IOException ioe) { }
+		input = sc.nextLine();
 		input.toLowerCase().trim();
 		if(input.equals("y") || input.equals("yes") || input.equals("oui") || input.equals("1")) 
 			return true;

@@ -15,8 +15,8 @@ public class MenuClient extends Menu {
 	private final String messageBienvenue = "\nGESTION DES CLIENTS";
 	private final String messageOption = "\t1. Ajouter un client.\n\t2. Modifier un client.\n\t3. Supprimer un client."
 			+ "\n\t4. Afficher tous les clients\n\t5. Retour";
-	private final String messageIndicAccueil = "Entrez le numéro correspondant à l'option désiree pour y accéder.";
-	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous souhaitez poursuivre la naviguation";
+	private final String messageIndicAccueil = "Entrez le numero correspondant à l'option désiree pour y acceder.";
+	private final String messageNavig = "Pressez la touche \"entree\" des lors que vous souhaitez poursuivre la naviguation";
 	
 	//Ajouter un client
 	private final String messageIndicAjout = "--AJOUT D'UN CLIENT--";
@@ -64,41 +64,40 @@ public class MenuClient extends Menu {
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
 		
-		Client c = lireClient();
+		System.out.println("Entrez les attributs du client qui va être ajoute : ");
+		Client client= lireClient();
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().create(c);
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().create(client);
+		}
 	}
 	
 	private void afficherModif() {
 		System.out.println(messageIndicModif);
 
 		int idClientModifie = -1;
-		Client nouveauClient;
-		
 		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("Entrez l'id du client qui va etre modifie : ");
 		do {
 			try {
 				idClientModifie = sc.nextInt();
-			} catch (InputMismatchException nfe) {
-				System.out.println("Entrez un nombre positif.");
+			} catch (InputMismatchException ime) {
+				System.out.println("Un id est un nombre positif.");
 				idClientModifie = -1;
 			} finally {
-				sc.next();
+				sc = new Scanner(System.in);
 			}
 		} while(idClientModifie < 0);
 		
 		
-		System.out.println("Entrez les nouveaux attributs du client");
-		nouveauClient  = lireClient();
+		System.out.println("Entrez les nouveaux attributs du client : ");
+		Client client = lireClient();
+		client.setIdClient(idClientModifie);
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(idClientModifie, nouveauClient);
-	}
-	
-	private Client lireClient(int idClient) {
-		Client C = lireClient();
-		C.setIdClient(idClient);
-		return C;
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client);
+		}
 	}
 	
 	private Client lireClient() {
@@ -147,16 +146,23 @@ public class MenuClient extends Menu {
 	private void afficherSupp() {
 		System.out.println(messageIndicSupp);
 		
-		int id;
+		int idClientSupprime;
 		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("Entrez l'id du client qui va etre supprime : ");
+		
 		try {
-			id = sc.nextInt();
+			idClientSupprime = sc.nextInt();
 		} catch (InputMismatchException nfe) {
-			return;
+			System.out.println("Un id est un nombre positif.");
+			idClientSupprime = -1;
+		} finally {
+			sc = new Scanner(System.in);
 		}
 		
-		DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(new Client(1, "", "", "", "", "", "", "", "", ""));
+		if(confirmRequest()) {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(new Client(idClientSupprime, "", "", "", "", "", "", "", "", ""));
+		}
 	}
 	
 	private void afficherTousClient() {

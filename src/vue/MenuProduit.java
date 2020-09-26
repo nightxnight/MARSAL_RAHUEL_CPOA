@@ -64,7 +64,7 @@ public class MenuProduit extends Menu{
 	private void afficherAjout() {
 		System.out.println(messageIndicAjout);
 		
-		System.out.println("Nous allons entrez les informations concernant le produit qui va etre ajouter : ");
+		System.out.println("Nous allons entrez les attributs concernant le produit qui va etre ajouter : ");
 		Produit produit;
 		produit = lireProduit();
 		if(confirmRequest())
@@ -75,31 +75,27 @@ public class MenuProduit extends Menu{
 		System.out.println(messageIndicModif);
 		
 		int idProduitModifie = -1;
-		Produit nouveauProduit;		
+		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("id du produit qui va etre modifie : ");
 		do {
 			try {
-				idProduitModifie = readId();
-			} catch (IOException ioe) {
+				idProduitModifie = sc.nextInt();
+			} catch (InputMismatchException ime) {
 				System.out.println("Un id de produit est un entier positif");
 				idProduitModifie = -1;
+			} finally {
+				sc = new Scanner(System.in);
 			}
 		} while(idProduitModifie < 0);
 		
 		System.out.println("Desormais, entrez les nouveaux attributs de ce produit : ");
-		nouveauProduit = lireProduit();
+		Produit produit = lireProduit();
+		produit.setId(idProduitModifie);
 		if(confirmRequest())
-			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(idProduitModifie, nouveauProduit);
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(produit);
 	}
-	
-	private Produit lireProduit(int idProduit) {
-		Produit produit;
-		produit = lireProduit();
-		produit.setId(idProduit);
-		return produit;
-	}
-	
+		
 	private Produit lireProduit() {
 		String nom;
 		String description;
@@ -117,30 +113,32 @@ public class MenuProduit extends Menu{
 		description = sc.nextLine();
 		
 		System.out.println("Entrez le tarif unitaire : ");
+		
 		do {
 			try {
 				tarif = sc.nextDouble();
 			} catch(InputMismatchException ime) {
-				System.out.println("Un prix est un réel positif.");
+				System.out.println("Un prix est un reel positif.");
 				tarif = -1;
 			} finally {
-				sc.next();
+				sc = new Scanner(System.in);
 			}
 		} while(tarif < 0); 
 		
-		System.out.println("Entrez le nom du fichier visuel associé : ");
+		System.out.println("Entrez le nom du fichier visuel associe : ");
 		visuel = sc.nextLine();
 		
-		System.out.println("Entrez le numéro de la catégorie associé à votre produit : ");
+		System.out.println("Entrez le numero de la catégorie associe à votre produit : ");
 		do {
 			try {
 				idCategorie = sc.nextInt();
 			} catch(InputMismatchException ime) {
-				System.out.println("Un numéro de catégorie est un entier positif.");
+				System.out.println("Un numero de catégorie est un entier positif.");
+				idCategorie = -1;
+			} finally {
+				sc = new Scanner(System.in);
 			}
 		} while(idCategorie < 0);
-		
-		if(sc != null) sc.close();
 		
 		return new Produit(nom.trim(), description.trim(), tarif, visuel.trim(), idCategorie);
 	}
@@ -149,14 +147,17 @@ public class MenuProduit extends Menu{
 		System.out.println(messageIndicSupp);
 		
 		int idProduitSupprime = -1;
-		
+		Scanner sc = new Scanner(System.in);
 		System.out.println("id du produit qui va etre supprime : ");
 		do {
 			try {
-				idProduitSupprime = readId();
-			} catch(IOException ioe) {
-				idProduitSupprime = -1;
+				idProduitSupprime = sc.nextInt();
+			} catch(InputMismatchException ime) {
 				System.out.println("Un id de produit est un entier positif.");
+				idProduitSupprime = -1;
+			}
+			finally {
+				sc = new Scanner(System.in);
 			}
 		} while(idProduitSupprime < 0);
 		
