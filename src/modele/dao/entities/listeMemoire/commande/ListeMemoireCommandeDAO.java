@@ -1,15 +1,13 @@
 package modele.dao.entities.listeMemoire.commande;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import entities.commande.Commande;
-import entities.produit.Produit;
 import modele.dao.entities.CommandeDAO;
 
 public class ListeMemoireCommandeDAO implements CommandeDAO{
 	
 	private ArrayList<Commande> listeCommande;
-	private static int autoIncrementedId;
+	private static int autoIncrementedId = 0;
 	
 	private static ListeMemoireCommandeDAO instance;
 	
@@ -24,24 +22,27 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 
 	@Override
 	public boolean create(Commande objet) {
-		return listeCommande.add(new Commande(++autoIncrementedId, Date.valueOf(objet.getDateCommande()), objet.getIdClient()));
+		++autoIncrementedId;
+		objet.setIdCommande(autoIncrementedId);
+		listeCommande.add(autoIncrementedId, objet);
+		return true;
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Commande objetRemplacant) {
-		int idx = positionById(idObjetModifie);
+	public boolean update(Commande objet) {
+		int idx = listeCommande.indexOf(objet);
 		if(idx == -1) {
 			return false;
 		} else {
-			listeCommande.get(idx).setIdClient(objetRemplacant.getIdClient());
-			listeCommande.get(idx).setDateCommande(objetRemplacant.getDateCommande());
+			listeCommande.get(idx).setIdClient(objet.getIdClient());
+			listeCommande.get(idx).setDateCommande(objet.getDateCommande());
 			return true;
 		}
 	}
 
 	@Override
 	public boolean delete(Commande objet) {
-		int idx = positionById(objet.getIdCommande());
+		int idx = listeCommande.indexOf(objet);
 		if(idx == -1) {
 			return false;
 		} else return listeCommande.remove(objet);
@@ -50,15 +51,5 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	@Override
 	public ArrayList<Commande> getAll() {
 		return listeCommande;
-	}
-	
-	private int positionById(int idCommande) {
-		int position = -1;
-		for(Commande commande : listeCommande) {
-			if(commande.getIdCommande()==idCommande) {
-				position = listeCommande.indexOf(commande);
-			}
-		}
-		return position;
 	}
 }

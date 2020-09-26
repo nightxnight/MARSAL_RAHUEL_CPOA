@@ -133,70 +133,7 @@ public class Client {
 			return false;
 		}
 		Client other = (Client) obj;
-		if (adrCodePostal == null) {
-			if (other.adrCodePostal != null) {
-				return false;
-			}
-		} else if (!adrCodePostal.equals(other.adrCodePostal)) {
-			return false;
-		}
-		if (adrNumero == null) {
-			if (other.adrNumero != null) {
-				return false;
-			}
-		} else if (!adrNumero.equals(other.adrNumero)) {
-			return false;
-		}
-		if (adrPays == null) {
-			if (other.adrPays != null) {
-				return false;
-			}
-		} else if (!adrPays.equals(other.adrPays)) {
-			return false;
-		}
-		if (adrVille == null) {
-			if (other.adrVille != null) {
-				return false;
-			}
-		} else if (!adrVille.equals(other.adrVille)) {
-			return false;
-		}
-		if (adrVoie == null) {
-			if (other.adrVoie != null) {
-				return false;
-			}
-		} else if (!adrVoie.equals(other.adrVoie)) {
-			return false;
-		}
 		if (idClient != other.idClient) {
-			return false;
-		}
-		if (identifiant == null) {
-			if (other.identifiant != null) {
-				return false;
-			}
-		} else if (!identifiant.equals(other.identifiant)) {
-			return false;
-		}
-		if (motDePasse == null) {
-			if (other.motDePasse != null) {
-				return false;
-			}
-		} else if (!motDePasse.equals(other.motDePasse)) {
-			return false;
-		}
-		if (nom == null) {
-			if (other.nom != null) {
-				return false;
-			}
-		} else if (!nom.equals(other.nom)) {
-			return false;
-		}
-		if (prenom == null) {
-			if (other.prenom != null) {
-				return false;
-			}
-		} else if (!prenom.equals(other.prenom)) {
 			return false;
 		}
 		return true;

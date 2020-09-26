@@ -7,7 +7,7 @@ import modele.dao.entities.ProduitDAO;
 public class ListeMemoireProduitDAO  implements ProduitDAO{
 
 	private ArrayList<Produit> listeProduit;
-	private static int autoIncrementedId;
+	private static int autoIncrementedId = 0;
 	
 	private static ListeMemoireProduitDAO instance;
 	
@@ -22,27 +22,33 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 
 	@Override
 	public boolean create(Produit objet) {
-		return listeProduit.add(new Produit(++autoIncrementedId, objet.getNom(), objet.getDescription(), objet.getTarif(), objet.getVisuel(), objet.getIdCategorie()));
+		++autoIncrementedId;
+		while(listeProduit.get(autoIncrementedId)!=null) {
+			++autoIncrementedId;
+		}
+		objet.setId(autoIncrementedId);
+		listeProduit.add(autoIncrementedId, objet);
+		return true;
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Produit objetRemplacant) {
-		int idx = positionById(idObjetModifie);
+	public boolean update(Produit objet) {
+		int idx = listeProduit.indexOf(objet);
 		if(idx == -1) 
 			return false;
 		else {
-			listeProduit.get(idx).setNom(objetRemplacant.getNom());
-			listeProduit.get(idx).setDescription(objetRemplacant.getDescription());
-			listeProduit.get(idx).setTarif(objetRemplacant.getTarif());
-			listeProduit.get(idx).setVisuel(objetRemplacant.getVisuel());
-			listeProduit.get(idx).setIdCategorie(objetRemplacant.getIdCategorie());
+			listeProduit.get(idx).setNom(objet.getNom());
+			listeProduit.get(idx).setDescription(objet.getDescription());
+			listeProduit.get(idx).setTarif(objet.getTarif());
+			listeProduit.get(idx).setVisuel(objet.getVisuel());
+			listeProduit.get(idx).setIdCategorie(objet.getIdCategorie());
 			return true;
 		}
 	}
 
 	@Override
 	public boolean delete(Produit objet) {
-		int idx = positionById(objet.getId());
+		int idx = listeProduit.indexOf(objet);
 		if(idx == -1) 
 			return false;
 		else {
@@ -54,15 +60,5 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	@Override
 	public ArrayList<Produit> getAll() {
 		return listeProduit;
-	}
-	
-	private int positionById(int idProduit) {
-		int position = -1;
-		for(Produit produit : listeProduit) {
-			if(produit.getId()==idProduit) {
-				position = listeProduit.indexOf(produit);
-			}
-		}
-		return position;
 	}
 }

@@ -2,32 +2,23 @@ package entities.commande;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import entities.ligneCommande.LigneCommande;
 
 public class Commande {
 	
 	private int idCommande;
 	private LocalDate dateCommande;
 	private int idClient;
-	private HashMap<Integer, ArrayList<LigneCommande>> mapLigneCommande;
 	
 	//Constructor
-	public Commande(int idCommande, Date dateCommandeSQL, int idClient) {
-		
-		this.idCommande = idCommande;
-		this.dateCommande = dateCommandeSQL.toLocalDate();
-		this.idClient = idClient;
-	}
-	
 	public Commande(int idCommande, LocalDate dateCommande, int idClient) {
 		this.idCommande = idCommande;
 		this.dateCommande = dateCommande;
 		this.idClient = idClient;
 	}
-
+	
+	public Commande(int idCommande, Date dateCommandeSQL, int idClient) {
+		this(idCommande, dateCommandeSQL.toLocalDate(), idClient);
+	}
 	
 	//Getters and Setters
 	public int getIdCommande() {
@@ -70,17 +61,7 @@ public class Commande {
 			return false;
 		}
 		Commande other = (Commande) obj;
-		if (dateCommande == null) {
-			if (other.dateCommande != null) {
-				return false;
-			}
-		} else if (!dateCommande.equals(other.dateCommande)) {
-			return false;
-		}
 		if (idClient != other.idClient) {
-			return false;
-		}
-		if (idCommande != other.idCommande) {
 			return false;
 		}
 		return true;

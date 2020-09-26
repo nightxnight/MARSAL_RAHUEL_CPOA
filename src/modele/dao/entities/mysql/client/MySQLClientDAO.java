@@ -58,20 +58,20 @@ private static MySQLClientDAO instance;
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Client objetRemplacant) {
+	public boolean update(Client objet) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? , WHERE id_client = ?");
-			query.setString(1, objetRemplacant.getNom());
-			query.setString(2, objetRemplacant.getPrenom());
-			query.setString(3, objetRemplacant.getIdentifiant());
-			query.setString(4, objetRemplacant.getMotDePasse());
-			query.setString(5, objetRemplacant.getAdrNumero());
-			query.setString(6, objetRemplacant.getAdrVoie());
-			query.setString(7, objetRemplacant.getAdrCodePostal());
-			query.setString(8, objetRemplacant.getAdrVille());
-			query.setString(9, objetRemplacant.getAdrPays());
+			query.setString(1, objet.getNom());
+			query.setString(2, objet.getPrenom());
+			query.setString(3, objet.getIdentifiant());
+			query.setString(4, objet.getMotDePasse());
+			query.setString(5, objet.getAdrNumero());
+			query.setString(6, objet.getAdrVoie());
+			query.setString(7, objet.getAdrCodePostal());
+			query.setString(8, objet.getAdrVille());
+			query.setString(9, objet.getAdrPays());
 			
-			query.setInt(10, idObjetModifie);
+			query.setInt(10, objet.getIdClient());
 		
 		int nbLigne = query.executeUpdate();
 		System.out.println(nbLigne + " ligne(s) modifi�e(s)");

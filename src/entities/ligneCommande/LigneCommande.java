@@ -71,12 +71,6 @@ public class LigneCommande {
 		if (idProduit != other.idProduit) {
 			return false;
 		}
-		if (quantite != other.quantite) {
-			return false;
-		}
-		if (Double.doubleToLongBits(tarifUnitaire) != Double.doubleToLongBits(other.tarifUnitaire)) {
-			return false;
-		}
 		return true;
 	}
 	

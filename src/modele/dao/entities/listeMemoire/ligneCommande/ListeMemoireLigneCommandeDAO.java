@@ -1,19 +1,19 @@
 package modele.dao.entities.listeMemoire.ligneCommande;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import entities.ligneCommande.LigneCommande;
-import entities.produit.Produit;
 import modele.dao.entities.LigneCommandeDAO;
 
 public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	
-	private ArrayList<LigneCommande> listeLigneCommande;
+	private HashMap<Integer, ArrayList<LigneCommande>> mapLigneCommande;
 	
 	private static ListeMemoireLigneCommandeDAO instance;
 	
 	private ListeMemoireLigneCommandeDAO() { 
-		listeLigneCommande = new ArrayList<LigneCommande>();
+		mapLigneCommande = new HashMap<Integer,ArrayList<LigneCommande>>();
 	}
 	
 	public static ListeMemoireLigneCommandeDAO getInstance() {
@@ -23,38 +23,47 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	
 	@Override
 	public boolean create(LigneCommande objet) {
-		return listeLigneCommande.add(new LigneCommande(objet.getIdCommande(), objet.getIdProduit(), objet.getQuantite(), objet.getTarifUnitaire()));
+		int key = objet.getIdCommande();
+		if(mapLigneCommande.get(key)== null) {
+			mapLigneCommande.put(key, new ArrayList<LigneCommande>());
+		}
+		mapLigneCommande.get(key).add(objet.getIdProduit(), objet);
+		return true;
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, LigneCommande objetRemplacant) {
-		if(listeLigneCommande.contains(objetModifie)) {
-			listeLigneCommande.get(listeLigneCommande.indexOf(objetModifie)).setIdProduit(objetRemplacant.getIdProduit());
-			listeLigneCommande.get(listeLigneCommande.indexOf(objetModifie)).setQuantite(objetRemplacant.getQuantite());
-			listeLigneCommande.get(listeLigneCommande.indexOf(objetModifie)).setTarifUnitaire(objetRemplacant.getTarifUnitaire());
-			return true;
+	public boolean update(LigneCommande objet) {
+		int key = objet.getIdCommande();
+		if(mapLigneCommande.containsKey(key)) {
+			int idx = mapLigneCommande.get(key).indexOf(objet);
+			if(idx == -1) return false;
+			else {
+				mapLigneCommande.get(key).get(idx).setQuantite(objet.getQuantite());
+				mapLigneCommande.get(key).get(idx).setTarifUnitaire(objet.getTarifUnitaire());
+				return true;
+			}
 		} else return false;
 	}
 
 	@Override
 	public boolean delete(LigneCommande objet) {
-		if(listeLigneCommande.contains(objet)) {
-			return listeLigneCommande.remove(objet);
+		int key = objet.getIdCommande();
+		if(mapLigneCommande.containsKey(key)) {
+			int idx = mapLigneCommande.get(key).indexOf(objet);
+			if(idx == -1) return false;
+			else {
+				mapLigneCommande.get(key).get(idx);
+				return true;
+			}
 		} else return false;
 	}
 
 	@Override
 	public ArrayList<LigneCommande> getAll() {
-		return listeLigneCommande;
-	}
-	
-	private int positionById(int idCommande) {
-		int position = -1;
-		for(Ligne produit : listeProduit) {
-			if(produit.getId()==idProduit) {
-				position = listeProduit.indexOf(produit);
-			}
+		ArrayList<LigneCommande> listeToutesLignesCommande = new ArrayList<LigneCommande>();
+		for(int key : mapLigneCommande.keySet()) {
+			listeToutesLignesCommande.addAll(mapLigneCommande.get(key));
 		}
-		return position;
+		return listeToutesLignesCommande;
 	}
 }

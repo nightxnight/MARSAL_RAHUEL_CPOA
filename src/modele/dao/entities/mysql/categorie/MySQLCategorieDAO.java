@@ -49,12 +49,13 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Categorie objetRemplacant) {
+	public boolean update(Categorie objet) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Categorie SET titre = ?, visuel = ? WHERE id_categorie = ?");
-			query.setString(1, objetRemplacant.getTitre());
-			query.setString(2, objetRemplacant.getVisuel());
-			query.setInt(3, idObjetModifie);
+			query.setString(1, objet.getTitre());
+			query.setString(2, objet.getVisuel());
+			
+			query.setInt(3, objet.getIdCategorie());
 		
 			int nbLigne = query.executeUpdate();
 			System.out.println(nbLigne + " ligne(s) modifi�e(s)");

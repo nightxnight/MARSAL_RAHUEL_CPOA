@@ -62,20 +62,6 @@ public class Categorie {
 		if (idCategorie != other.idCategorie) {
 			return false;
 		}
-		if (titre == null) {
-			if (other.titre != null) {
-				return false;
-			}
-		} else if (!titre.equals(other.titre)) {
-			return false;
-		}
-		if (visuel == null) {
-			if (other.visuel != null) {
-				return false;
-			}
-		} else if (!visuel.equals(other.visuel)) {
-			return false;
-		}
 		return true;
 	}
 	

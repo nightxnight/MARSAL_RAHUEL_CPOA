@@ -53,12 +53,13 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Commande objetRemplacant) {
+	public boolean update(Commande objet) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Commande SET date_commande = ?, id_client = ?  WHERE id_commande = ?");
-			query.setDate(1, Date.valueOf(objetRemplacant.getDateCommande()));
-			query.setInt(2, objetRemplacant.getIdClient());
-			query.setInt(3, idObjetModifie);
+			query.setDate(1, Date.valueOf(objet.getDateCommande()));
+			query.setInt(2, objet.getIdClient());
+			
+			query.setInt(3, objet.getIdCommande());
 		
 		int nbLigne = query.executeUpdate();
 		System.out.println(nbLigne + " ligne(s) modifi�e(s)");

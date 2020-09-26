@@ -51,14 +51,14 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, LigneCommande objetRemplacant) {
+	public boolean update(LigneCommande objet) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET id_produit = ?, quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
-			query.setInt(2, objetRemplacant.getQuantite());
-			query.setDouble(3, objetRemplacant.getTarifUnitaire());
+			query.setInt(2, objet.getQuantite());
+			query.setDouble(3, objet.getTarifUnitaire());
 			
-			query.setInt(5, idObjetModifie);
-			query.setInt(5, objetRemplacant.getIdProduit());
+			query.setInt(5, objet.getIdCommande());
+			query.setInt(5, objet.getIdProduit());
 		
 		int nbLigne = query.executeUpdate();
 		System.out.println(nbLigne + " ligne(s) modifi�e(s)");

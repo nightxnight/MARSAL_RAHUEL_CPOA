@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.categorie.Categorie;
 import entities.produit.Produit;
 import modele.dao.entities.ProduitDAO;
 import modele.dao.entities.mysql.MySQLDAOFactory;
@@ -54,15 +53,16 @@ public class MySQLProduitDAO implements ProduitDAO{
 	}
 
 	@Override
-	public boolean update(int idObjetModifie, Produit objetRemplacant) {
+	public boolean update(Produit objet) {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Produit SET nom = ?, description = ?, tarif = ?, visuel = ?, id_categorie = ? WHERE id_produit = ?");
-			query.setString(1, objetRemplacant.getNom());
-			query.setString(2, objetRemplacant.getDescription());
-			query.setDouble(3, objetRemplacant.getTarif());
-			query.setString(4, objetRemplacant.getVisuel());
-			query.setInt(5, objetRemplacant.getIdCategorie());
-			query.setInt(6, idObjetModifie);
+			query.setString(1, objet.getNom());
+			query.setString(2, objet.getDescription());
+			query.setDouble(3, objet.getTarif());
+			query.setString(4, objet.getVisuel());
+			query.setInt(5, objet.getIdCategorie());
+			
+			query.setInt(6, objet.getId());
 			
 			int nbLigne = query.executeUpdate();
 			System.out.println(nbLigne + " ligne(s) modifi�e(s)");
