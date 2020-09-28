@@ -10,7 +10,7 @@ public class MenuGeneral extends Menu {
 	
 	private final String messageBienvenue = "\nLA BOUTIQUE DES PULLS MOCHES";
 	private final String messageOption = "\t1. Gestion des catégories.\n\t2. Gestion des clients.\n\t3. Gestion des produits"
-			+ "\n\t4. Quitter";
+			+ "\n\t4. Mode de travail. \n\t5. Quitter";
 	private final String messageIndicAccueil = "Entrez le numéro correspondant à l'option désirée pour y accéder.";
 	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous désirez poursuivre la naviguation.";
 	
@@ -20,7 +20,8 @@ public class MenuGeneral extends Menu {
 		private final int ETAT_CATEG = 1;
 		private final int ETAT_CLIENT = 2;
 		private final int ETAT_PRODUIT = 3;
-		private final int ETAT_QUITTER = 4;
+		private final int ETAT_PERSISTENCE = 4;
+		private final int ETAT_QUITTER = 5;
 		
 	public MenuGeneral() {
 		super();
@@ -31,6 +32,7 @@ public class MenuGeneral extends Menu {
 		menuMap.put(ETAT_CATEG, new MenuCategorie());
 		menuMap.put(ETAT_CLIENT, new MenuClient());
 		menuMap.put(ETAT_PRODUIT, new MenuProduit());
+		menuMap.put(ETAT_PERSISTENCE, new MenuPersistance());
 		start();
 	}
 		

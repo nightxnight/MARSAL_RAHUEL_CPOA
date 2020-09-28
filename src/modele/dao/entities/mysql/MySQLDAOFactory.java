@@ -55,7 +55,8 @@ public class MySQLDAOFactory extends DAOFactory{
 	public static boolean fermerConnexion() {
 		boolean connexionFerme = false;
 		try {
-			connexion.close();
+			if(!connexion.isClosed())
+				connexion.close();
 			connexionFerme = true;
 		} catch (SQLException sqle) {
 			System.out.println("Erreur lors de la fermeture de la connexion ï¿½ " + dbName + ".");
@@ -90,6 +91,17 @@ public class MySQLDAOFactory extends DAOFactory{
 	
 	public static Connection getConnexion() {
 		return connexion;
+	}
+
+	//Détruire l'instance pour rappeler le constructeur
+	//Et ainsi rouvrir une connexion lorsqu'on reselectionne cette persistance
+	@Override
+	public boolean closeDAO() {
+		if(instance==null) return true;
+		else {
+			instance = null;
+			return fermerConnexion();
+		}
 	}
 	
 }

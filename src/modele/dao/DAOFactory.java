@@ -24,6 +24,7 @@ public abstract class DAOFactory {
 		return daoF;
 	}
 	
+	public abstract boolean closeDAO();
 	public abstract CategorieDAO getCategorieDAO();
 	public abstract ClientDAO getClientDAO();
 	public abstract ProduitDAO getProduitDAO();
