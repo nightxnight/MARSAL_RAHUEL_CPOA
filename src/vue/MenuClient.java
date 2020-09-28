@@ -14,7 +14,7 @@ public class MenuClient extends Menu {
 	//Accueil 
 	private final String messageBienvenue = "\nGESTION DES CLIENTS";
 	private final String messageOption = "\t1. Ajouter un client.\n\t2. Modifier un client.\n\t3. Supprimer un client."
-			+ "\n\t4. Afficher tous les clients\n\t5. Retour";
+			+ "\n\t4. Afficher tous les clients\n\t5. Obtenir un client par id\n\t6. Retour";
 	private final String messageIndicAccueil = "Entrez le numero correspondant à l'option désiree pour y acceder.";
 	private final String messageNavig = "Pressez la touche \"entree\" des lors que vous souhaitez poursuivre la naviguation";
 	
@@ -26,17 +26,20 @@ public class MenuClient extends Menu {
 	
 	//Supprimer un client
 	private final String messageIndicSupp = "--SUPPRESSION D'UN CLIENT--";
-	
-	
+
 	//Obtenir toutes les clients
 	private final String messageTousClient = "--AFFICHAGE DE TOUS LES CLIENTS--";
+	
+	//Obtenir un client par id
+	private final String messageClientById = "--RECHERCHE UN CLIENT PAR ID--";
 	
 	//Constantes d'�tat
 	private final int ETAT_AJOUTER = 1;
 	private final int ETAT_MODIFIER = 2;
 	private final int ETAT_SUPPRIMER = 3;
-	private final int ETAT_TOUTES_CATEG = 4;
-	private final int ETAT_RETOUR = 5;
+	private final int ETAT_TOUT_CLIENT = 4;
+	private final int ETAT_ID_CLIENT = 5;
+	private final int ETAT_RETOUR = 6;
 
 	@Override
 	public void boucle() {
@@ -46,7 +49,8 @@ public class MenuClient extends Menu {
 			case ETAT_AJOUTER : afficherAjout(); break;
 			case ETAT_MODIFIER : afficherModif(); break;
 			case ETAT_SUPPRIMER : afficherSupp(); break;
-			case ETAT_TOUTES_CATEG : afficherTousClient(); break;
+			case ETAT_TOUT_CLIENT : afficherTousClient(); break;
+			case ETAT_ID_CLIENT : afficherClientById(); break;
 			case ETAT_RETOUR : quit(); break;
 		}
 		etat = ETAT_ACCUEIL;
@@ -177,6 +181,33 @@ public class MenuClient extends Menu {
 		
 		for (int i = 0; i < listeClient.size(); i++) {
 			System.out.println("\t- " + listeClient.get(i).toString());
+		}
+	}
+	
+	private void afficherClientById() {
+		System.out.println(messageClientById + "\n");
+		
+		Client client;
+		int idClient = -1;
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Entrez l'id du client que vous voulez consultez");
+		
+		do {
+			try {
+				idClient = sc.nextInt();
+			} catch(InputMismatchException ime) {
+				System.out.println("Un id est un nombre strictement positif.");
+				idClient = -1;
+			} finally {
+				sc = new Scanner(System.in);
+			}
+		} while(idClient < 0);
+		
+		if(confirmRequest()) {
+			client = (Client) DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(idClient);
+			if(client == null) System.out.println("Client introuvable.");
+			else System.out.println(client.toString());
 		}
 	}
 }

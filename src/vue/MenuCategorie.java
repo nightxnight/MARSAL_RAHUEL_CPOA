@@ -14,7 +14,7 @@ public class MenuCategorie extends Menu{
 	//Accueil 
 	private final String messageBienvenue = "\nGESTION DES CATEGORIES";
 	private final String messageOption = "\t1. Ajouter une catégorie.\n\t2. Modifier une catégorie.\n\t3. Supprimer une catégorie."
-			+ "\n\t4. Afficher toutes les catégories.\n\t5. Retour";
+			+ "\n\t4. Afficher toutes les catégories.\n\t5. Obtenir une categorie par id.\n\t6. Retour";
 	private final String messageIndicAccueil = "Entrez le numéro correspondant à l'option désirée pour y accéder.";
 	private final String messageNavig = "Pressez la touche \"entrée\" dès lors que vous désirez continuer la naviguation";
 	
@@ -26,9 +26,11 @@ public class MenuCategorie extends Menu{
 	//Supprimer une catégorie
 	private final String messageIndicSupp = "--SUPPRESSION D'UN PRODUIT";
 	
-	
 	//Obtenir toutes les catégories
-	private final String messageToutesCateg = "--AFFICHAGE DE TOUTES LES CATEGORIES : --";
+	private final String messageToutesCateg = "--AFFICHAGE DE TOUTES LES CATEGORIES--";
+	
+	//Obtenir une categorie par id
+	private final String messageCategById = "--RECHERCHE D'UNE CATEGORIE PAR ID--";
 
 	
 	//Constantes d'�tat
@@ -36,7 +38,8 @@ public class MenuCategorie extends Menu{
 	private final int ETAT_MODIFIER = 2;
 	private final int ETAT_SUPPRIMER = 3;
 	private final int ETAT_TOUTES_CATEG = 4;
-	private final int ETAT_RETOUR = 5;
+	private final int ETAT_ID_CATEG = 5;
+	private final int ETAT_RETOUR = 6;
 		
 	//Constructeur
 	
@@ -54,6 +57,7 @@ public class MenuCategorie extends Menu{
 			case ETAT_MODIFIER : afficherModif(); break;
 			case ETAT_SUPPRIMER : afficherSupp(); break;
 			case ETAT_TOUTES_CATEG : afficherToutesCateg(); break;
+			case ETAT_ID_CATEG : afficherCategById(); break;
 			case ETAT_RETOUR : quit(); break;
 		}
 		etat = ETAT_ACCUEIL;
@@ -157,4 +161,31 @@ public class MenuCategorie extends Menu{
 			System.out.println("\t- " + listeCategorie.get(i).toString());
 		}
 	}	
+	
+	private void afficherCategById() {
+		System.out.println(messageCategById + "\n");
+		
+		Categorie categorie;
+		int idCategorie = -1;
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Entrez l'id de la categorie que vous voulez consultez");
+		
+		do {
+			try {
+				idCategorie = sc.nextInt();
+			} catch(InputMismatchException ime) {
+				System.out.println("Un id est un nombre strictement positif.");
+				idCategorie = -1;
+			} finally {
+				sc = new Scanner(System.in);
+			}
+		} while(idCategorie < 0);
+		
+		if(confirmRequest()) {
+			categorie = (Categorie) DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(idCategorie);
+			if(categorie == null) System.out.println("Categorie introuvable.");
+			else System.out.println(categorie.toString());
+		}
+	}
 }

@@ -1,6 +1,5 @@
 package vue;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -16,7 +15,7 @@ public class MenuProduit extends Menu{
 	//Accueil 
 	private final String messageBienvenue = "\n--GESTION DES PRODUITS--";
 	private final String messageOption = "\t1. Ajouter un produit\n\t2. Modifier un produit.\n\t3. Supprimer un produit."
-			+ "\n\t4. Afficher tous les produits.\n\t5. Retour";
+			+ "\n\t4. Afficher tous les produits.\n\t5. Obtenir un produit par id.\n\t6. Retour";
 	private final String messageIndicAccueil = "Entrez le numero correspondant a l'option desiree pour y acceder.";
 	private final String messageNavig = "Pressez la touche \"entree\" des lors que vous désirez poursuivre la naviguation";
 	
@@ -29,16 +28,19 @@ public class MenuProduit extends Menu{
 	//Supprimer une produit
 	private final String messageIndicSupp = "--SUPPRESSION DE PRODUIT--";
 	
-	
 	//Obtenir toutes les produits
 	private final String messageTousProduit = "--LISTE DES PRODUITS--";
+	
+	//Obtenir un produit par id
+	private final String messageProduitById = "--RECHERCHE D'UN PRODUIT PAR ID--";
 
 	//Constantes d'�tat
 	private final int ETAT_AJOUTER = 1;
 	private final int ETAT_MODIFIER = 2;
 	private final int ETAT_SUPPRIMER = 3;
-	private final int ETAT_TOUTES_CATEG = 4;
-	private final int ETAT_RETOUR = 5;
+	private final int ETAT_TOUT_PRODUIT = 4;
+	private final int ETAT_ID_PRODUIT = 5;
+	private final int ETAT_RETOUR = 6;
 	
 	@Override
 	public void boucle() {
@@ -48,7 +50,8 @@ public class MenuProduit extends Menu{
 			case ETAT_AJOUTER : afficherAjout(); break;
 			case ETAT_MODIFIER : afficherModif(); break;
 			case ETAT_SUPPRIMER : afficherSupp(); break;
-			case ETAT_TOUTES_CATEG : afficherTousProduit(); break;
+			case ETAT_TOUT_PRODUIT : afficherTousProduit(); break;
+			case ETAT_ID_PRODUIT : afficherProduitById(); break;
 			case ETAT_RETOUR : quit(); break;
 		}
 		etat = ETAT_ACCUEIL;
@@ -179,4 +182,31 @@ public class MenuProduit extends Menu{
 			System.out.println("\t- " + listeProduit.get(i).toString());
 		}
 	}	
+	
+	private void afficherProduitById() {
+		System.out.println(messageProduitById + "\n");
+		
+		Produit produit;
+		int idProduit = -1;
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Entrez l'id du produit que vous voulez consultez");
+		
+		do {
+			try {
+				idProduit = sc.nextInt();
+			} catch(InputMismatchException ime) {
+				System.out.println("Un id est un nombre strictement positif.");
+				idProduit = -1;
+			} finally {
+				sc = new Scanner(System.in);
+			}
+		} while(idProduit < 0);
+		
+		if(confirmRequest()) {
+			produit = (Produit) DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(idProduit);
+			if(produit == null) System.out.println("Produit introuvable.");
+			else System.out.println(produit.toString());
+		}
+	}
 }

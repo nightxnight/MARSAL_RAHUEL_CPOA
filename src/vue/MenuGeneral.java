@@ -70,6 +70,7 @@ public class MenuGeneral extends Menu {
 	@Override
 	public void quit() {
 		super.quit();
+		DAOFactory.getDAOFactory(PERSISTANCE).closeDAO();
 		System.out.println("Merci de votre visite, à très bientôt!");
 	}
 }
