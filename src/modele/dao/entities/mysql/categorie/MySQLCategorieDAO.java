@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import entities.categorie.Categorie;
+import entities.produit.Produit;
 import modele.dao.entities.CategorieDAO;
 import modele.dao.entities.mysql.MySQLDAOFactory;
 
@@ -91,6 +92,25 @@ public class MySQLCategorieDAO implements CategorieDAO {
 		return false;
 	}
 
+	@Override
+	public Categorie getById(int id) {
+		Categorie categorie = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie WHERE id_categorie = ?");
+			query.setInt(1, id);
+			
+			ResultSet res = query.executeQuery();
+			
+			while(res.next()) {
+				categorie = new Categorie(res.getInt(1), res.getString(2), res.getString(3));
+			}
+			return categorie;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_categorie.getById\".");
+		}
+		return categorie;
+	}
+	
 	@Override
 	public ArrayList<Categorie> getAll() {
 		ArrayList<Categorie> listeCategorie = null;

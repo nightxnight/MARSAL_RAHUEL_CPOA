@@ -53,6 +53,15 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 			return true;
 		}
 	}
+	
+	@Override
+	public Produit getById(int id) {
+		int idx = listeProduit.indexOf(new Produit(id, "", "", 0, "", 0));
+		if(idx == -1) return null;
+		else {
+			return listeProduit.get(idx);
+		}
+	}
 
 	@Override
 	public ArrayList<Produit> getAll() {

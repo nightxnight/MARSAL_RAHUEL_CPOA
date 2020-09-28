@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entities.categorie.Categorie;
 import entities.ligneCommande.LigneCommande;
 import modele.dao.entities.LigneCommandeDAO;
 import modele.dao.entities.mysql.MySQLDAOFactory;
@@ -93,6 +94,26 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 				System.out.println("logs : " + sqle.getMessage());
 			}	
 		return false;
+	}
+	
+	@Override
+	public LigneCommande getById(int id) {
+		LigneCommande ligneCommande = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Ligne_commande WHERE id_commande = ? AND id_produit = ?");
+			query.setInt(1, id);
+			query.setInt(2, 1);
+			
+			ResultSet res = query.executeQuery();
+			
+			while(res.next()) {
+				ligneCommande = new LigneCommande(res.getInt(1), res.getInt(2), res.getInt(3), res.getInt(4));
+			}
+			return ligneCommande;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_ligneCommande.getById\".");
+		}
+		return ligneCommande;
 	}
 	
 	@Override

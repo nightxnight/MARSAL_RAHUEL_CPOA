@@ -97,6 +97,25 @@ public class MySQLProduitDAO implements ProduitDAO{
 	}
 	
 	@Override
+	public Produit getById(int id) {
+		Produit produit = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Produit WHERE id_produit = ?");
+			query.setInt(1, id);
+			
+			ResultSet res = query.executeQuery();
+			
+			while(res.next()) {
+				produit = new Produit(res.getInt(1), res.getString(2), res.getString(3), res.getDouble(4), res.getString(5), res.getInt(1));
+			}
+			return produit;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_produit.getById\".");
+		}
+		return produit;
+	}
+	
+	@Override
 	public ArrayList<Produit> getAll() {
 		ArrayList<Produit> listeProduit = null;
 		try {
@@ -109,7 +128,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			}
 			return listeProduit;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_Produit.getAll");
+			System.out.println("Erreur lors de la requï¿½te \"MySQLDAOFactory_Produit.getAll\".");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeProduit;

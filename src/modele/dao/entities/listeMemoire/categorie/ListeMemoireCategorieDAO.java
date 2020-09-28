@@ -49,6 +49,14 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 			return true;
 		}
 	}
+	
+	public Categorie getById(int id) {
+		int idx = listeCategorie.indexOf(new Categorie(id, "", ""));
+		if(idx == -1) return null;
+		else {
+			return listeCategorie.get(idx);
+		}
+	}
 
 	@Override
 	public ArrayList<Categorie> getAll() {

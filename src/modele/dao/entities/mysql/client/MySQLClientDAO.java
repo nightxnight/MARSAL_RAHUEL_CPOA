@@ -106,6 +106,25 @@ private static MySQLClientDAO instance;
 	}
 	
 	@Override
+	public Client getById(int id) {
+		Client client = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client WHERE id_client = ?");
+			query.setInt(1, id);
+			
+			ResultSet res = query.executeQuery();
+			
+			while(res.next()) {
+				client = new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10));
+			}
+			return client;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_client.getById\".");
+		}
+		return client;
+	}
+	
+	@Override
 	public ArrayList<Client> getAll() {
 		ArrayList<Client> listeClient = null;
 		try {

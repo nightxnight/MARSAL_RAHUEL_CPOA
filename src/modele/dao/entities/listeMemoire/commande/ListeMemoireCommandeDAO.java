@@ -1,6 +1,8 @@
 package modele.dao.entities.listeMemoire.commande;
 
 import java.util.ArrayList;
+import java.sql.Date;
+
 import entities.commande.Commande;
 import modele.dao.entities.CommandeDAO;
 
@@ -46,6 +48,14 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 		if(idx == -1) {
 			return false;
 		} else return listeCommande.remove(objet);
+	}
+	
+	public Commande getById(int id) {
+		int idx = listeCommande.indexOf(new Commande(id, new Date(0), 0));
+		if(idx == -1) return null;
+		else {
+			return listeCommande.get(idx);
+		}
 	}
 
 	@Override

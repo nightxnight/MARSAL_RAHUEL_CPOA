@@ -56,6 +56,14 @@ public class ListeMemoireClientDAO implements ClientDAO{
 			return true;
 		}
 	}
+	
+	public Client getById(int id) {
+		int idx = listeClient.indexOf(new Client(id, "", "", "", "", "", "", "", "", ""));
+		if(idx == -1) return null;
+		else {
+			return listeClient.get(idx);
+		}
+	}
 
 	@Override
 	public ArrayList<Client> getAll() {

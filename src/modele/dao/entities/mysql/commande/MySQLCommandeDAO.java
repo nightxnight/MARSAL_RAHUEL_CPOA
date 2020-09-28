@@ -96,6 +96,25 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	}
 	
 	@Override
+	public Commande getById(int id) {
+		Commande commande = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande WHERE id_commande = ?");
+			query.setInt(1, id);
+			
+			ResultSet res = query.executeQuery();
+			
+			while(res.next()) {
+				commande = new Commande(res.getInt(1), res.getDate(2), res.getInt(3));
+			}
+			return commande;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_commande.getById\".");
+		}
+		return commande;
+	}
+	
+	@Override
 	public ArrayList<Commande> getAll() {
 		ArrayList<Commande> listeCommande = null;
 		try {

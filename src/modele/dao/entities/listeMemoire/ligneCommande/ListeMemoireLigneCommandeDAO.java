@@ -57,6 +57,18 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 			}
 		} else return false;
 	}
+	
+	//Pas cool la clé composé de la table ligne commande
+	public LigneCommande getById(int id) {
+		int key = id;
+		if(mapLigneCommande.containsKey(key)) {
+			int idx = mapLigneCommande.get(key).indexOf(new LigneCommande(key, 1, 0, 0));
+			if(idx == -1) return null;
+			else {
+				return mapLigneCommande.get(key).get(idx);
+			}
+		} else return null;
+	}
 
 	@Override
 	public ArrayList<LigneCommande> getAll() {
