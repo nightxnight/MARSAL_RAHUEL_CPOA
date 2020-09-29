@@ -1,16 +1,16 @@
 package vue;
 
-import modele.dao.DAOFactory;
-import modele.dao.Persistance;
+import dao.DAOFactory;
+import dao.Persistance;
 
 public class MenuPersistance extends Menu {
 	
 	//Accueil 
 		private final String messageBienvenue = "\nMODE DE TRAVAIL";
-		private final String messageOption = "\t1. Base de données MYSQL.\n\t2. Mode hors-ligne.\n\t3. Retour";
-		private final String messageIndicAccueil = "Entrez le numero correspondant à l'option désiree pour y acceder.";
+		private final String messageOption = "\t1. Base de donnï¿½es MYSQL.\n\t2. Mode hors-ligne.\n\t3. Retour";
+		private final String messageIndicAccueil = "Entrez le numero correspondant ï¿½ l'option dï¿½siree pour y acceder.";
 		private final String messageNavig = "Pressez la touche \"entree\" des lors que vous souhaitez poursuivre la naviguation";
-	//Constante d'état
+	//Constante d'ï¿½tat
 	private final int ETAT_SQL = 1;
 	private final int ETAT_LISTEMEMOIRE = 2;
 	private final int ETAT_RETOUR = 3;
@@ -47,7 +47,7 @@ public class MenuPersistance extends Menu {
 	
 	private void afficherSQL() {
 		if(closeAllDAO()) {
-			System.out.println("Vous travaillez désormais en base de donnée MYSQL : ");
+			System.out.println("Vous travaillez dï¿½sormais en base de donnï¿½e MYSQL : ");
 			PERSISTANCE = Persistance.MYSQL;
 			DAOFactory.getDAOFactory(PERSISTANCE);
 		}
@@ -55,7 +55,7 @@ public class MenuPersistance extends Menu {
 	
 	private void afficherListeMemoire() {
 		if(closeAllDAO()) {
-			System.out.println("Vous êtes désormais en mode hors-ligne");
+			System.out.println("Vous ï¿½tes dï¿½sormais en mode hors-ligne");
 			PERSISTANCE = Persistance.LISTEMEMOIRE;
 			DAOFactory.getDAOFactory(PERSISTANCE);
 		}

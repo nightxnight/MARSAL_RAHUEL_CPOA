@@ -2,8 +2,8 @@ package vue;
 
 import java.util.HashMap;
 
-import modele.dao.DAOFactory;
-import modele.dao.Persistance;
+import dao.DAOFactory;
+import dao.Persistance;
 
 public class MenuGeneral extends Menu {
 	

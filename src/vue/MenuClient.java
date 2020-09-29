@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import entities.client.Client;
-import modele.dao.DAOFactory;;
+import dao.DAOFactory;;
 
 public class MenuClient extends Menu {
 	

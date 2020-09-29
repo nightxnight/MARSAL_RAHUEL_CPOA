@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import entities.categorie.Categorie;
-import modele.dao.DAOFactory;
+import dao.DAOFactory;
 
 public class MenuCategorie extends Menu{
 	

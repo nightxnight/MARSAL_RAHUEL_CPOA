@@ -3,7 +3,7 @@ package vue;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import modele.dao.Persistance;
+import dao.Persistance;
 
 public abstract class Menu {
 

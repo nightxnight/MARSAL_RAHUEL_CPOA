@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.produit.Produit;
-import modele.dao.DAOFactory;
+import dao.DAOFactory;
 
 public class MenuProduit extends Menu{
 	
