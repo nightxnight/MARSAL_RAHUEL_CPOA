@@ -101,9 +101,10 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			
 			ResultSet res = query.executeQuery();
 			
-			while(res.next()) {
+			if(res.next()) {
 				categorie = new Categorie(res.getInt(1), res.getString(2), res.getString(3));
 			}
+			
 			return categorie;
 		} catch (SQLException sqle) {
 			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_categorie.getById\".");

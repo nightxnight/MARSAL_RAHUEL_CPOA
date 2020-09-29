@@ -27,7 +27,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean create(Commande objet) {
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Commande (id_commande, date_commande, id_client) VALUES (?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Commande (id_commande, date_commande, id_client) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setInt(1, objet.getIdCommande());
 			query.setDate(2, Date.valueOf(objet.getDateCommande()));
 			query.setInt(3, objet.getIdClient());
@@ -104,7 +104,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			
 			ResultSet res = query.executeQuery();
 			
-			while(res.next()) {
+			if(res.next()) {
 				commande = new Commande(res.getInt(1), res.getDate(2), res.getInt(3));
 			}
 			return commande;

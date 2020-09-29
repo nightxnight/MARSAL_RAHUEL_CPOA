@@ -26,7 +26,7 @@ private static MySQLClientDAO instance;
 	@Override
 	public boolean create(Client objet) {
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO CLient (nom, prenom, identifiant, mot_de_passe, adr_numero, adr_voie, adr_code_postal, adr_ville, adr_pays) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?))", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Client (nom, prenom, identifiant, mot_de_passe, adr_numero, adr_voie, adr_code_postal, adr_ville, adr_pays) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getNom());
 			query.setString(2, objet.getPrenom());
 			query.setString(3, objet.getIdentifiant());
@@ -60,7 +60,7 @@ private static MySQLClientDAO instance;
 	@Override
 	public boolean update(Client objet) {
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? , WHERE id_client = ?");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? WHERE id_client = ?");
 			query.setString(1, objet.getNom());
 			query.setString(2, objet.getPrenom());
 			query.setString(3, objet.getIdentifiant());

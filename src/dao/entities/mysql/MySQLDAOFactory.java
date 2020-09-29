@@ -55,7 +55,7 @@ public class MySQLDAOFactory extends DAOFactory{
 	public static boolean fermerConnexion() {
 		boolean connexionFerme = false;
 		try {
-			if(!connexion.isClosed())
+			if(connexion!=null && !connexion.isClosed())
 				connexion.close();
 			connexionFerme = true;
 		} catch (SQLException sqle) {
