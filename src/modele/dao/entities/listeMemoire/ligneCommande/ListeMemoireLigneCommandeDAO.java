@@ -14,6 +14,12 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	
 	private ListeMemoireLigneCommandeDAO() { 
 		mapLigneCommande = new HashMap<Integer,ArrayList<LigneCommande>>();
+		mapLigneCommande.put(1, new ArrayList<LigneCommande>());
+		mapLigneCommande.get(1).add(new LigneCommande(1, 2, 2, 41.5));
+		mapLigneCommande.get(1).add(new LigneCommande(1, 6, 1, 15));
+		
+		mapLigneCommande.put(2, new ArrayList<LigneCommande>());
+		mapLigneCommande.get(2).add(new LigneCommande(2, 12, 4, 35));
 	}
 	
 	public static ListeMemoireLigneCommandeDAO getInstance() {
@@ -27,6 +33,10 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		if(!mapLigneCommande.containsKey(key)) {
 			mapLigneCommande.put(key, new ArrayList<LigneCommande>());
 		}
+		
+		int idx = mapLigneCommande.get(key).indexOf(objet);
+		if(idx != -1) return false;
+		
 		mapLigneCommande.get(key).add(objet.getIdProduit(), objet);
 		return true;
 	}
@@ -58,7 +68,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		} else return false;
 	}
 	
-	//Pas cool la clé composé de la table ligne commande
+	//Pas cool la clï¿½ composï¿½ de la table ligne commande
 	public ArrayList<LigneCommande> getById(int id) {
 		int key = id;
 		if(mapLigneCommande.containsKey(key)) return mapLigneCommande.get(key);

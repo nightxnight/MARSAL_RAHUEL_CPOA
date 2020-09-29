@@ -14,6 +14,10 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	
 	private ListeMemoireCategorieDAO() { 
 		listeCategorie = new ArrayList<Categorie>();
+		listeCategorie.add(new Categorie(1, "Pulls", "lespulls.png"));
+		listeCategorie.add(new Categorie(2, "Bonnets", "lesbonnets.png"));
+		
+		autoIncrementedId = 2;
 	}
 	
 	public static ListeMemoireCategorieDAO getInstance() {
@@ -25,6 +29,10 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	public boolean create(Categorie objet) {
 		++autoIncrementedId;
 		objet.setIdCategorie(autoIncrementedId);
+		
+		int idx = listeCategorie.indexOf(objet);
+		if(idx != -1) return false;
+		
 		listeCategorie.add(objet);
 		return true;
 	}

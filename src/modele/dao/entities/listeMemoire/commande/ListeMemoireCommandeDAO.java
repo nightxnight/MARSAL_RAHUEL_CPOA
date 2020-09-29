@@ -1,7 +1,8 @@
 package modele.dao.entities.listeMemoire.commande;
 
 import java.util.ArrayList;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import entities.commande.Commande;
 import modele.dao.entities.CommandeDAO;
@@ -11,10 +12,15 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	private ArrayList<Commande> listeCommande;
 	private static int autoIncrementedId = 0;
 	
+	private static DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 	private static ListeMemoireCommandeDAO instance;
 	
 	private ListeMemoireCommandeDAO() {
 		listeCommande = new ArrayList<Commande>();
+	    listeCommande.add(new Commande(1, LocalDate.parse("02/09/2020", formatage), 1));
+	    listeCommande.add(new Commande(2, LocalDate.parse("30/08/2020", formatage), 1));
+	    autoIncrementedId = 2;
 	}
 	
 	public static ListeMemoireCommandeDAO getInstance() {
@@ -26,6 +32,10 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	public boolean create(Commande objet) {
 		++autoIncrementedId;
 		objet.setIdCommande(autoIncrementedId);
+		
+		int idx = listeCommande.indexOf(objet);
+		if(idx != -1) return false;
+		
 		listeCommande.add(objet);
 		return true;
 	}
@@ -51,7 +61,7 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	}
 	
 	public Commande getById(int id) {
-		int idx = listeCommande.indexOf(new Commande(id, new Date(0), 0));
+		int idx = listeCommande.indexOf(new Commande(id, LocalDate.parse("01/01/0001", formatage), 0));
 		if(idx == -1) return null;
 		else {
 			return listeCommande.get(idx);

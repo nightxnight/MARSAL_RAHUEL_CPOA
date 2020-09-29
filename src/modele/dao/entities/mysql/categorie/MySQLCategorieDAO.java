@@ -15,7 +15,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	
 	private static MySQLCategorieDAO instance;
 	
-	private MySQLCategorieDAO() { }
+	private MySQLCategorieDAO() {}
 	
 	public static MySQLCategorieDAO getInstance() {
 		if(instance==null) instance = new MySQLCategorieDAO();
@@ -106,7 +106,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			}
 			return categorie;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requête \"MYSQLDAOFactory_categorie.getById\".");
+			System.out.println("Erreur lors de la requï¿½te \"MYSQLDAOFactory_categorie.getById\".");
 		}
 		return categorie;
 	}
