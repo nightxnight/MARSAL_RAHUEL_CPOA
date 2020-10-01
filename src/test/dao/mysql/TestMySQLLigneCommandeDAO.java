@@ -1,6 +1,5 @@
 package test.dao.mysql;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +30,7 @@ public class TestMySQLLigneCommandeDAO {
 	
 	@Test
 	public void testCreate() {
-		LigneCommande LigneCommande = new LigneCommande(3, 6, 2, 15);
+		LigneCommande LigneCommande = new LigneCommande(1, 12, 1, 35);
 		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getLigneCommandeDAO().create(LigneCommande));
 	}
 	
@@ -43,7 +42,7 @@ public class TestMySQLLigneCommandeDAO {
 	
 	@Test
 	public void testDelete() {
-		LigneCommande LigneCommande = new LigneCommande(3, 12, 8, 35);
+		LigneCommande LigneCommande = new LigneCommande(2, 12, 4, 35);
 		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getLigneCommandeDAO().delete(LigneCommande));
 	}
 	

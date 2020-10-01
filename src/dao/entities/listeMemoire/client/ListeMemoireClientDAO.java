@@ -14,7 +14,9 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	
 	private ListeMemoireClientDAO() { 
 		listeClient = new ArrayList<Client>();
-		listeClient.add(new Client(1, "LAROCHE", "Pierre", "pl@ul.fr", "toto", "12", "rue des étudiants", "57990", "Metz", "France"));
+		listeClient.add(new Client(1, "LAROCHE", "Pierre", "pl@ul.fr", "toto", "12", "rue des etudiants", "57990", "Metz", "France"));
+		listeClient.add(new Client(2, "CHAMPION", "Nico", "nico@lechampion.fr", "niconico78", "17", "rue de la muscu", "68952", "Epinal", "France"));
+		listeClient.add(new Client(4, "LEVIKING", "Victor", "victorleM@gmail.com", "carole", "51", "rue des berserk", "41256", "Vent sur flamme", "Valhalla"));
 		autoIncrementedId = 1;
 	}
 	
@@ -26,10 +28,12 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	@Override
 	public boolean create(Client objet) {
 		++autoIncrementedId;
-		objet.setIdClient(autoIncrementedId);
 		
-		int idx = listeClient.indexOf(objet);
-		if(idx != -1) return false;
+		while(listeClient.indexOf(objet) != -1) {
+			++autoIncrementedId;
+		}
+		
+		objet.setIdClient(autoIncrementedId);
 		
 		listeClient.add(objet);
 		return true;

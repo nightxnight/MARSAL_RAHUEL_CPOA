@@ -20,6 +20,7 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 		listeCommande = new ArrayList<Commande>();
 	    listeCommande.add(new Commande(1, LocalDate.parse("02/09/2020", formatage), 1));
 	    listeCommande.add(new Commande(2, LocalDate.parse("30/08/2020", formatage), 1));
+	    listeCommande.add(new Commande(3, LocalDate.parse("05/10/2020", formatage), 4));
 	    autoIncrementedId = 2;
 	}
 	
@@ -31,10 +32,12 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean create(Commande objet) {
 		++autoIncrementedId;
-		objet.setIdCommande(autoIncrementedId);
 		
-		int idx = listeCommande.indexOf(objet);
-		if(idx != -1) return false;
+		while(listeCommande.indexOf(objet) != -1) {
+			++autoIncrementedId;
+		}
+		
+		objet.setIdCommande(autoIncrementedId);
 		
 		listeCommande.add(objet);
 		return true;

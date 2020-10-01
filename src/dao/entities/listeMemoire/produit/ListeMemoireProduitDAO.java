@@ -14,12 +14,12 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	private ListeMemoireProduitDAO() { 
 		listeProduit = new ArrayList<Produit>();
 		listeProduit.add(new Produit(2, "Sonic te kiffe", 
-				"Inspiré par la saga Séga (c'est plus fort que toi !), un pull 100% gamer qui te permettra de faire baver d'envie tes petits camarades de jeu.",
+				"Inspire par la saga Sega (c'est plus fort que toi !), un pull 100% gamer qui te permettra de faire baver d'envie tes petits camarades de jeu.",
 				41.5, "pull1.png", 1));
 		listeProduit.add(new Produit(6, "La chaleur des rennes",
-				"Classique mais efficace, un bonnet dont l'élégance n'est pas à souligner, il vous grattera comme il faut !",
+				"Classique mais efficace, un bonnet dont l'elegance n'est pas a souligner, il vous grattera comme il faut !",
 				15, "bonnet0.png", 2));
-		listeProduit.add(new Produit(12, "Dall", "Joyeux Noël avec nos petits lutins dansants !",
+		listeProduit.add(new Produit(12, "Dall", "Joyeux Noel avec nos petits lutins dansants !",
 				35, "bonnet1.png", 2));
 		autoIncrementedId = 12;
 	}
@@ -32,10 +32,12 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	@Override
 	public boolean create(Produit objet) {
 		++autoIncrementedId;
-		objet.setId(autoIncrementedId);
+				
+		while(listeProduit.indexOf(objet) != -1) {
+			++autoIncrementedId;
+		}
 		
-		int idx = listeProduit.indexOf(objet);
-		if(idx != -1) return false;
+		objet.setId(autoIncrementedId);
 		
 		listeProduit.add(objet);
 		return true;

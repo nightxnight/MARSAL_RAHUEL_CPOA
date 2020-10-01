@@ -20,6 +20,10 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		
 		mapLigneCommande.put(2, new ArrayList<LigneCommande>());
 		mapLigneCommande.get(2).add(new LigneCommande(2, 12, 4, 35));
+		
+		mapLigneCommande.put(3,	new ArrayList<LigneCommande>());
+		mapLigneCommande.get(3).add(new LigneCommande(3, 2, 1, 41.5));
+		mapLigneCommande.get(3).add(new LigneCommande(3, 12, 8, 35));
 	}
 	
 	public static ListeMemoireLigneCommandeDAO getInstance() {
@@ -37,7 +41,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		int idx = mapLigneCommande.get(key).indexOf(objet);
 		if(idx != -1) return false;
 		
-		mapLigneCommande.get(key).add(objet.getIdProduit(), objet);
+		mapLigneCommande.get(key).add(objet);
 		return true;
 	}
 

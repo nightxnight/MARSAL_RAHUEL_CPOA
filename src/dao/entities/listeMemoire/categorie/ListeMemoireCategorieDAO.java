@@ -16,8 +16,9 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 		listeCategorie = new ArrayList<Categorie>();
 		listeCategorie.add(new Categorie(1, "Pulls", "lespulls.png"));
 		listeCategorie.add(new Categorie(2, "Bonnets", "lesbonnets.png"));
+		listeCategorie.add(new Categorie(3, "Chaussettes", "leschaussettes.png"));
 		
-		autoIncrementedId = 2;
+		autoIncrementedId = 3;
 	}
 	
 	public static ListeMemoireCategorieDAO getInstance() {
@@ -28,10 +29,12 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	@Override
 	public boolean create(Categorie objet) {
 		++autoIncrementedId;
-		objet.setIdCategorie(autoIncrementedId);
 		
-		int idx = listeCategorie.indexOf(objet);
-		if(idx != -1) return false;
+		while (listeCategorie.indexOf(objet) != -1){
+			++autoIncrementedId;
+		}
+		
+		objet.setIdCategorie(autoIncrementedId);
 		
 		listeCategorie.add(objet);
 		return true;
