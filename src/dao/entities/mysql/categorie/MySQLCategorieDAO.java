@@ -30,11 +30,11 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			query.setString(2, objet.getVisuel());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) ajout�e(s)");
+			System.out.println(nbLigne + " ligne(s) ajoutee(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cl� g�n�r�e : " + res.getInt(1));
+				System.out.println("Cle generee : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -43,7 +43,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			return nbLigne == 1;
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"ajouterCategorie\".");
+				System.out.println("Erreur lors de la requete \"ajouterCategorie\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		
 		return false;

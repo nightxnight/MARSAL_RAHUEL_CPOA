@@ -59,22 +59,17 @@ public class Commande {
 		return "Commande [idCommande=" + idCommande + ", dateCommande=" + dateCommande + ", idClient=" + idClient + "]";
 	}
 
-	//Equals
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!(obj instanceof Commande)) {
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
 		Commande other = (Commande) obj;
-		if (idClient != other.idClient) {
+		if (idCommande != other.idCommande)
 			return false;
-		}
 		return true;
-	}
-	
-	
-	
+	}	
 }

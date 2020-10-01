@@ -18,8 +18,8 @@ import entities.commande.Commande;
 
 public class TestMySQLCommandeDAO {
 
-private static Persistance PERSISTANCE = Persistance.MYSQL;
-private static DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static Persistance PERSISTANCE = Persistance.MYSQL;
+	private static DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -56,6 +56,6 @@ private static DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/
 	
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/0001", formatage), 0));
+		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/1970", formatage), 0));
 	}
 }

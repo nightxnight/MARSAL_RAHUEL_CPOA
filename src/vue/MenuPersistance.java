@@ -47,7 +47,7 @@ public class MenuPersistance extends Menu {
 	
 	private void afficherSQL() {
 		if(closeCurrentMode()) {
-			System.out.println("Vous travaillez d�sormais en base de donn�e MYSQL : ");
+			System.out.println("Vous travaillez desormais en base de donnees MYSQL : ");
 			PERSISTANCE = Persistance.MYSQL;
 			DAOFactory.getDAOFactory(PERSISTANCE);
 		}
@@ -55,7 +55,7 @@ public class MenuPersistance extends Menu {
 	
 	private void afficherListeMemoire() {
 		if(closeCurrentMode()) {
-			System.out.println("Vous �tes d�sormais en mode hors-ligne");
+			System.out.println("Vous etes desormais en mode hors-ligne");
 			PERSISTANCE = Persistance.LISTEMEMOIRE;
 			DAOFactory.getDAOFactory(PERSISTANCE);
 		}

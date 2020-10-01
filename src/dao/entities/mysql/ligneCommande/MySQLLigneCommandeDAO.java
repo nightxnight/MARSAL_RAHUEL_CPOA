@@ -53,12 +53,12 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	@Override
 	public boolean update(LigneCommande objet) {
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET id_produit = ?, quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
-			query.setInt(2, objet.getQuantite());
-			query.setDouble(3, objet.getTarifUnitaire());
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
+			query.setInt(1, objet.getQuantite());
+			query.setDouble(2, objet.getTarifUnitaire());
 			
-			query.setInt(5, objet.getIdCommande());
-			query.setInt(5, objet.getIdProduit());
+			query.setInt(3, objet.getIdCommande());
+			query.setInt(4, objet.getIdProduit());
 		
 		int nbLigne = query.executeUpdate();
 		System.out.println(nbLigne + " ligne(s) modifi�e(s)");
@@ -106,7 +106,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 			
 			listeLigneCommande = new ArrayList<LigneCommande>();
 			while(res.next()) {
-				listeLigneCommande.add(new LigneCommande(res.getInt(1), res.getInt(2), res.getInt(3), res.getInt(4)));
+				listeLigneCommande.add(new LigneCommande(res.getInt(1), res.getInt(2), res.getInt(3), res.getDouble(4)));
 			}
 			return listeLigneCommande;
 		} catch (SQLException sqle) {
@@ -119,7 +119,7 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	public ArrayList<LigneCommande> getAll() {
 		ArrayList<LigneCommande> listeLigneCommande = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie");
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Ligne_commande");
 			ResultSet res = query.executeQuery();
 			
 			listeLigneCommande = new ArrayList<LigneCommande>();	
