@@ -56,6 +56,6 @@ private static DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/
 	
 	@Test
 	public void testGetById() {
-		assertEquals((Commande) DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/0001", formatage), 0));
+		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/0001", formatage), 0));
 	}
 }

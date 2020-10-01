@@ -52,6 +52,6 @@ public class TestMySQLCategorieDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals((Categorie) DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(4), new Categorie(4, "", ""));
+		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(4), new Categorie(4, "", ""));
 	}
 }

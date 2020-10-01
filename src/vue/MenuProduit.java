@@ -204,7 +204,7 @@ public class MenuProduit extends Menu{
 		} while(idProduit < 0);
 		
 		if(confirmRequest()) {
-			produit = (Produit) DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(idProduit);
+			produit = DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(idProduit);
 			if(produit == null) System.out.println("Produit introuvable.");
 			else System.out.println(produit.toString());
 		}

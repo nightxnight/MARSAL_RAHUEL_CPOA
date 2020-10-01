@@ -205,7 +205,7 @@ public class MenuClient extends Menu {
 		} while(idClient < 0);
 		
 		if(confirmRequest()) {
-			client = (Client) DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(idClient);
+			client = DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(idClient);
 			if(client == null) System.out.println("Client introuvable.");
 			else System.out.println(client.toString());
 		}

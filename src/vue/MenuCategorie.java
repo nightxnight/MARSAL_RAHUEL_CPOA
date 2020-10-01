@@ -183,7 +183,7 @@ public class MenuCategorie extends Menu{
 		} while(idCategorie < 0);
 		
 		if(confirmRequest()) {
-			categorie = (Categorie) DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(idCategorie);
+			categorie = DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(idCategorie);
 			if(categorie == null) System.out.println("Categorie introuvable.");
 			else System.out.println(categorie.toString());
 		}

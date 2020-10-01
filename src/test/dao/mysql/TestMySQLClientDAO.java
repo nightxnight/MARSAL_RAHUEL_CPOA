@@ -51,6 +51,6 @@ public class TestMySQLClientDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals((Client) DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(2), new Client(2, "", "", "", "", "", "", "", "", ""));
+		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(2), new Client(2, "", "", "", "", "", "", "", "", ""));
 	}
 }

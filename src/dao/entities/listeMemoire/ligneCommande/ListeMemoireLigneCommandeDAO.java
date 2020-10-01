@@ -3,8 +3,8 @@ package dao.entities.listeMemoire.ligneCommande;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import entities.ligneCommande.LigneCommande;
 import dao.entities.LigneCommandeDAO;
+import entities.ligneCommande.LigneCommande;
 
 public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	
@@ -68,7 +68,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		} else return false;
 	}
 	
-	//Pas cool la cl� compos� de la table ligne commande
+	@Override
 	public ArrayList<LigneCommande> getById(int id) {
 		int key = id;
 		if(mapLigneCommande.containsKey(key)) return mapLigneCommande.get(key);

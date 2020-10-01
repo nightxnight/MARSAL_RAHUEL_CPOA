@@ -1,8 +1,14 @@
 package dao.entities;
 
+import java.util.ArrayList;
+
 import entities.ligneCommande.LigneCommande;
-import dao.DAO;
 
-public interface LigneCommandeDAO extends DAO<LigneCommande>{
+public interface LigneCommandeDAO {
 
+	public abstract boolean create(LigneCommande objet);
+	public abstract boolean update(LigneCommande objet);
+	public abstract boolean delete(LigneCommande objet);
+	public abstract ArrayList<LigneCommande> getById(int id);
+	public abstract ArrayList<LigneCommande> getAll();
 }
