@@ -30,25 +30,23 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public boolean create(Commande objet) {
+	public boolean create(Commande objet) {		
 		++autoIncrementedId;
-		
 		while(listeCommande.indexOf(objet) != -1) {
 			++autoIncrementedId;
 		}
 		
 		objet.setIdCommande(autoIncrementedId);
 		
-		listeCommande.add(objet);
-		return true;
+		return listeCommande.add(objet);
 	}
 
 	@Override
-	public boolean update(Commande objet) {
+	public boolean update(Commande objet) throws IllegalArgumentException {		
 		int idx = listeCommande.indexOf(objet);
-		if(idx == -1) {
-			return false;
-		} else {
+		
+		if(idx == -1) throw new IllegalArgumentException("La commande que vous essayez de modifier est introuvable.");
+		else {
 			listeCommande.get(idx).setIdClient(objet.getIdClient());
 			listeCommande.get(idx).setDateCommande(objet.getDateCommande());
 			return true;
@@ -56,16 +54,16 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public boolean delete(Commande objet) {
+	public boolean delete(Commande objet) throws IllegalArgumentException {
 		int idx = listeCommande.indexOf(objet);
-		if(idx == -1) {
-			return false;
-		} else return listeCommande.remove(objet);
+		
+		if(idx == -1) throw new IllegalArgumentException("La commande que vous essayez de supprimer est introuvable.");
+		else return listeCommande.remove(objet);
 	}
 	
-	public Commande getById(int id) {
+	public Commande getById(int id) throws IllegalArgumentException {
 		int idx = listeCommande.indexOf(new Commande(id, LocalDate.parse("01/01/0001", formatage), 0));
-		if(idx == -1) return null;
+		if(idx == -1) throw new IllegalArgumentException("La commande recherchee est introuvable");
 		else {
 			return listeCommande.get(idx);
 		}

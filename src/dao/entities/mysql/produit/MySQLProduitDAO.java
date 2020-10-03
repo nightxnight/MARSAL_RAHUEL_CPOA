@@ -32,11 +32,11 @@ public class MySQLProduitDAO implements ProduitDAO{
 			query.setInt(5, objet.getIdCategorie());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) ajout�e(s)");
+			System.out.println(nbLigne + " ligne(s) ajoutee(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cl� g�n�r�e : " + res.getInt(1));
+				System.out.println("Cle generee(s) : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -46,14 +46,14 @@ public class MySQLProduitDAO implements ProduitDAO{
 			
 			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"ajouterProduit\".");
+			System.out.println("Erreur lors de la requete \"ajouterProduit\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		
 		return false;
 	}
 
 	@Override
-	public boolean update(Produit objet) {
+	public boolean update(Produit objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Produit SET nom = ?, description = ?, tarif = ?, visuel = ?, id_categorie = ? WHERE id_produit = ?");
 			query.setString(1, objet.getNom());
@@ -65,39 +65,43 @@ public class MySQLProduitDAO implements ProduitDAO{
 			query.setInt(6, objet.getId());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) modifi�e(s)");
+			System.out.println(nbLigne + " ligne(s) modifiee(s)");
 
 			if(query != null) query.close();
 			
-			return nbLigne == 1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("Le produit que vous souhaitez modifier est introuvable.");
 			
-		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"modifierProduit\".");
+			System.out.println("Erreur lors de la requete \"modifierProduit\".");
 			System.out.println("logs : " + sqle.getMessage());
-		}		return false;
+		}		
+		return false;
 	}
 
 	@Override
-	public boolean delete(Produit objet) {
+	public boolean delete(Produit objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Produit WHERE id_produit = ?");
 			query.setInt(1, objet.getId());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprim�e(s)");
+			System.out.println(nbLigne + " ligne(s) supprimee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne ==1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("Le produit que vous souhaitez supprimer est introuvable.");
+			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"supprimerProduit\".");
+			System.out.println("Erreur lors de la requete \"supprimerProduit\".");
 			System.out.println("logs : " + sqle.getMessage());		
-		}		return false;
+		}		
+		return false;
 	}
 	
 	@Override
-	public Produit getById(int id) {
+	public Produit getById(int id) throws IllegalArgumentException {
 		Produit produit = null;
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Produit WHERE id_produit = ?");
@@ -105,12 +109,13 @@ public class MySQLProduitDAO implements ProduitDAO{
 			
 			ResultSet res = query.executeQuery();
 			
-			while(res.next()) {
-				produit = new Produit(res.getInt(1), res.getString(2), res.getString(3), res.getDouble(4), res.getString(5), res.getInt(1));
-			}
+			if (res.next()) produit = new Produit(res.getInt(1), res.getString(2), res.getString(3), res.getDouble(4), res.getString(5), res.getInt(1));
+			else throw new IllegalArgumentException("Le produit recherche est introuvable.");
+			
 			return produit;
+			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_produit.getById\".");
+			System.out.println("Erreur lors de la requete \"MYSQLDAOFactory_produit.getById\".");
 		}
 		return produit;
 	}
@@ -128,7 +133,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			}
 			return listeProduit;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MySQLDAOFactory_Produit.getAll\".");
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Produit.getAll\".");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeProduit;

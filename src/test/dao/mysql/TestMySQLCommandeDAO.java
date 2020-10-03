@@ -3,6 +3,7 @@ package test.dao.mysql;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -40,13 +41,43 @@ public class TestMySQLCommandeDAO {
 	@Test
 	public void testUpdate() {
 		Commande commande = new Commande(2, LocalDate.parse("18/09/2020", formatage), 1);
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().update(commande));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().update(commande));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testUpdateCommandeInexistante() {
+		Commande commande = new Commande(-1, LocalDate.parse("01/01/1970", formatage), 1);
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().update(commande);
+			fail("On ne peut pas modifier une commande inexistante");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test
 	public void testDelete() {
 		Commande commande = new Commande(1, new Date(0), 0);
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().delete(commande));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().delete(commande));
+		} catch (IllegalArgumentException iae) {
+			fail("Exception lancee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testDeleteCommandeIntrouvable() {
+		Commande commande = new Commande(-1, LocalDate.parse("01/01/1970", formatage), 0);
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().delete(commande);
+			fail("On ne peut pas supprimer une commande inexistante.");
+		} catch (IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test

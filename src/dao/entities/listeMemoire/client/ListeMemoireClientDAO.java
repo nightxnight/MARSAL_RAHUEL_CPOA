@@ -26,9 +26,8 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public boolean create(Client objet) {
+	public boolean create(Client objet) {		
 		++autoIncrementedId;
-		
 		while(listeClient.indexOf(objet) != -1) {
 			++autoIncrementedId;
 		}
@@ -40,9 +39,9 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public boolean update(Client objet) {
+	public boolean update(Client objet) throws IllegalArgumentException {		
 		int idx = listeClient.indexOf(objet);
-		if(idx == -1) return false;
+		if(idx == -1) throw new IllegalArgumentException("Le client que vous essayez de modifier est introuvable.");
 		else {
 			listeClient.get(idx).setNom(objet.getNom());
 			listeClient.get(idx).setPrenom(objet.getPrenom());
@@ -58,18 +57,18 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public boolean delete(Client objet) {
+	public boolean delete(Client objet) throws IllegalArgumentException {
 		int idx = listeClient.indexOf(objet);
-		if(idx == -1) return false;
+		if(idx == -1) throw new IllegalArgumentException("Le client que vous essayez de supprimer est introuvable.");
 		else {
 			listeClient.remove(idx);
 			return true;
 		}
 	}
 	
-	public Client getById(int id) {
+	public Client getById(int id) throws IllegalArgumentException {
 		int idx = listeClient.indexOf(new Client(id, "", "", "", "", "", "", "", "", ""));
-		if(idx == -1) return null;
+		if(idx == -1) throw new IllegalArgumentException("Le client recherché est introuvable.");
 		else {
 			return listeClient.get(idx);
 		}

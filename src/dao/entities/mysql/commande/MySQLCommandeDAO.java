@@ -37,7 +37,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cl� g�n�r�e : " + res.getInt(1));
+				System.out.println("Cle generee : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -46,14 +46,14 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			return nbLigne ==1;
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"ajouterCommande\".");
+				System.out.println("Erreur lors de la requete \"ajouterCommande\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		
 		return false;
 	}
 
 	@Override
-	public boolean update(Commande objet) {
+	public boolean update(Commande objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Commande SET date_commande = ?, id_client = ?  WHERE id_commande = ?");
 			query.setDate(1, Date.valueOf(objet.getDateCommande()));
@@ -61,42 +61,44 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			
 			query.setInt(3, objet.getIdCommande());
 		
-		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifi�e(s)");
-		
-		if(query != null) query.close();
-		
-		return nbLigne == 1;
+			int nbLigne = query.executeUpdate();
+			System.out.println(nbLigne + " ligne(s) modifiee(s)");
+			
+			if(query != null) query.close();
+			
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("La commande que vous essayez de modifier est introuvable.");
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"modifierCommande\".");
+			System.out.println("Erreur lors de la requete \"modifierCommande\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}				
 		return false;
 	}
 
 	@Override
-	public boolean delete(Commande objet) {
+	public boolean delete(Commande objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Commande WHERE id_commande = ?");
 			query.setInt(1, objet.getIdCommande());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprim�e(s)");
+			System.out.println(nbLigne + " ligne(s) supprimee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne == 1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("La commande que vous essayez de supprimer est introuvable");
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"supprimerCommande\".");
+				System.out.println("Erreur lors de la requete \"supprimerCommande\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}
 		return false;
 	}
 	
 	@Override
-	public Commande getById(int id) {
+	public Commande getById(int id) throws IllegalArgumentException {
 		Commande commande = null;
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande WHERE id_commande = ?");
@@ -104,12 +106,11 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			
 			ResultSet res = query.executeQuery();
 			
-			if(res.next()) {
-				commande = new Commande(res.getInt(1), res.getDate(2), res.getInt(3));
-			}
+			if(res.next()) commande = new Commande(res.getInt(1), res.getDate(2), res.getInt(3));
+			else throw new IllegalArgumentException("La commande recherchee est introuvable.");
 			return commande;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_commande.getById\".");
+			System.out.println("Erreur lors de la requete \"MYSQLDAOFactory_commande.getById\".");
 		}
 		return commande;
 	}

@@ -50,7 +50,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	}
 
 	@Override
-	public boolean update(Categorie objet) {
+	public boolean update(Categorie objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Categorie SET titre = ?, visuel = ? WHERE id_categorie = ?");
 			query.setString(1, objet.getTitre());
@@ -59,41 +59,43 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			query.setInt(3, objet.getIdCategorie());
 		
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) modifi�e(s)");
+			System.out.println(nbLigne + " ligne(s) modifiee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne == 1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("La categorie que vous essayez de modifier est introuvable");
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"modifierCategorie\".");
+			System.out.println("Erreur lors de la requete \"modifierCategorie\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}	
 		return false;
 	}
 
 	@Override
-	public boolean delete(Categorie objet) {
+	public boolean delete(Categorie objet) throws IllegalArgumentException{
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Categorie WHERE id_categorie = ?");
 			query.setInt(1, objet.getIdCategorie());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprim�e(s)");
+			System.out.println(nbLigne + " ligne(s) supprimee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne ==1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("La categorie que vous essayez de supprimer est introuvable");
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"supprimerCategorie\".");
+				System.out.println("Erreur lors de la requete \"supprimerCategorie\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}	
 		return false;
 	}
 
 	@Override
-	public Categorie getById(int id) {
+	public Categorie getById(int id) throws IllegalArgumentException {
 		Categorie categorie = null;
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie WHERE id_categorie = ?");
@@ -101,13 +103,12 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			
 			ResultSet res = query.executeQuery();
 			
-			if(res.next()) {
-				categorie = new Categorie(res.getInt(1), res.getString(2), res.getString(3));
-			}
+			if(res.next()) categorie = new Categorie(res.getInt(1), res.getString(2), res.getString(3));
+			else throw new IllegalArgumentException("La categorie recherchee est introuvable.");
 			
 			return categorie;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_categorie.getById\".");
+			System.out.println("Erreur lors de la requete \"MYSQLDAOFactory_categorie.getById\".");
 		}
 		return categorie;
 	}
@@ -125,7 +126,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			}
 			return listeCategorie;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MySQLDAOFactory_Categorie.getAll");
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Categorie.getAll");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeCategorie;

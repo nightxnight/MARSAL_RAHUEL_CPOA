@@ -48,9 +48,9 @@ public class ListeMemoireDAOFactory extends DAOFactory {
 		return ListeMemoireLigneCommandeDAO.getInstance();
 	}
 	
-	//TODO : Ajout de la possibilit� de sauvegarder des configurations
-	//--> Sauvegarde des donn�es s�rialis�es dans des fichiers
-	//--> Chargement de donn�es � partir d'un fichier .txt ou .ser
+	//TODO : Ajout de la possibilite de sauvegarder des configurations
+	//--> Sauvegarde des donnees serialisees dans des fichiers
+	//--> Chargement de donnees a partir d'un fichier .txt ou .ser
 	@Override
 	public boolean closeDAO() {
 		if(instance == null) return true;

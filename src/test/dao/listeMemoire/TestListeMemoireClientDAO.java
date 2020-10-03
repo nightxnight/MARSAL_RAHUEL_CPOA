@@ -3,6 +3,7 @@ package test.dao.listeMemoire;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,13 +35,43 @@ public class TestListeMemoireClientDAO {
 	@Test
 	public void testUpdate() {
 		Client client = new Client(4, "LEMALADE", "Victor", "victorleM@gmail.com", "carole", "51", "rue des antibios", "41256", "Dunkerque", "France");
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testUpdateClientIntrouvable() {
+		Client client = new Client(-1, "", "", "", "", "", "", "", "", "");
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client);
+			fail("On ne peut pas modifier un client inexistant.");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test
 	public void testDelete() {
 		Client client = new Client(1, "", "", "", "", "", "", "", "", "");
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(client));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(client));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancée par erreur!");
+		}
+	}
+	
+	@Test
+	public void testDeleteClientIntrouvable() {
+		Client client = new Client(-1, "", "", "", "", "", "", "", "", "");
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(client);
+			fail("On ne peut pas supprimer un client inexistant");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test

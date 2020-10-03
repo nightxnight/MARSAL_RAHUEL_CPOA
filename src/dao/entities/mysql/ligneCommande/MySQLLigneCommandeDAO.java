@@ -31,27 +31,28 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 			query.setDouble(4, objet.getTarifUnitaire());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) ajout�e(s)");
+			System.out.println(nbLigne + " ligne(s) ajoutee(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cl� g�n�r�e : " + res.getInt(1));
+				System.out.println("Cle generee(s) : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
 			if(query != null) query.close();
 			
-			return nbLigne == 1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("Une ligne de commande concernant le produit de cette commande existe deja.");
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"ajouterLigneCommande\".");
+				System.out.println("Erreur lors de la requete \"ajouterLigneCommande\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		
 		return false;
 	}
 
 	@Override
-	public boolean update(LigneCommande objet) {
+	public boolean update(LigneCommande objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Ligne_commande SET quantite = ?, tarif_unitaire = ? WHERE id_commande = ? AND id_produit = ?");
 			query.setInt(1, objet.getQuantite());
@@ -61,56 +62,65 @@ public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 			query.setInt(4, objet.getIdProduit());
 		
 		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifi�e(s)");
+		System.out.println(nbLigne + " ligne(s) modifiee(s)");
 		
 		if(query != null) query.close();
 		
-		return nbLigne == 1;
+		if(nbLigne == 1) return true;
+		else throw new IllegalArgumentException("La ligne de commande que vous essayez de modifier est introuvable.");
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"modifierLigneCommande\".");
+			System.out.println("Erreur lors de la requete \"modifierLigneCommande\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}	
 		return false;
 	}
 
 	@Override
-	public boolean delete(LigneCommande objet) {
+	public boolean delete(LigneCommande objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("DELETE FROM Ligne_commande WHERE id_commande = ? AND id_produit = ?");
 			query.setInt(1, objet.getIdCommande());
 			query.setInt(2, objet.getIdProduit());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprim�e(s)");
+			System.out.println(nbLigne + " ligne(s) supprimee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne ==1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("La ligne de commande que vous essayez de supprimer est introuvable.");
 			
-			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"supprimerLigneCommande\".");
-				System.out.println("logs : " + sqle.getMessage());
-			}	
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requete \"supprimerLigneCommande\".");
+			System.out.println("logs : " + sqle.getMessage());
+		}	
 		return false;
 	}
 	
 	@Override
-	public ArrayList<LigneCommande> getById(int id) {
+	public ArrayList<LigneCommande> getById(int id) throws IllegalArgumentException {
 		ArrayList<LigneCommande> listeLigneCommande = null;
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Ligne_commande WHERE id_commande = ?");
 			query.setInt(1, id);
 			
 			ResultSet res = query.executeQuery();
-			
-			listeLigneCommande = new ArrayList<LigneCommande>();
-			while(res.next()) {
+			if(res.next()) {
+				listeLigneCommande = new ArrayList<LigneCommande>();
 				listeLigneCommande.add(new LigneCommande(res.getInt(1), res.getInt(2), res.getInt(3), res.getDouble(4)));
-			}
-			return listeLigneCommande;
+						
+				while(res.next()) {
+					listeLigneCommande.add(new LigneCommande(res.getInt(1), res.getInt(2), res.getInt(3), res.getDouble(4)));
+				}
+				
+				return listeLigneCommande;
+				
+			} else throw new IllegalArgumentException("Il n'existe aucune de ligne de commande concernant cette commande");
+			
+			
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_ligneCommande.getById\".");
+			System.out.println("Erreur lors de la requete \"MYSQLDAOFactory_ligneCommande.getById\".");
 		}
 		return listeLigneCommande;
 	}

@@ -24,7 +24,7 @@ private static MySQLClientDAO instance;
 	}
 
 	@Override
-	public boolean create(Client objet) {
+	public boolean create(Client objet) throws IllegalArgumentException{		
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Client (nom, prenom, identifiant, mot_de_passe, adr_numero, adr_voie, adr_code_postal, adr_ville, adr_pays) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getNom());
@@ -38,11 +38,11 @@ private static MySQLClientDAO instance;
 			query.setString(9, objet.getAdrPays());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) ajout�e(s)");
+			System.out.println(nbLigne + " ligne(s) ajoutee(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cl� g�n�r�e : " + res.getInt(1));
+				System.out.println("Cle generee(s) : " + res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -51,14 +51,14 @@ private static MySQLClientDAO instance;
 			return nbLigne ==1;
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"ajouterClient\".");
+				System.out.println("Erreur lors de la requete \"ajouterClient\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		
 		return false;
 	}
 
 	@Override
-	public boolean update(Client objet) {
+	public boolean update(Client objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("UPDATE Client SET nom = ?, prenom = ? ,identifiant = ?, mot_de_passe = ?, adr_numero = ?, adr_voie = ?, adr_code_postal = ?, adr_ville = ?, adr_pays = ? WHERE id_client = ?");
 			query.setString(1, objet.getNom());
@@ -73,17 +73,19 @@ private static MySQLClientDAO instance;
 			
 			query.setInt(10, objet.getIdClient());
 		
-		int nbLigne = query.executeUpdate();
-		System.out.println(nbLigne + " ligne(s) modifi�e(s)");
-		
-		if(query != null) query.close();
-		
-		return nbLigne == 1;
+			int nbLigne = query.executeUpdate();
+			System.out.println(nbLigne + " ligne(s) modifiee(s)");
+			
+			if(query != null) query.close();
+			
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("Le client que vous essayez de modifier est introuvable");
 		
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"modifierClient\".");
+			System.out.println("Erreur lors de la requete \"modifierClient\".");
 			System.out.println("logs : " + sqle.getMessage());
-		}				return false;
+		}				
+		return false;
 	}
 
 	@Override
@@ -93,20 +95,22 @@ private static MySQLClientDAO instance;
 			query.setInt(1, objet.getIdClient());
 			
 			int nbLigne = query.executeUpdate();
-			System.out.println(nbLigne + " ligne(s) supprim�e(s)");
+			System.out.println(nbLigne + " ligne(s) supprimee(s)");
 			
 			if(query != null) query.close();
 			
-			return nbLigne == 1;
+			if(nbLigne == 1) return true;
+			else throw new IllegalArgumentException("Le client que vous essayez de modifier est introuvable.");
 			
 			} catch (SQLException sqle) {
-				System.out.println("Erreur lors de la requ�te \"supprimerCategorie\".");
+				System.out.println("Erreur lors de la requete \"supprimerCategorie\".");
 				System.out.println("logs : " + sqle.getMessage());
-			}			return false;
+			}		
+		return false;
 	}
 	
 	@Override
-	public Client getById(int id) {
+	public Client getById(int id) throws IllegalArgumentException {
 		Client client = null;
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client WHERE id_client = ?");
@@ -114,12 +118,12 @@ private static MySQLClientDAO instance;
 			
 			ResultSet res = query.executeQuery();
 			
-			while(res.next()) {
-				client = new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10));
-			}
+			if(res.next()) client = new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10));
+			else throw new IllegalArgumentException("Le client que vous cherchez est introuvable.");
+			
 			return client;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requ�te \"MYSQLDAOFactory_client.getById\".");
+			System.out.println("Erreur lors de la requete \"MYSQLDAOFactory_client.getById\".");
 		}
 		return client;
 	}

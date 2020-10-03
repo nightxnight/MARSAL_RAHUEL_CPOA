@@ -27,23 +27,21 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	}
 
 	@Override
-	public boolean create(Categorie objet) {
+	public boolean create(Categorie objet)  {	
 		++autoIncrementedId;
-		
 		while (listeCategorie.indexOf(objet) != -1){
 			++autoIncrementedId;
 		}
 		
 		objet.setIdCategorie(autoIncrementedId);
 		
-		listeCategorie.add(objet);
-		return true;
+		return listeCategorie.add(objet);
 	}
 
 	@Override
-	public boolean update(Categorie objet) {
+	public boolean update(Categorie objet)  throws IllegalArgumentException {
 		int idx = listeCategorie.indexOf(objet);
-		if(idx == -1) return false;
+		if(idx == -1) throw new IllegalArgumentException("La catégorie que vous voulez modifié est introuvable");
 		else {
 			listeCategorie.get(idx).setTitre(objet.getTitre());
 			listeCategorie.get(idx).setVisuel(objet.getVisuel());
@@ -52,18 +50,18 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	}
 
 	@Override
-	public boolean delete(Categorie objet) {
+	public boolean delete(Categorie objet) throws IllegalArgumentException {
 		int idx = listeCategorie.indexOf(objet);
-		if(idx == -1) return false;
+		if(idx == -1) throw new IllegalArgumentException("La catégorie que vous voulez supprimé est introuvable");
 		else {
 			listeCategorie.remove(idx);
 			return true;
 		}
 	}
 	
-	public Categorie getById(int id) {
+	public Categorie getById(int id) throws IllegalArgumentException {
 		int idx = listeCategorie.indexOf(new Categorie(id, "", ""));
-		if(idx == -1) return null;
+		if(idx == -1) throw new IllegalArgumentException("La catégorie cherchée est introuvable.");
 		else {
 			return listeCategorie.get(idx);
 		}

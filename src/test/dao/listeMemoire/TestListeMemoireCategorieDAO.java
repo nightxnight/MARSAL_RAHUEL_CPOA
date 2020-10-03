@@ -3,6 +3,7 @@ package test.dao.listeMemoire;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,13 +36,43 @@ public class TestListeMemoireCategorieDAO {
 	@Test
 	public void testUpdate() {
 		Categorie categorie = new Categorie(2, "Echarpes", "lesecharpes.png");
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancee par erreur!");
+		}
+	}
+	
+	@Test 
+	public void testUpdateCategorieIntrouvable() {
+		Categorie categorie = new Categorie(-1, "test", "test.png");
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie);
+			fail("On ne peut pas modifier une categorie inexistante");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test
 	public void testDelete() {
 		Categorie categorie = new Categorie(1, "", "");
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(categorie));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(categorie));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancée par erreur!");
+		}
+	}
+	
+	@Test
+	public void testDeleteCategorieIntrouvable() {
+		Categorie categorie = new Categorie(-1, "", "");
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(categorie);
+			fail("On ne peut pas supprimer une categorie inexistante");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test

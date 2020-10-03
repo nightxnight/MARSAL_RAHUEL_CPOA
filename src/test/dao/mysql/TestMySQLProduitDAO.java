@@ -3,6 +3,7 @@ package test.dao.mysql;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,13 +36,43 @@ public class TestMySQLProduitDAO {
 	@Test
 	public void testUpdate() {
 		Produit Produit = new Produit(2, "Eggman t'aimes pas", "Inspiré par la saga séga (il est plus fort que toi)", 141.5, "eggman.png", 1);
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(Produit));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(Produit));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testUpdateProduitIntrouvable() {
+		Produit Produit = new Produit(-1, "", "", 0, "", 0);
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(Produit);
+			fail("On ne peut pas modifier un produit inexistant.");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test
 	public void testDelete() {
 		Produit Produit = new Produit(12, "", "", 0, "", 0);
-		assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(Produit));
+		try {
+			assertTrue(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(Produit));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testDeleteProduitIntrouvable() {
+		Produit Produit = new Produit(-1, "", "", 0, "", 0);
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(Produit);
+			fail("On ne peut pas supprimer un produit inexistant");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 	
 	@Test

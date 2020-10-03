@@ -30,24 +30,20 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	}
 
 	@Override
-	public boolean create(Produit objet) {
+	public boolean create(Produit objet) {		
 		++autoIncrementedId;
-				
 		while(listeProduit.indexOf(objet) != -1) {
 			++autoIncrementedId;
 		}
 		
 		objet.setId(autoIncrementedId);
-		
-		listeProduit.add(objet);
-		return true;
+		return listeProduit.add(objet);
 	}
 
 	@Override
-	public boolean update(Produit objet) {
+	public boolean update(Produit objet) throws IllegalArgumentException {		
 		int idx = listeProduit.indexOf(objet);
-		if(idx == -1) 
-			return false;
+		if(idx == -1) throw new IllegalArgumentException("Le produit que vous essayez de modifier est introuvable.");
 		else {
 			listeProduit.get(idx).setNom(objet.getNom());
 			listeProduit.get(idx).setDescription(objet.getDescription());
@@ -59,10 +55,9 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	}
 
 	@Override
-	public boolean delete(Produit objet) {
+	public boolean delete(Produit objet) throws IllegalArgumentException {
 		int idx = listeProduit.indexOf(objet);
-		if(idx == -1) 
-			return false;
+		if(idx == -1) throw new IllegalArgumentException("Le produit que vous essayez de supprimer est introuvable.");
 		else {
 			listeProduit.remove(idx);
 			return true;
@@ -70,9 +65,9 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	}
 	
 	@Override
-	public Produit getById(int id) {
+	public Produit getById(int id) throws IllegalArgumentException {
 		int idx = listeProduit.indexOf(new Produit(id, "", "", 0, "", 0));
-		if(idx == -1) return null;
+		if(idx == -1) throw new IllegalArgumentException("Le produit recherche est introuvable.");
 		else {
 			return listeProduit.get(idx);
 		}

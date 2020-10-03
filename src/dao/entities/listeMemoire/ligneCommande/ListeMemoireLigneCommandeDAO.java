@@ -32,51 +32,51 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	}
 	
 	@Override
-	public boolean create(LigneCommande objet) {
+	public boolean create(LigneCommande objet) throws IllegalArgumentException {		
 		int key = objet.getIdCommande();
 		if(!mapLigneCommande.containsKey(key)) {
 			mapLigneCommande.put(key, new ArrayList<LigneCommande>());
 		}
 		
+		//On peut egalement augmenter la quantite mais ce n'est pas le but de la fonction. Pas d'ambiguite.
 		int idx = mapLigneCommande.get(key).indexOf(objet);
-		if(idx != -1) return false;
+		if(idx != -1) throw new IllegalArgumentException("Une ligne de commande concernant ce produit existe deja.");
 		
-		mapLigneCommande.get(key).add(objet);
-		return true;
+		return mapLigneCommande.get(key).add(objet);
 	}
 
 	@Override
-	public boolean update(LigneCommande objet) {
+	public boolean update(LigneCommande objet) throws IllegalArgumentException {
 		int key = objet.getIdCommande();
 		if(mapLigneCommande.containsKey(key)) {
 			int idx = mapLigneCommande.get(key).indexOf(objet);
-			if(idx == -1) return false;
+			if(idx == -1) throw new IllegalArgumentException("Il n'existe pas de ligne de commande concernant le produit de cette commande");
 			else {
 				mapLigneCommande.get(key).get(idx).setQuantite(objet.getQuantite());
 				mapLigneCommande.get(key).get(idx).setTarifUnitaire(objet.getTarifUnitaire());
 				return true;
 			}
-		} else return false;
+		} else throw new IllegalArgumentException("Il n'existe pas de ligne de commande concernant cette commande.");
 	}
 
 	@Override
-	public boolean delete(LigneCommande objet) {
+	public boolean delete(LigneCommande objet) throws IllegalArgumentException {
 		int key = objet.getIdCommande();
 		if(mapLigneCommande.containsKey(key)) {
 			int idx = mapLigneCommande.get(key).indexOf(objet);
-			if(idx == -1) return false;
+			if(idx == -1) throw new IllegalArgumentException("Il n'y a aucune ligne de commande concernant ce produit pour cette commande.");
 			else {
-				mapLigneCommande.get(key).get(idx);
+				mapLigneCommande.get(key).remove(idx);
 				return true;
 			}
-		} else return false;
+		} else throw new IllegalArgumentException("Les lignes de commande concernant cette commande sont introuvable");
 	}
 	
 	@Override
-	public ArrayList<LigneCommande> getById(int id) {
+	public ArrayList<LigneCommande> getById(int id) throws IllegalArgumentException {
 		int key = id;
 		if(mapLigneCommande.containsKey(key)) return mapLigneCommande.get(key);
-		else return null;
+		else throw new IllegalArgumentException("Les lignes de commande concernant la commande recherchee sont introuvables");
 	}
 
 	@Override
