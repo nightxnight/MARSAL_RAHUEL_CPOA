@@ -49,7 +49,7 @@ public class TestMySQLCategorieDAO {
 		Categorie categorie = new Categorie(-1, "test", "test.png");
 		try {
 			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie);
-			fail("On ne peut pas modifier une categorie inexistante");
+			fail("On ne peut pas modifier une categorie enregistrante");
 		} catch(IllegalArgumentException iae) {
 			//Normal
 		}
@@ -83,6 +83,20 @@ public class TestMySQLCategorieDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(4), new Categorie(4, "", ""));
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(4), new Categorie(4, "", ""));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancée par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdCategorieIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(-1);
+			fail("On ne peut pas obtenir une catégorie dont l'id n'est pas enregistré.");
+		} catch(IllegalArgumentException iae) {
+			//Normal");
+		}
 	}
 }

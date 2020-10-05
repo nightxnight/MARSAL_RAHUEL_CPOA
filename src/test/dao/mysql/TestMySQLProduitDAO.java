@@ -82,6 +82,20 @@ public class TestMySQLProduitDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(6), new Produit(6, "", "", 0, "", 0));
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(6), new Produit(6, "", "", 0, "", 0));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdClientIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(-1);
+			fail("On ne peut pas obtenir un client dont l'id n'est pas enregistre");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 }

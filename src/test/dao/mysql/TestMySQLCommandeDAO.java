@@ -84,9 +84,23 @@ public class TestMySQLCommandeDAO {
 	public void testGetAll() {
 		assertNotNull(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getAll());
 	}
-	
+		
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/1970", formatage), 0));
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(3), new Commande(3, LocalDate.parse("01/01/1970", formatage), 0));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdCommandeIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCommandeDAO().getById(-1);
+			fail("On ne peut pas obtenir une commande dont l'id n'est pas enregistre");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 }

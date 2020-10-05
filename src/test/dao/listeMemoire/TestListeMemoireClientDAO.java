@@ -81,6 +81,20 @@ public class TestListeMemoireClientDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(2), new Client(2, "", "", "", "", "", "", "", "", ""));
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(2), new Client(2, "", "", "", "", "", "", "", "", ""));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdClientIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(-1);
+			fail("On ne peut pas obtenir un client dont l'id n'est pas enregistre");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 }

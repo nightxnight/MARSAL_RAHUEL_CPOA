@@ -87,6 +87,20 @@ public class TestListeMemoireLigneCommandeDAO {
 		ArrayList<LigneCommande> listeAttendu = new ArrayList<LigneCommande>();
 		listeAttendu.add(new LigneCommande(3, 2, 1, 41.5));
 		listeAttendu.add(new LigneCommande(3, 12, 8, 35));
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getLigneCommandeDAO().getById(3), listeAttendu);
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getLigneCommandeDAO().getById(3), listeAttendu);
+		} catch(IllegalArgumentException iae) {
+			fail("Exception levee par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdLigneCommandeIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getLigneCommandeDAO().getById(-1);
+			fail("On ne peut pas obtenir la listes des ligne de commande concernant une commande dont l'id n'est pas enregistre");
+		} catch(IllegalArgumentException iae) {
+			//Normal
+		}
 	}
 }

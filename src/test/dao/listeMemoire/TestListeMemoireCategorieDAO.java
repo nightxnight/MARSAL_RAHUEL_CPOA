@@ -82,6 +82,20 @@ public class TestListeMemoireCategorieDAO {
 	
 	@Test
 	public void testGetById() {
-		assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(3), new Categorie(3, "", ""));
+		try {
+			assertEquals(DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(3), new Categorie(3, "", ""));
+		} catch(IllegalArgumentException iae) {
+			fail("Exception lancée par erreur!");
+		}
+	}
+	
+	@Test
+	public void testGetByIdCategorieIntrouvable() {
+		try {
+			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(-1);
+			fail("On ne peut pas obtenir une categorie dont l'id n'est pas enregistre.");
+		} catch(IllegalArgumentException iae) {
+			//Normal");
+		}
 	}
 }
