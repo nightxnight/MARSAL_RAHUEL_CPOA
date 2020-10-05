@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import entities.categorie.Categorie;
-import entities.produit.Produit;
 import dao.entities.CategorieDAO;
 import dao.entities.mysql.MySQLDAOFactory;
 
