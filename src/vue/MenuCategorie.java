@@ -105,7 +105,11 @@ public class MenuCategorie extends Menu{
 		categorie.setIdCategorie(idCategorieModifie);
 		
 		if(confirmRequest()) {
-			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie);
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().update(categorie);
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 	
@@ -143,7 +147,11 @@ public class MenuCategorie extends Menu{
 		} while(idCategorieSupprime < 0);
 		
 		if(confirmRequest()) {
-			DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(new Categorie(idCategorieSupprime, "", ""));
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().delete(new Categorie(idCategorieSupprime, "", ""));
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 	
@@ -183,9 +191,12 @@ public class MenuCategorie extends Menu{
 		} while(idCategorie < 0);
 		
 		if(confirmRequest()) {
-			categorie = DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(idCategorie);
-			if(categorie == null) System.out.println("Categorie introuvable.");
-			else System.out.println(categorie.toString());
+			try {
+				categorie = DAOFactory.getDAOFactory(PERSISTANCE).getCategorieDAO().getById(idCategorie);
+				System.out.println(categorie.toString());
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 }

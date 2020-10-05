@@ -34,7 +34,7 @@ public class MenuProduit extends Menu{
 	//Obtenir un produit par id
 	private final String messageProduitById = "--RECHERCHE D'UN PRODUIT PAR ID--";
 
-	//Constantes d'�tat
+	//Constantes d'etat
 	private final int ETAT_AJOUTER = 1;
 	private final int ETAT_MODIFIER = 2;
 	private final int ETAT_SUPPRIMER = 3;
@@ -96,7 +96,11 @@ public class MenuProduit extends Menu{
 		Produit produit = lireProduit();
 		produit.setId(idProduitModifie);
 		if(confirmRequest())
-			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(produit);
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().update(produit);
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.toString());
+			}
 	}
 		
 	private Produit lireProduit() {
@@ -164,8 +168,13 @@ public class MenuProduit extends Menu{
 			}
 		} while(idProduitSupprime < 0);
 		
-		if(confirmRequest())
-			DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(new Produit(idProduitSupprime, "", "", 0, "", 0));
+		if(confirmRequest()) {
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().delete(new Produit(idProduitSupprime, "", "", 0, "", 0));
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.toString());
+			}
+		}
 	}
 	
 	private void afficherTousProduit() {
@@ -204,9 +213,12 @@ public class MenuProduit extends Menu{
 		} while(idProduit < 0);
 		
 		if(confirmRequest()) {
-			produit = DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(idProduit);
-			if(produit == null) System.out.println("Produit introuvable.");
-			else System.out.println(produit.toString());
+			try {
+				produit = DAOFactory.getDAOFactory(PERSISTANCE).getProduitDAO().getById(idProduit);
+				System.out.println(produit.toString());
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.toString());
+			}
 		}
 	}
 }

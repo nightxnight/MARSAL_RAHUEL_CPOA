@@ -100,7 +100,11 @@ public class MenuClient extends Menu {
 		client.setIdClient(idClientModifie);
 		
 		if(confirmRequest()) {
-			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client);
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().update(client);
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 	
@@ -165,7 +169,11 @@ public class MenuClient extends Menu {
 		}
 		
 		if(confirmRequest()) {
-			DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(new Client(idClientSupprime, "", "", "", "", "", "", "", "", ""));
+			try {
+				DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().delete(new Client(idClientSupprime, "", "", "", "", "", "", "", "", ""));
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 	
@@ -205,9 +213,12 @@ public class MenuClient extends Menu {
 		} while(idClient < 0);
 		
 		if(confirmRequest()) {
-			client = DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(idClient);
-			if(client == null) System.out.println("Client introuvable.");
-			else System.out.println(client.toString());
+			try {
+				client = DAOFactory.getDAOFactory(PERSISTANCE).getClientDAO().getById(idClient);
+				System.out.println(client.toString());
+			} catch(IllegalArgumentException iae) {
+				System.out.println(iae.getMessage());
+			}
 		}
 	}
 }
