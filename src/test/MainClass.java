@@ -1,6 +1,6 @@
 package test;
 
-import vue.MenuGeneral;
+import vue.console.MenuGeneral;
 
 public class MainClass {
 
