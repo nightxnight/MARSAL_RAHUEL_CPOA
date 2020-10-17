@@ -5,8 +5,8 @@ import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
-import entities.produit.Produit;
 import dao.DAOFactory;
+import entities.Produit;
 
 public class MenuProduit extends Menu{
 	

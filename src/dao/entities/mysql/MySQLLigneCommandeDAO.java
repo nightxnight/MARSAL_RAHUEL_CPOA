@@ -1,4 +1,4 @@
-package dao.entities.mysql.ligneCommande;
+package dao.entities.mysql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.ligneCommande.LigneCommande;
 import dao.entities.LigneCommandeDAO;
-import dao.entities.mysql.MySQLDAOFactory;
+import entities.LigneCommande;
 
 public class MySQLLigneCommandeDAO implements LigneCommandeDAO{
 	

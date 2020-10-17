@@ -1,4 +1,4 @@
-package dao.entities.mysql.commande;
+package dao.entities.mysql;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,9 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.commande.Commande;
 import dao.entities.CommandeDAO;
-import dao.entities.mysql.MySQLDAOFactory;
+import entities.Commande;
 
 public class MySQLCommandeDAO implements CommandeDAO{
 	

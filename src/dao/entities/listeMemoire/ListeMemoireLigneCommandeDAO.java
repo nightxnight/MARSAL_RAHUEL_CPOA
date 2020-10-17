@@ -1,10 +1,10 @@
-package dao.entities.listeMemoire.ligneCommande;
+package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import dao.entities.LigneCommandeDAO;
-import entities.ligneCommande.LigneCommande;
+import entities.LigneCommande;
 
 public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	

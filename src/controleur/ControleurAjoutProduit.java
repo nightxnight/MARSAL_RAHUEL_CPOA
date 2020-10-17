@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import dao.DAOFactory;
-import entities.categorie.Categorie;
-import entities.produit.Produit;
+import entities.Categorie;
+import entities.Produit;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;

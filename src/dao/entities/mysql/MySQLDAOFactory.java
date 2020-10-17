@@ -11,11 +11,6 @@ import dao.DAOFactory;
 import dao.entities.LigneCommandeDAO;
 import dao.entities.ProduitDAO;
 import dao.entities.CategorieDAO;
-import dao.entities.mysql.categorie.MySQLCategorieDAO;
-import dao.entities.mysql.client.MySQLClientDAO;
-import dao.entities.mysql.commande.MySQLCommandeDAO;
-import dao.entities.mysql.ligneCommande.MySQLLigneCommandeDAO;
-import dao.entities.mysql.produit.MySQLProduitDAO;
 
 public class MySQLDAOFactory extends DAOFactory{
 	

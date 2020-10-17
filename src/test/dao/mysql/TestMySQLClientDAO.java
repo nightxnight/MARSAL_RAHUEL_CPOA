@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import dao.DAOFactory;
 import dao.Persistance;
-import entities.client.Client;
+import entities.Client;
 
 public class TestMySQLClientDAO {
 

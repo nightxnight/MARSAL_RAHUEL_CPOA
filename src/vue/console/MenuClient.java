@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import entities.client.Client;
-import dao.DAOFactory;;
+import dao.DAOFactory;
+import entities.Client;;
 
 public class MenuClient extends Menu {
 	

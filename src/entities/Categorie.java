@@ -1,4 +1,4 @@
-package entities.categorie;
+package entities;
 
 public class Categorie {
 

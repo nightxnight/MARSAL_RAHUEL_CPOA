@@ -1,9 +1,9 @@
-package dao.entities.listeMemoire.categorie;
+package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
 
-import entities.categorie.Categorie;
 import dao.entities.CategorieDAO;
+import entities.Categorie;
 
 public class ListeMemoireCategorieDAO implements CategorieDAO{
 	

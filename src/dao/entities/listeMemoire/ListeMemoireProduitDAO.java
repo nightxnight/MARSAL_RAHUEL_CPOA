@@ -1,8 +1,9 @@
-package dao.entities.listeMemoire.produit;
+package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
-import entities.produit.Produit;
+
 import dao.entities.ProduitDAO;
+import entities.Produit;
 
 public class ListeMemoireProduitDAO  implements ProduitDAO{
 

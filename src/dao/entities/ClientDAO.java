@@ -1,7 +1,7 @@
 package dao.entities;
 
-import entities.client.Client;
 import dao.DAO;
+import entities.Client;
 
 public interface ClientDAO extends DAO<Client>{
 

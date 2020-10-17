@@ -1,4 +1,4 @@
-package dao.entities.mysql.categorie;
+package dao.entities.mysql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.categorie.Categorie;
 import dao.entities.CategorieDAO;
-import dao.entities.mysql.MySQLDAOFactory;
+import entities.Categorie;
 
 public class MySQLCategorieDAO implements CategorieDAO {
 	

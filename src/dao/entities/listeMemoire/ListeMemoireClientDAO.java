@@ -1,9 +1,9 @@
-package dao.entities.listeMemoire.client;
+package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
 
-import entities.client.Client;
 import dao.entities.ClientDAO;
+import entities.Client;
 
 public class ListeMemoireClientDAO implements ClientDAO{
 

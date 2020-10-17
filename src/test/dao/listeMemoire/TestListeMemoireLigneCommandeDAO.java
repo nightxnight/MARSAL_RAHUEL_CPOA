@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import dao.DAOFactory;
 import dao.Persistance;
-import entities.ligneCommande.LigneCommande;
+import entities.LigneCommande;
 
 public class TestListeMemoireLigneCommandeDAO {
 

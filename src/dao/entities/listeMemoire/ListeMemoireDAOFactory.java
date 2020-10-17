@@ -6,11 +6,6 @@ import dao.entities.ClientDAO;
 import dao.entities.CommandeDAO;
 import dao.entities.LigneCommandeDAO;
 import dao.entities.ProduitDAO;
-import dao.entities.listeMemoire.categorie.ListeMemoireCategorieDAO;
-import dao.entities.listeMemoire.client.ListeMemoireClientDAO;
-import dao.entities.listeMemoire.commande.ListeMemoireCommandeDAO;
-import dao.entities.listeMemoire.ligneCommande.ListeMemoireLigneCommandeDAO;
-import dao.entities.listeMemoire.produit.ListeMemoireProduitDAO;
 
 public class ListeMemoireDAOFactory extends DAOFactory {
 	

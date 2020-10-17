@@ -1,4 +1,4 @@
-package dao.entities.mysql.client;
+package dao.entities.mysql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.client.Client;
 import dao.entities.ClientDAO;
-import dao.entities.mysql.MySQLDAOFactory; 
+import entities.Client; 
 
 public class MySQLClientDAO implements ClientDAO{
 	

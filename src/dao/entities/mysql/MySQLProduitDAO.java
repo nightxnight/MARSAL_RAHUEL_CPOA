@@ -1,4 +1,4 @@
-package dao.entities.mysql.produit;
+package dao.entities.mysql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.produit.Produit;
 import dao.entities.ProduitDAO;
-import dao.entities.mysql.MySQLDAOFactory;
+import entities.Produit;
 
 public class MySQLProduitDAO implements ProduitDAO{
 	

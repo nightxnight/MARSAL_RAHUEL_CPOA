@@ -1,4 +1,4 @@
-package entities.ligneCommande;
+package entities;
 
 public class LigneCommande {
 	private int idCommande;

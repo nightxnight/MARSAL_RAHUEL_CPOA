@@ -1,11 +1,11 @@
-package dao.entities.listeMemoire.commande;
+package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import entities.commande.Commande;
 import dao.entities.CommandeDAO;
+import entities.Commande;
 
 public class ListeMemoireCommandeDAO implements CommandeDAO{
 	

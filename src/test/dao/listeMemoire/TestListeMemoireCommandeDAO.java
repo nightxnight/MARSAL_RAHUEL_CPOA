@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import dao.DAOFactory;
 import dao.Persistance;
-import entities.commande.Commande;
+import entities.Commande;
 
 public class TestListeMemoireCommandeDAO {
 

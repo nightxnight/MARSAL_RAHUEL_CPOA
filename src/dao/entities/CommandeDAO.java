@@ -1,7 +1,7 @@
 package dao.entities;
 
-import entities.commande.Commande;
 import dao.DAO;
+import entities.Commande;
 
 public interface CommandeDAO extends DAO<Commande>{
 

@@ -2,7 +2,7 @@ package dao.entities;
 
 import java.util.ArrayList;
 
-import entities.ligneCommande.LigneCommande;
+import entities.LigneCommande;
 
 public interface LigneCommandeDAO {
 

@@ -1,4 +1,4 @@
-package entities.client;
+package entities;
 
 public class Client {
 	

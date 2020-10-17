@@ -1,7 +1,7 @@
 package dao.entities;
 
-import entities.categorie.Categorie;
 import dao.DAO;
+import entities.Categorie;
 
 public interface CategorieDAO extends DAO<Categorie>{
 
