@@ -9,12 +9,12 @@ import javafx.stage.Stage;
 
 public class HomePage extends Application {
 
-	public static Persistance PERSISTANCE = Persistance.MYSQL;
+	public static Persistance PERSISTANCE = Persistance.LISTEMEMOIRE;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("AjoutProduit.fxml"));
-			Scene scene = new Scene(root,400,400);
+			Parent root = FXMLLoader.load(getClass().getResource("Accueil.fxml"));
+			Scene scene = new Scene(root,800,600);
 			primaryStage.setTitle("Ajout d'un produit");
 			primaryStage.setScene(scene);
 			primaryStage.show();

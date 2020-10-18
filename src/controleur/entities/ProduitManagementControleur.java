@@ -1,4 +1,4 @@
-package controleur;
+package controleur.entities;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import vue.application.HomePage;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -18,7 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
-public class ControleurAjoutProduit implements Initializable{
+public class ProduitManagementControleur implements Initializable{
 
 	@FXML
 	private TextField edtNom;
@@ -30,6 +31,14 @@ public class ControleurAjoutProduit implements Initializable{
 	private ChoiceBox<Categorie> choicebCategorie;
 	@FXML
 	private Label lblResultat;
+	
+	@FXML
+	private Button boutonCreer;
+	@FXML
+	private Button boutonModif;
+	
+	private Produit produit;
+	private boolean modif;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -48,6 +57,30 @@ public class ControleurAjoutProduit implements Initializable{
 		});
 	}
 	
+	public void setFormMode(Produit produit, boolean modif) {
+		this.produit = produit;
+		this.modif = modif;
+		
+		if(this.produit == null) boutonModif.setVisible(false);
+		else {
+			boutonCreer.setVisible(false);
+			boutonModif.setVisible(this.modif);
+			edtNom.setDisable(!modif);
+			txtDescription.setDisable(!modif);
+			edtTarif.setDisable(!modif);
+			choicebCategorie.setDisable(!modif);
+			loadDatas();
+		}
+
+	}
+	
+	private void loadDatas() {
+		edtNom.setText(produit.getNom());
+		txtDescription.setText(produit.getDescription());
+		edtTarif.setText(String.valueOf(produit.getTarif()));
+		choicebCategorie.getSelectionModel().select(new Categorie(produit.getIdCategorie(), "", ""));
+	}
+	
 	public void creerProduit() {
 		lblResultat.setText("");
 		String erreurs = controleErreur();
@@ -59,6 +92,10 @@ public class ControleurAjoutProduit implements Initializable{
 			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
 			alert.showAndWait();
 		}
+	}
+	
+	public void modifierProduit() {
+		
 	}
 	
 	private String controleErreur() {
@@ -83,5 +120,13 @@ public class ControleurAjoutProduit implements Initializable{
 		}
 		
 		return erreurs;
+	}
+	
+	public void setProduit(Produit produit) {
+		this.produit = produit;
+	}
+	
+	public void setModif(boolean modif) {
+		this.modif = modif;
 	}
 }

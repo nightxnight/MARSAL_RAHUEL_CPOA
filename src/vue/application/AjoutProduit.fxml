@@ -10,9 +10,10 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.ControleurAjoutProduit">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.ProduitManagementControleur">
    <children>
       <GridPane prefHeight="300.0" prefWidth="600.0">
         <columnConstraints>
@@ -44,11 +45,12 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+      <StackPane prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button fx:id="btnCreer" mnemonicParsing="false" onAction="#creerProduit" text="Créer" />
+            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#creerProduit" text="Créer" />
+            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#modifierProduit" text="Modifier" />
          </children>
-      </FlowPane>
+      </StackPane>
       <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
          <children>
             <Label fx:id="lblResultat" />
