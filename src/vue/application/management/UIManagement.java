@@ -29,9 +29,4 @@ public abstract class UIManagement {
 		}		
 		return uiM;
 	}
-	
-	public Pane loadFxml(String name) throws IOException {
-		Pane loadedPane = FXMLLoader.load(getClass().getResource("/vue/application/" + name + ".fxml"));
-		return loadedPane;
-	}	
 }

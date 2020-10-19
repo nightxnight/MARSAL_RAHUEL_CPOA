@@ -70,5 +70,11 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	@Override
 	public ArrayList<Categorie> getAll() {
 		return listeCategorie;
+	}
+
+	@Override
+	public ArrayList<Categorie> research(Categorie objet) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

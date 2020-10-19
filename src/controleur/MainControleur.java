@@ -1,17 +1,17 @@
 package controleur;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import vue.application.management.Entities;
-public class MainControleur implements Initializable{
+
+public class MainControleur {
 	
 	//Conteneur principale
 	@FXML
@@ -28,6 +28,9 @@ public class MainControleur implements Initializable{
 	private MenuItem menuItemClient;
 	@FXML
 	private MenuItem menuItemCommande;
+	
+	@FXML
+	private Label labelFilAriane;
 	
 	public void showCategories() {
 		showManagementPane(Entities.CATEGORIE);
@@ -50,21 +53,17 @@ public class MainControleur implements Initializable{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/ListePane.fxml"));
 			managementPane = loader.load();
 	        ManagementControleur controller = loader.getController();
-	        controller.setParentPane(mainPane);
+	        controller.setParent(this);
 	        controller.render(entities);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		mainPane.setCenter(managementPane);
 	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-	}
 	
-	public Pane loadFxml(String name) throws IOException {
-		Pane loadedPane = FXMLLoader.load(getClass().getResource("/vue/application/" + name + ".fxml"));
-		return loadedPane;
-	}	
+	public BorderPane getMainPane() {
+		return mainPane;
+	}
+
+	
 }

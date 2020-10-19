@@ -78,4 +78,10 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	public ArrayList<Client> getAll() {
 		return listeClient;
 	}
+
+	@Override
+	public ArrayList<Client> research(Client objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

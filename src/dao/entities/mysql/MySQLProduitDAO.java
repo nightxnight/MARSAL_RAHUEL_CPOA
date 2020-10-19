@@ -138,4 +138,10 @@ public class MySQLProduitDAO implements ProduitDAO{
 		return listeProduit;
 	}
 
+	@Override
+	public ArrayList<Produit> research(Produit objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

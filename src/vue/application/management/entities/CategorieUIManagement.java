@@ -36,7 +36,7 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	}
 	
 	@Override
-	public ArrayList<Categorie> research(Categorie objet) {
+	public ArrayList<Categorie> research() {
 		// TODO Auto-generated method stub
 		return null;
 	}	
@@ -56,6 +56,12 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	           e.printStackTrace();
 	       }
 		return actionPane;
+	}
+	
+	@Override
+	public Pane getResearchPane() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

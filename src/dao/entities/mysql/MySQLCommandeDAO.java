@@ -132,4 +132,10 @@ public class MySQLCommandeDAO implements CommandeDAO{
 		return listeCommande;
 	}
 
+	@Override
+	public ArrayList<Commande> research(Commande objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

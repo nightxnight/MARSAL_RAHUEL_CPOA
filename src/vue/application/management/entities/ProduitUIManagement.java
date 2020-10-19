@@ -3,6 +3,7 @@ package vue.application.management.entities;
 import java.util.ArrayList;
 
 import controleur.entities.ProduitManagementControleur;
+import controleur.research.RechercheProduitControleur;
 import dao.DAOFactory;
 import dao.Persistance;
 import entities.Produit;
@@ -17,6 +18,8 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	private static ProduitUIManagement instance;
 	private TableView<Produit> table;
+	
+	private RechercheProduitControleur rechercheControleur;
 	
 	private ProduitUIManagement() {}
 	
@@ -37,8 +40,8 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	}
 	
 	@Override
-	public ArrayList<Produit> research(Produit objet) {
-		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().getAll();
+	public ArrayList<Produit> research() {
+		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().research(rechercheControleur.getResearchParameter());
 	}
 
 	@Override
@@ -53,6 +56,19 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	           e.printStackTrace();
 	       }
 		return actionPane;
+	}
+	
+	@Override
+	public Pane getResearchPane() {
+		Pane researchPane = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/PanelRechercheProduit.fxml"));
+			researchPane = loader.load();
+			rechercheControleur = loader.getController();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return researchPane;
 	}
 
 	@Override

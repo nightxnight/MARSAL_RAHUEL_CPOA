@@ -147,4 +147,10 @@ private static MySQLClientDAO instance;
 		return listeClient;
 	}
 
+	@Override
+	public ArrayList<Client> research(Client objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

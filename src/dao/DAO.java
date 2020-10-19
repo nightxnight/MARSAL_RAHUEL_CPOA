@@ -9,4 +9,5 @@ public interface DAO <T>{
 	public abstract boolean delete(T objet);
 	public abstract T getById(int id);
 	public abstract ArrayList<T> getAll();
+	public abstract ArrayList<T> research(T objet);
 }

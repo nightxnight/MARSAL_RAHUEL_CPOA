@@ -130,4 +130,10 @@ public class MySQLCategorieDAO implements CategorieDAO {
 		return listeCategorie;
 	}
 
+	@Override
+	public ArrayList<Categorie> research(Categorie objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

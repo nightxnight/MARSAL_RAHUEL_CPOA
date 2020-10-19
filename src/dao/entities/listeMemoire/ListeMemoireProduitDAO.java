@@ -1,6 +1,9 @@
 package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import dao.entities.ProduitDAO;
 import entities.Produit;
@@ -20,6 +23,8 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 		listeProduit.add(new Produit(6, "La chaleur des rennes",
 				"Classique mais efficace, un bonnet dont l'elegance n'est pas a souligner, il vous grattera comme il faut !",
 				15, "bonnet0.png", 2));
+		listeProduit.add(new Produit(11, "Des chaussettes", "Pour avoir les pieds bien chaud tout l'hiver!",
+				22, "chaussettes1.png", 3));
 		listeProduit.add(new Produit(12, "Dall", "Joyeux Noel avec nos petits lutins dansants !",
 				35, "bonnet1.png", 2));
 		autoIncrementedId = 12;
@@ -27,6 +32,7 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 		for(int i = 0; i < 20; i++) {
 			create(new Produit("test", "desText", 10, "visuel.png", 1));
 		}
+		create(new Produit("testSpeciale", "desText", 10, "visuel.png", 1));
 	}
 	
 	public static ListeMemoireProduitDAO getInstance() {
@@ -81,5 +87,17 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	@Override
 	public ArrayList<Produit> getAll() {
 		return listeProduit;
+	}
+
+	@Override
+	public ArrayList<Produit> research(Produit produitRecherche) {
+		List<Produit> result = listeProduit.stream()
+								.filter(produit -> 
+								produit.getNom().contains(produitRecherche.getNom())
+								&& produit.getTarif() <= produitRecherche.getTarif()
+								&& (produit.getIdCategorie() == produitRecherche.getIdCategorie() || (produitRecherche.getIdCategorie() == -1)) 
+								)
+								.collect(Collectors.toList());
+		return new ArrayList<Produit>(result);
 	}
 }

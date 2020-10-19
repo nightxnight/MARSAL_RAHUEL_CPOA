@@ -73,4 +73,10 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	public ArrayList<Commande> getAll() {
 		return listeCommande;
 	}
+
+	@Override
+	public ArrayList<Commande> research(Commande objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

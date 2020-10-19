@@ -10,9 +10,10 @@ public interface Management<T>{
 	public abstract TableView<T> getTableModel();
 	
 	public abstract ArrayList<T> getDatas();
-	public abstract ArrayList<T> research(T objet);
+	public abstract ArrayList<T> research();
 	
 	public abstract Pane getActionPane(T objet, boolean bool);
+	public abstract Pane getResearchPane();
 	
 	public abstract boolean delete(T objet);
 }

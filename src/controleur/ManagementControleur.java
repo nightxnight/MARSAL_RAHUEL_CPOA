@@ -1,9 +1,14 @@
 package controleur;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -14,10 +19,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import vue.application.management.Entities;
 import vue.application.management.UIManagement;
 
-public class ManagementControleur {
+public class ManagementControleur implements Initializable{
 	
 	@FXML
 	private Label labelNombreRes;
@@ -27,6 +33,7 @@ public class ManagementControleur {
 	private Button boutonPagePrec;
 	@FXML
 	private ChoiceBox<Integer> choicebPage;
+	private ChangeListener<Integer> choicebPageChangeList;
 	@FXML
 	private Button boutonPageSuiv;
 	@FXML
@@ -41,22 +48,30 @@ public class ManagementControleur {
 	@FXML
 	private Button boutonDelete;
 	
-	private BorderPane parentPane;
+	@FXML
+	private BorderPane panelRecherche;
+	
+	private MainControleur parent;
 	private Entities dataModel;
 	private ArrayList<Object> datas;
 	
 	private int nombreDePage;
 	private int pageCourante;
 	
-	public void setParentPane(BorderPane parentPane) {
-		this.parentPane = parentPane;
+	public void setParent(MainControleur parent) {
+		this.parent = parent;
 	}
 	
 	public void render(Entities entities) {
 		spinnerNombreLigne.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 40, 10));
 		this.dataModel = entities;
 		setModel(dataModel);
+		showResearchPane();
 		loadDatas(UIManagement.getUIManagement(dataModel).getDatas());
+		refresh();
+	}
+	
+	private void refresh() {
 		pageCourante = 1;
 		setPaginationParameters();
 		showDatas(1);
@@ -78,6 +93,8 @@ public class ManagementControleur {
 		dataTable.getItems().clear();
 		
 		int nbResultat = datas.size();
+		if(nbResultat == 0) return;
+		
 		int nbLigneParPage = spinnerNombreLigne.getValue();
 		
 		int idxDebut = (pageNumber - 1) * nbLigneParPage;
@@ -100,10 +117,12 @@ public class ManagementControleur {
 		int nombreDeLigneParPage = spinnerNombreLigne.getValue();
 		nombreDePage = nombreResultat / nombreDeLigneParPage;
 		if((nombreResultat % nombreDeLigneParPage != 0)) nombreDePage += 1;
+		disableChangeListener();
 		choicebPage.getItems().clear();
 		for(int i = 1; i <= nombreDePage; i++) {
 			choicebPage.getItems().add(i);
 		}
+		enableChangeListener();
 	}
 	
 	public void boutonPagePrecClick() {
@@ -118,18 +137,20 @@ public class ManagementControleur {
 		showDatas(pageCourante);
 	}
 	
-	public void choicebPage() {
-		pageCourante = choicebPage.getValue();
+	public void choicebPageChange(int numeroPage) {
+		pageCourante = numeroPage;
 		updatePageControls(pageCourante);
-		showDatas(pageCourante);
+		showDatas(pageCourante);		
 	}
 	
 	private void updatePageControls(int numeroPage) {
+		disableChangeListener();
 		boutonPagePrec.setDisable(numeroPage == 1);
 		boutonPageSuiv.setDisable(numeroPage == nombreDePage);
 		choicebPage.getSelectionModel().select(numeroPage-1); //Index start at 0
 		dataTable.getSelectionModel().clearSelection();
 		disableButtonsIfNoRowSelected();
+		enableChangeListener();
 	}
 	
 	public void disableButtonsIfNoRowSelected() {
@@ -153,7 +174,7 @@ public class ManagementControleur {
 	}
 	
 	private void showActionPane(Object objet, boolean bool) {
-		parentPane.setCenter(UIManagement.getUIManagement(dataModel).getActionPane(objet, bool));
+		parent.getMainPane().setCenter(UIManagement.getUIManagement(dataModel).getActionPane(objet, bool));
 	}
 
 	public void delete() {
@@ -165,4 +186,26 @@ public class ManagementControleur {
 			showDatas(pageCourante);
 		}
 	}	
+	
+	public void showResearchPane() {
+		panelRecherche.setCenter(UIManagement.getUIManagement(dataModel).getResearchPane());
+	}
+	public void lancerRecherche() {
+		loadDatas(UIManagement.getUIManagement(dataModel).research());
+		refresh();
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		choicebPageChangeList = (listePage, oldValue, newValue) -> choicebPageChange(newValue);
+		enableChangeListener();
+	}
+	
+	private void enableChangeListener() {
+		choicebPage.valueProperty().addListener(choicebPageChangeList);
+	}
+	
+	private void disableChangeListener() {
+		choicebPage.valueProperty().removeListener(choicebPageChangeList);
+	}
 }

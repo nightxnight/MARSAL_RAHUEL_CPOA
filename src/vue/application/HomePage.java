@@ -15,7 +15,7 @@ public class HomePage extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Accueil.fxml"));
 			Scene scene = new Scene(root,800,600);
-			primaryStage.setTitle("Ajout d'un produit");
+			primaryStage.setTitle("Gestion de la boutique");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
