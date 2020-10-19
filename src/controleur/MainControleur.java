@@ -24,6 +24,10 @@ public class MainControleur implements Initializable{
 	private MenuItem menuItemCategorie;
 	@FXML
 	private MenuItem menuItemProduit;
+	@FXML
+	private MenuItem menuItemClient;
+	@FXML
+	private MenuItem menuItemCommande;
 	
 	public void showCategories() {
 		showManagementPane(Entities.CATEGORIE);
@@ -33,13 +37,21 @@ public class MainControleur implements Initializable{
 		showManagementPane(Entities.PRODUIT);
 	}
 	
+	public void showClients() {
+		showManagementPane(Entities.CLIENT);
+	}
+	
+	public void showCommandes() {
+		showManagementPane(Entities.COMMANDE);
+	}
+	
 	public void showManagementPane(Entities entities) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/ListePane.fxml"));
 			managementPane = loader.load();
 	        ManagementControleur controller = loader.getController();
 	        controller.setParentPane(mainPane);
-	        controller.setModel(entities);
+	        controller.render(entities);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -35,6 +35,11 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	public ArrayList<Produit> getDatas() {
 		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().getAll();
 	}
+	
+	@Override
+	public ArrayList<Produit> research(Produit objet) {
+		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().getAll();
+	}
 
 	@Override
 	public Pane getActionPane(Produit produit, boolean modif) {
@@ -48,5 +53,10 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	           e.printStackTrace();
 	       }
 		return actionPane;
+	}
+
+	@Override
+	public boolean delete(Produit objet) {
+		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().delete(objet);
 	}
 }

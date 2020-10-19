@@ -34,6 +34,12 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	public ArrayList<Categorie> getDatas() {
 		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getCategorieDAO().getAll();
 	}
+	
+	@Override
+	public ArrayList<Categorie> research(Categorie objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 
 	@Override
 	public Pane getActionPane(Categorie objet, boolean bool) {
@@ -50,5 +56,11 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	           e.printStackTrace();
 	       }
 		return actionPane;
-	}	
+	}
+
+	@Override
+	public boolean delete(Categorie objet) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

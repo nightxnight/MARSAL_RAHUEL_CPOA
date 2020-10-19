@@ -61,7 +61,7 @@ public class ProduitManagementControleur implements Initializable{
 		this.produit = produit;
 		this.modif = modif;
 		
-		if(this.produit == null) boutonModif.setVisible(false);
+		if(this.produit == null) boutonModif.setVisible(false); 
 		else {
 			boutonCreer.setVisible(false);
 			boutonModif.setVisible(this.modif);
@@ -85,7 +85,7 @@ public class ProduitManagementControleur implements Initializable{
 		lblResultat.setText("");
 		String erreurs = controleErreur();
 		if(erreurs.equals("")) {
-			Produit produit = new Produit(edtNom.getText(), txtDescription.getText(), Double.parseDouble(edtTarif.getText()), "", choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
+			produit = new Produit(edtNom.getText(), txtDescription.getText(), Double.parseDouble(edtTarif.getText()), "", choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 			DAOFactory.getDAOFactory(HomePage.PERSISTANCE).getProduitDAO().create(produit);
 			lblResultat.setText(edtNom.getText() + " (" + choicebCategorie.getSelectionModel().getSelectedItem().getTitre() + ") " + ", " + edtTarif.getText() + " euros");
 		} else {
@@ -95,7 +95,16 @@ public class ProduitManagementControleur implements Initializable{
 	}
 	
 	public void modifierProduit() {
-		
+		lblResultat.setText("");
+		String erreurs = controleErreur();
+		if(erreurs.equals("")) {
+			produit = new Produit(this.produit.getId(), edtNom.getText(), txtDescription.getText(), Double.parseDouble(edtTarif.getText()), "", choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
+			DAOFactory.getDAOFactory(HomePage.PERSISTANCE).getProduitDAO().update(produit);
+			lblResultat.setText(edtNom.getText() + " (" + choicebCategorie.getSelectionModel().getSelectedItem().getTitre() + ") " + ", " + edtTarif.getText() + " euros");
+		} else {
+			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 	
 	private String controleErreur() {

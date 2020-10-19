@@ -23,6 +23,10 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 		listeProduit.add(new Produit(12, "Dall", "Joyeux Noel avec nos petits lutins dansants !",
 				35, "bonnet1.png", 2));
 		autoIncrementedId = 12;
+		
+		for(int i = 0; i < 20; i++) {
+			create(new Produit("test", "desText", 10, "visuel.png", 1));
+		}
 	}
 	
 	public static ListeMemoireProduitDAO getInstance() {

@@ -30,10 +30,22 @@ public class CommandeUIManagement extends UIManagement implements Management<Com
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public ArrayList<Commande> research(Commande objet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Pane getActionPane(Commande objet, boolean bool) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean delete(Commande objet) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
