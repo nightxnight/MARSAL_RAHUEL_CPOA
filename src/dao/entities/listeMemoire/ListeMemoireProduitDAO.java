@@ -93,7 +93,7 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 	public ArrayList<Produit> research(Produit produitRecherche) {
 		List<Produit> result = listeProduit.stream()
 								.filter(produit -> 
-								produit.getNom().contains(produitRecherche.getNom())
+								produit.getNom().toLowerCase().contains(produitRecherche.getNom().toLowerCase())
 								&& produit.getTarif() <= produitRecherche.getTarif()
 								&& (produit.getIdCategorie() == produitRecherche.getIdCategorie() || (produitRecherche.getIdCategorie() == -1)) 
 								)

@@ -45,7 +45,7 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
     public Pane getActionPane(Client objet, boolean bool) {
         Pane actionPane = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/AjoutClient.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/clientForm.fxml"));
             actionPane = loader.load();
             ClientManagementControleur controller = loader.getController();
             controller.setFormMode(objet, bool);

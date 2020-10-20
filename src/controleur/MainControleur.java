@@ -50,7 +50,7 @@ public class MainControleur {
 	
 	public void showManagementPane(Entities entities) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/ListePane.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/managementPane.fxml"));
 			managementPane = loader.load();
 	        ManagementControleur controller = loader.getController();
 	        controller.setParent(this);

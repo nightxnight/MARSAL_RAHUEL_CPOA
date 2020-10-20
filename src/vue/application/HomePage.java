@@ -13,7 +13,7 @@ public class HomePage extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("Accueil.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Accueil.fxml"));
 			Scene scene = new Scene(root,800,600);
 			primaryStage.setTitle("Gestion de la boutique");
 			primaryStage.setScene(scene);

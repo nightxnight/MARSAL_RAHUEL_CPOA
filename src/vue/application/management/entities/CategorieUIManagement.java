@@ -45,7 +45,7 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	public Pane getActionPane(Categorie objet, boolean bool) {
 		Pane actionPane = null;
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/AjoutCategorie.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/categorieForm.fxml"));
 			actionPane = loader.load();
 			/*
 	        ControleurAjoutCategorie controller = loader.getController();

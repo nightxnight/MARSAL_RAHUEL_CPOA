@@ -48,7 +48,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	public Pane getActionPane(Produit produit, boolean modif) {
 		Pane actionPane = null;
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/AjoutProduit.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/produitForm.fxml"));
 			actionPane = loader.load();
 	        ProduitManagementControleur controller = loader.getController();
 	        controller.setFormMode(produit, modif);
@@ -62,7 +62,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 	public Pane getResearchPane() {
 		Pane researchPane = null;
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/application/PanelRechercheProduit.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheProduit.fxml"));
 			researchPane = loader.load();
 			rechercheControleur = loader.getController();
 		} catch (Exception e) {
