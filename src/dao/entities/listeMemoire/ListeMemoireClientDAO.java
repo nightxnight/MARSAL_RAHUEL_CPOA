@@ -1,8 +1,11 @@
 package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import dao.entities.ClientDAO;
+import entities.Categorie;
 import entities.Client;
 
 public class ListeMemoireClientDAO implements ClientDAO{
@@ -80,8 +83,12 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public ArrayList<Client> research(Client objet) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Client> research(Client clientRecherchee) {
+		List<Client> result = listeClient.stream()
+							.filter(client -> 
+							client.getNom().toLowerCase().contains(clientRecherchee.getNom().toLowerCase())
+							&& client.getPrenom().toLowerCase().contains(clientRecherchee.getPrenom().toLowerCase()))
+							.collect(Collectors.toList());
+		return new ArrayList<Client>(result);
 	}
 }

@@ -131,9 +131,23 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	}
 
 	@Override
-	public ArrayList<Categorie> research(Categorie objet) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Categorie> research(Categorie categorieRecherchee) {
+		ArrayList<Categorie> listeCategorie = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie WHERE titre LIKE '%?%'");
+			query.setString(1, categorieRecherchee.getTitre());
+			ResultSet res = query.executeQuery();
+			
+			listeCategorie = new ArrayList<Categorie>();	
+			while(res.next()) {
+				listeCategorie.add(new Categorie(res.getInt(1), res.getString(2), res.getString(3)));
+			}
+			return listeCategorie;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Categorie.getAll");
+			System.out.println("Logs : " + sqle.getMessage());
+		}
+		return listeCategorie;
 	}
 
 }

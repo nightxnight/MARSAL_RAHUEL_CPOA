@@ -1,10 +1,13 @@
 package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import dao.entities.CommandeDAO;
+import entities.Categorie;
 import entities.Commande;
 
 public class ListeMemoireCommandeDAO implements CommandeDAO{
@@ -75,8 +78,12 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public ArrayList<Commande> research(Commande objet) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Commande> research(Commande commandeRecherchee) {
+		List<Commande> result = listeCommande.stream()
+				.filter(commande -> 
+				((commande.getIdCommande() == commandeRecherchee.getIdCommande()) || commandeRecherchee.getIdCommande() == -1)
+				&& ((commande.getIdClient() == commandeRecherchee.getIdClient()) || commandeRecherchee.getIdClient() == -1)				)
+				.collect(Collectors.toList());
+		return new ArrayList<Commande>(result);
 	}
 }

@@ -1,9 +1,12 @@
 package dao.entities.listeMemoire;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import dao.entities.CategorieDAO;
 import entities.Categorie;
+import entities.Produit;
 
 public class ListeMemoireCategorieDAO implements CategorieDAO{
 	
@@ -73,8 +76,11 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	}
 
 	@Override
-	public ArrayList<Categorie> research(Categorie objet) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Categorie> research(Categorie categRecherchee) {
+		List<Categorie> result = listeCategorie.stream()
+				.filter(categ -> 
+				categ.getTitre().toLowerCase().contains(categRecherchee.getTitre().toLowerCase().toLowerCase()))
+				.collect(Collectors.toList());
+		return new ArrayList<Categorie>(result);
 	}	
 }
