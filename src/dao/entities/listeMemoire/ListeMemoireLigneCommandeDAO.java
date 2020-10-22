@@ -37,12 +37,11 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 		if(!mapLigneCommande.containsKey(key)) {
 			mapLigneCommande.put(key, new ArrayList<LigneCommande>());
 		}
-		
-		//On peut egalement augmenter la quantite mais ce n'est pas le but de la fonction. Pas d'ambiguite.
 		int idx = mapLigneCommande.get(key).indexOf(objet);
 		if(idx != -1) throw new IllegalArgumentException("Une ligne de commande concernant ce produit existe deja.");
 		
-		return mapLigneCommande.get(key).add(objet);
+		mapLigneCommande.get(key).add(objet);
+		return true;
 	}
 
 	@Override
@@ -63,10 +62,11 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	public boolean delete(LigneCommande objet) throws IllegalArgumentException {
 		int key = objet.getIdCommande();
 		if(mapLigneCommande.containsKey(key)) {
+			System.out.println(mapLigneCommande.get(key));
 			int idx = mapLigneCommande.get(key).indexOf(objet);
 			if(idx == -1) throw new IllegalArgumentException("Il n'y a aucune ligne de commande concernant ce produit pour cette commande.");
 			else {
-				mapLigneCommande.get(key).remove(idx);
+				mapLigneCommande.get(key).remove(objet);
 				return true;
 			}
 		} else throw new IllegalArgumentException("Les lignes de commande concernant cette commande sont introuvable");

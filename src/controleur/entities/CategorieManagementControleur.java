@@ -28,11 +28,10 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	private Button boutonModif;
 	@FXML
 	private Button boutonRetour;
-	@FXML
-	private Label lblResultat;
 	
 	public void setFormMode(Categorie categorie, boolean modif) {		
-		if(this.categorie == null) boutonModif.setVisible(false);
+		
+		if(categorie == null) boutonModif.setVisible(false);
 		else {
 			boutonCreer.setVisible(false);
 			boutonModif.setVisible(modif);
@@ -79,7 +78,7 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 		
 		String nom = edtNom.getText().trim();
 		if(!nom.equals("")) {
-			if(nom.matches("[a-z]")) erreurs += "Le nom de la categorie ne peut pas etre compose de chiffres \n";
+			if(nom.matches("^[A-Z]*$")) erreurs += "Le nom de la categorie ne peut pas etre compose de chiffres \n";
 		} else erreurs += "Le nom de la categorie est a renseigner.\n";
 		
 		//TODO verification qu'un visuel soit bien de type xxx.ext

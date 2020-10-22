@@ -1,15 +1,12 @@
 package controleur.entities;
 
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import controleur.MainControleur;
 import dao.DAOFactory;
 import entities.Categorie;
 import entities.Produit;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -20,7 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
-public class ProduitManagementControleur implements Initializable, ImplManagementControleur<Produit>{
+public class ProduitManagementControleur implements ImplManagementControleur<Produit>{
 
 	@FXML
 	private TextField edtNom;
@@ -43,9 +40,9 @@ public class ProduitManagementControleur implements Initializable, ImplManagemen
 	private Produit produit;
 	private MainControleur parent;
 	
-	//FIXME Charger les categories
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {		
+	public void initializeComponents() {	
+		choicebCategorie.getItems().add(new Categorie(-1, "Non selectionnée", ""));
+		choicebCategorie.getItems().addAll(DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getAll());
 		choicebCategorie.setConverter(new StringConverter<Categorie>() {
 			@Override
 			public Categorie fromString(String nom) {
@@ -57,6 +54,7 @@ public class ProduitManagementControleur implements Initializable, ImplManagemen
 				return objet.getTitre();
 			}
 		});
+		choicebCategorie.getSelectionModel().selectFirst();
 	}
 	
 	@Override
@@ -135,7 +133,7 @@ public class ProduitManagementControleur implements Initializable, ImplManagemen
 			erreurs += "Le prix du produit est a renseigner.\n";
 		}
 		
-		if(choicebCategorie.getSelectionModel().getSelectedIndex() == -1) {
+		if(choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie()== -1) {
 			erreurs += "La categorie du produit doit etre selectionner.\n";
 		}
 		
@@ -154,6 +152,5 @@ public class ProduitManagementControleur implements Initializable, ImplManagemen
 	
 	public void setParent(MainControleur parent) {
 		this.parent = parent;
-		choicebCategorie.getItems().addAll(DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getAll());
 	}
 }

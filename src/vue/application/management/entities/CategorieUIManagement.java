@@ -2,6 +2,7 @@ package vue.application.management.entities;
 
 import java.util.ArrayList;
 
+import controleur.entities.CategorieManagementControleur;
 import dao.DAOFactory;
 import entities.Categorie;
 import javafx.fxml.FXMLLoader;
@@ -33,24 +34,21 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	public ArrayList<Categorie> getDatas() {
 		return DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getAll();
 	}
-	
-	//FIXME parametre de recherche 
+	 
 	@Override
 	public ArrayList<Categorie> research(Categorie categorieRecherche) {
 		return DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().research(categorieRecherche);
 	}	
 
 	@Override
-	public Pane getActionPane(Categorie objet, boolean bool) {
+	public Pane getActionPane(Categorie categorie, boolean modif) {
 		Pane actionPane = null;
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/categorieForm.fxml"));
 			actionPane = loader.load();
-			/*
-	        ControleurAjoutCategorie controller = loader.getController();
-	        controller.setProduit(objet);
-	        controller.setModif(bool);
-	        */
+	        CategorieManagementControleur controller = loader.getController();
+	        controller.setParent(parent);
+	        controller.setFormMode(categorie, modif);
 	       } catch (Exception e) {
 	           e.printStackTrace();
 	       }
@@ -59,8 +57,15 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	
 	@Override
 	public Pane getResearchPane() {
-		// TODO Auto-generated method stub
-		return null;
+		Pane researchPane = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheCategorie.fxml"));
+			researchPane = loader.load();
+			researchControler = loader.getController();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return researchPane;
 	}
 
 	@Override

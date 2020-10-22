@@ -87,9 +87,9 @@
                <children>
                   <TableView fx:id="tableLigneCommande" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="300.0">
                      <columns>
-                        <TableColumn prefWidth="150.0" resizable="false" text="Produit" />
-                        <TableColumn prefWidth="75.0" resizable="false" sortable="false" text="Quantité" />
-                        <TableColumn prefWidth="75.0" text="Prix" />
+                        <TableColumn fx:id="produitCol" prefWidth="150.0" resizable="false" text="Produit" />
+                        <TableColumn fx:id="quantiteCol" onEditCommit="#quantiteColEdit" prefWidth="75.0" resizable="false" sortable="false" text="Quantité" />
+                        <TableColumn fx:id="prixAchatCol" onEditCommit="#prixColEdit" prefWidth="75.0" text="Prix" />
                      </columns>
                   </TableView>
                </children>
@@ -108,14 +108,14 @@
                <children>
                   <Label text="Produit : " />
                   <Label text="Quantité : " GridPane.rowIndex="1" />
-                  <Label text="Prix à l'achat : " GridPane.rowIndex="2" />
+                  <Label text="Tarif unitaire : " GridPane.rowIndex="2" />
                   <ChoiceBox fx:id="choicebProduit" prefWidth="150.0" GridPane.columnIndex="1" />
                   <TextField fx:id="edtQuantite" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="edtPrix" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
                         <Button fx:id="boutonDetailAjouter" mnemonicParsing="false" onAction="#ajouterLigneDetail" text="Ajouter" />
-                        <Button fx:id="boutonDetailSupprimer" mnemonicParsing="false" onAction="#supprimerLigneDetail" text="Supprimer">
+                        <Button fx:id="boutonDetailSupprimer" disable="true" mnemonicParsing="false" onAction="#supprimerLigneDetail" text="Supprimer">
                            <FlowPane.margin>
                               <Insets left="5.0" />
                            </FlowPane.margin>

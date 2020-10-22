@@ -140,7 +140,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 
 	@Override
 	public ArrayList<Produit> research(Produit objet) {
-		// TODO methode recherche d'un produit en mysql;
+		
 		return null;
 	}
 

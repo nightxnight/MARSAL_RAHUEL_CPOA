@@ -10,7 +10,6 @@ public interface Management<T>{
 	public abstract TableView<T> getTableModel();
 	
 	public abstract ArrayList<T> getDatas();
-	//FIXME changer l'entete, objet recherche en parametre
 	public abstract ArrayList<T> research(T objet);
 	
 	public abstract Pane getActionPane(T objet, boolean bool);

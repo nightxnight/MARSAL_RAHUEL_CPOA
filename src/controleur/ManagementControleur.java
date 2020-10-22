@@ -69,14 +69,12 @@ public class ManagementControleur implements Initializable{
 		setModel(dataModel);
 		showResearchPane();
 		loadDatas(UIManagement.getUIManagement(dataModel).getDatas());
-		refresh();
+		refresh(1);
 	}
 	
-	private void refresh() {
-		pageCourante = 1;
-		setPaginationParameters();
-		showDatas(1);
-		updatePageControls(1);
+	private void refresh(int refreshedPage) {
+		pageCourante = refreshedPage;
+		updateLinesDisplayed();
 		disableButtonsIfNoRowSelected();
 	}
 	
@@ -108,14 +106,15 @@ public class ManagementControleur implements Initializable{
 	public void updateLinesDisplayed() {
 		int ancienNombrePage = nombreDePage;
 		setPaginationParameters();
-		pageCourante = (pageCourante == 1) ? 1 : nombreDePage * pageCourante / ancienNombrePage;
+		if(pageCourante == 1) pageCourante = 1;
+		else pageCourante = nombreDePage * pageCourante / ancienNombrePage;
 		showDatas(pageCourante);
 		updatePageControls(pageCourante);
 	}
 	
 	private void setPaginationParameters() {
 		int nombreResultat = datas.size();
-		int nombreDeLigneParPage = spinnerNombreLigne.getValue();
+		int nombreDeLigneParPage = spinnerNombreLigne.getValue(); 
 		nombreDePage = nombreResultat / nombreDeLigneParPage;
 		if((nombreResultat % nombreDeLigneParPage != 0)) nombreDePage += 1;
 		disableChangeListener();
@@ -185,7 +184,9 @@ public class ManagementControleur implements Initializable{
 		Optional<ButtonType> confirmation = alert.showAndWait();
 		if(confirmation.get() == ButtonType.YES) {
 			UIManagement.getUIManagement(dataModel).delete(dataTable.getSelectionModel().getSelectedItem());
-			showDatas(pageCourante);
+			labelNombreRes.setText(String.valueOf(datas.size()));
+			if((pageCourante >= nombreDePage) && (datas.size()%spinnerNombreLigne.getValue() == 0)) pageCourante = nombreDePage;;
+			refresh(pageCourante);
 		}
 	}	
 	
@@ -194,7 +195,7 @@ public class ManagementControleur implements Initializable{
 	}
 	public void lancerRecherche() {
 		loadDatas(UIManagement.getUIManagement(dataModel).research(((UIManagement) UIManagement.getUIManagement(dataModel)).getResearch().getResearchParameters()));
-		refresh();
+		refresh(1);
 	}
 
 	@Override

@@ -9,6 +9,5 @@ public interface ImplManagementControleur<T> {
 	public abstract void update();
 	
 	public abstract boolean checkErrors();
-	public abstract void retourPage();
-	
+	public abstract void retourPage();	
 }

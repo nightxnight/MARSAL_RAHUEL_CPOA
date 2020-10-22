@@ -1,10 +1,13 @@
 package controleur.research;
 
+import dao.Persistance;
 import entities.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 public class RechercheClientControleur implements RechercheControleur<Client>{
+	
+	private Persistance persistance;
 	
 	@FXML
 	private TextField edtPrenom;
@@ -18,5 +21,10 @@ public class RechercheClientControleur implements RechercheControleur<Client>{
 		String nomClient = edtNom.getText().trim();
 		
 		return new Client(nomClient, prenomClient, "", "", "", "", "", "", "");
+	}
+
+	@Override
+	public void setPersistance(Persistance persistance) {
+		this.persistance = persistance;		
 	}
 }

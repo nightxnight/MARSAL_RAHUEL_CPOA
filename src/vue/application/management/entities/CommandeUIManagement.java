@@ -47,6 +47,7 @@ public class CommandeUIManagement extends UIManagement implements Management<Com
 			actionPane = loader.load();
 			controleur = loader.getController();
 			controleur.setParent(parent);
+			controleur.initializeComponents();
 			controleur.setFormMode(commande, modif);
 	       } catch (Exception e) {
 	           e.printStackTrace();

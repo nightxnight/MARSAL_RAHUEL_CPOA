@@ -20,6 +20,8 @@ import javafx.util.StringConverter;
 
 public class RechercheProduitControleur implements Initializable, RechercheControleur<Produit>{
 
+	private Persistance persistance;
+	
 	@FXML 
 	private TextField edtNom;
 	@FXML
@@ -41,7 +43,6 @@ public class RechercheProduitControleur implements Initializable, RechercheContr
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initializeSliderPrix();
-		initializeChoicebCategorie();
 	}
 	
 	private void initializeSliderPrix() {
@@ -58,11 +59,12 @@ public class RechercheProduitControleur implements Initializable, RechercheContr
 		sliderPrix.valueProperty().addListener(sliderChangeList);
 		sliderPrix.setValue(sliderPrix.getMax());
 	}
-	//FIXME Il faut faire parvenir la persistance ici
-	private void initializeChoicebCategorie() {
+	
+	private void initializeComponents() {
+		choicebCategorie.getItems().clear();
 		ArrayList<Categorie> listeCategorie = new ArrayList<Categorie>();
 		listeCategorie.add(new Categorie(-1, "Non selectionnée", ""));
-		listeCategorie.addAll(DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getCategorieDAO().getAll());
+		listeCategorie.addAll(DAOFactory.getDAOFactory(persistance).getCategorieDAO().getAll());
 		choicebCategorie.getItems().addAll(listeCategorie);
 		choicebCategorie.setConverter(new StringConverter<Categorie>() {
 			@Override
@@ -76,5 +78,11 @@ public class RechercheProduitControleur implements Initializable, RechercheContr
 			}
 		});
 		choicebCategorie.getSelectionModel().selectFirst();
+	}
+	
+	@Override
+	public void setPersistance(Persistance persistance) {
+		this.persistance = persistance;
+		initializeComponents();
 	}
 }

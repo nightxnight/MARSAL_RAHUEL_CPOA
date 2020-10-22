@@ -26,7 +26,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	@Override
 	public TableView<Produit> getTableModel() {
-		if(table == null) table = new ProduitTableView();
+		if(table == null) table = new ProduitTableView(parent.getPersistance());
 		return table;
 	}
 
@@ -48,6 +48,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 			actionPane = loader.load();
 	        ProduitManagementControleur controller = loader.getController();
 	        controller.setParent(parent);
+	        controller.initializeComponents();
 	        controller.setFormMode(produit, modif);
 	       } catch (Exception e) {
 	           e.printStackTrace();
@@ -62,6 +63,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheProduit.fxml"));
 			researchPane = loader.load();
 			researchControler = loader.getController();
+			researchControler.setPersistance(parent.getPersistance());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -59,9 +59,10 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	@Override
 	public boolean delete(Commande objet) throws IllegalArgumentException {
 		int idx = listeCommande.indexOf(objet);
-		
 		if(idx == -1) throw new IllegalArgumentException("La commande que vous essayez de supprimer est introuvable.");
-		else return listeCommande.remove(objet);
+		else {
+			return listeCommande.remove(objet);
+		}
 	}
 	
 	public Commande getById(int id) throws IllegalArgumentException {
@@ -82,7 +83,8 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 		List<Commande> result = listeCommande.stream()
 				.filter(commande -> 
 				((String.valueOf(commande.getIdCommande()).contains(String.valueOf(commandeRecherchee.getIdCommande()))) || commandeRecherchee.getIdCommande() == -1)
-				&& ((String.valueOf(commande.getIdClient()).contains(String.valueOf(commandeRecherchee.getIdClient()))) || commandeRecherchee.getIdClient() == -1)				)
+				&& ((String.valueOf(commande.getIdClient()).contains(String.valueOf(commandeRecherchee.getIdClient()))) || commandeRecherchee.getIdClient() == -1)
+				&& ((commandeRecherchee.getDateCommande().equals(commande.getDateCommande()) || (commandeRecherchee.getDateCommande().equals(LocalDate.of(1, 1, 1))))))
 				.collect(Collectors.toList());
 		return new ArrayList<Commande>(result);
 	}

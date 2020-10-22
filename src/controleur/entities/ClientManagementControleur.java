@@ -1,11 +1,14 @@
 package controleur.entities;
 
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import controleur.MainControleur;
 import dao.DAOFactory;
 import entities.Client;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -13,7 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class ClientManagementControleur implements ImplManagementControleur<Client>{
+public class ClientManagementControleur implements ImplManagementControleur<Client>, Initializable{
 
 	private MainControleur parent;
 	private Client client;
@@ -122,12 +125,12 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		
 		String nom = edtNom.getText().trim();
 		if(!nom.equals("")) {
-			if(!nom.matches("^[a-zA-Z]*$")) erreurs += "Le nom du client ne peut pas être composé de chiffres\n";
+			if(!nom.matches("^[A-Z]*$")) erreurs += "Le nom du client ne peut pas être composé de chiffres\n";
 		} else erreurs += "Le nom du client est a renseigner.\n";
 		
 		String prenom = edtPrenom.getText().trim();
 		if(!prenom.equals("")) {
-			if(!prenom.matches("^[a-zA-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres";
+			if(!prenom.matches("^[A-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres\n";
 		} else erreurs += "Le prénom du client est a renseigner.\n";
 		
 		//TODO Ajouter verification de l'adresse au bon format : xxx@xxx.xx
@@ -181,6 +184,13 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	
 	public void setParent(MainControleur parent) {
 		this.parent = parent;
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		edtNom.textProperty().addListener((ov, oldValue, newValue) -> {
+		     edtNom.setText(newValue.toUpperCase());
+		});
 	}
 	
 }
