@@ -88,11 +88,11 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="btnRetour" maxWidth="70.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" text="Retour" GridPane.columnIndex="2" />
+            <Button fx:id="btnRetour" maxWidth="70.0" mnemonicParsing="false" onAction="#retourPage" prefHeight="34.0" prefWidth="70.0" text="Retour" GridPane.columnIndex="2" />
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Button fx:id="boutonCreer" maxWidth="137.0" mnemonicParsing="false" onAction="#creerClient" prefHeight="34.0" prefWidth="137.0" text="Créer le client" />
-                  <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#modifierClient" prefHeight="35.0" prefWidth="108.0" text="Modifier" />
+                  <Button fx:id="boutonCreer" maxWidth="137.0" mnemonicParsing="false" onAction="#create" prefHeight="34.0" prefWidth="137.0" text="Créer le client" />
+                  <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" prefHeight="35.0" prefWidth="108.0" text="Modifier" />
                </children>
             </StackPane>
          </children>

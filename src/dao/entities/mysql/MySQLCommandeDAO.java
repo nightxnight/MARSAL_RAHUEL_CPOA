@@ -35,8 +35,10 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			System.out.println(nbLigne + " ligne(s) ajout�e(s)");
 			
 			ResultSet res = query.getGeneratedKeys();
-			while(res.next()) {
+			
+			if(res.next()) {
 				System.out.println("Cle generee : " + res.getInt(1));
+				objet.setIdCommande(res.getInt(1));
 			}
 			
 			if(res != null) res.close();
@@ -133,9 +135,27 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	}
 
 	@Override
-	public ArrayList<Commande> research(Commande objet) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Commande> research(Commande commandeRecherchee) {
+		ArrayList<Commande> listeCommande = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande WHERE id_commande LIKE '%?%' AND id_client LIKE '%?%'");
+			String idCommandeStr = (commandeRecherchee.getIdCommande() != -1) ? String.valueOf(commandeRecherchee.getIdCommande()) : "";
+			String idClientStr = (commandeRecherchee.getIdClient() != -1) ? String.valueOf(commandeRecherchee.getDateCommande()) : "";
+
+			query.setString(1, idCommandeStr);
+			query.setString(2, idClientStr);
+			
+			ResultSet res = query.executeQuery();
+			
+			listeCommande = new ArrayList<Commande>();	
+			while(res.next()) {
+				listeCommande.add(new Commande(res.getInt(1), res.getDate(2), res.getInt(3)));
+			}
+			return listeCommande;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Commande.getAll");
+		}
+		return listeCommande;
 	}
 
 }

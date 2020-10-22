@@ -3,7 +3,6 @@ package vue.application.management.entities;
 import java.util.ArrayList;
 
 import dao.DAOFactory;
-import dao.Persistance;
 import entities.Categorie;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
@@ -32,13 +31,13 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 
 	@Override
 	public ArrayList<Categorie> getDatas() {
-		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getCategorieDAO().getAll();
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getAll();
 	}
 	
+	//FIXME parametre de recherche 
 	@Override
-	public ArrayList<Categorie> research() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Categorie> research(Categorie categorieRecherche) {
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().research(categorieRecherche);
 	}	
 
 	@Override
@@ -65,8 +64,7 @@ public class CategorieUIManagement extends UIManagement implements Management<Ca
 	}
 
 	@Override
-	public boolean delete(Categorie objet) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Categorie categorie) {
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().delete(categorie);
 	}
 }

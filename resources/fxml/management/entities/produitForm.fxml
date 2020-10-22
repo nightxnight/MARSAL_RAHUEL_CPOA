@@ -47,12 +47,13 @@
       </GridPane>
       <StackPane prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#creerProduit" text="Créer" />
-            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#modifierProduit" text="Modifier" />
+            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" text="Créer" />
+            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" text="Modifier" />
          </children>
       </StackPane>
       <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
          <children>
+            <Button fx:id="boutonRetour" mnemonicParsing="false" onAction="#retourPage" text="Retour" />
             <Label fx:id="lblResultat" />
          </children>
       </FlowPane>

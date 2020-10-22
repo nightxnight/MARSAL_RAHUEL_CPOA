@@ -25,6 +25,13 @@ import vue.application.management.UIManagement;
 
 public class ManagementControleur implements Initializable{
 	
+	private MainControleur parent;
+	private Entities dataModel;
+	private ArrayList<Object> datas;
+	
+	private int nombreDePage;
+	private int pageCourante;
+	
 	@FXML
 	private Label labelNombreRes;
 	@FXML
@@ -51,13 +58,6 @@ public class ManagementControleur implements Initializable{
 	@FXML
 	private BorderPane panelRecherche;
 	
-	private MainControleur parent;
-	private Entities dataModel;
-	private ArrayList<Object> datas;
-	
-	private int nombreDePage;
-	private int pageCourante;
-	
 	public void setParent(MainControleur parent) {
 		this.parent = parent;
 	}
@@ -65,6 +65,7 @@ public class ManagementControleur implements Initializable{
 	public void render(Entities entities) {
 		spinnerNombreLigne.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 40, 10));
 		this.dataModel = entities;
+		((UIManagement)UIManagement.getUIManagement(dataModel)).setParent(parent);
 		setModel(dataModel);
 		showResearchPane();
 		loadDatas(UIManagement.getUIManagement(dataModel).getDatas());
@@ -174,6 +175,7 @@ public class ManagementControleur implements Initializable{
 	}
 	
 	private void showActionPane(Object objet, boolean bool) {
+		((UIManagement) UIManagement.getUIManagement(dataModel)).setParent(parent);
 		parent.getMainPane().setCenter(UIManagement.getUIManagement(dataModel).getActionPane(objet, bool));
 	}
 
@@ -191,7 +193,7 @@ public class ManagementControleur implements Initializable{
 		panelRecherche.setCenter(UIManagement.getUIManagement(dataModel).getResearchPane());
 	}
 	public void lancerRecherche() {
-		loadDatas(UIManagement.getUIManagement(dataModel).research());
+		loadDatas(UIManagement.getUIManagement(dataModel).research(((UIManagement) UIManagement.getUIManagement(dataModel)).getResearch().getResearchParameters()));
 		refresh();
 	}
 

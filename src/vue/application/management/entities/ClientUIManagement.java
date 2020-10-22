@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import controleur.entities.ClientManagementControleur;
 import dao.DAOFactory;
-import dao.Persistance;
 import entities.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
@@ -14,8 +13,8 @@ import vue.application.management.Management;
 import vue.application.management.UIManagement;
 
 public class ClientUIManagement extends UIManagement implements Management<Client>{
-
-    private static ClientUIManagement instance;
+	
+	private static ClientUIManagement instance;
     private TableView<Client> table;
 
     private ClientUIManagement() {}
@@ -33,12 +32,12 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
 
     @Override
     public ArrayList<Client> getDatas() {
-        return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getClientDAO().getAll();
+        return DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().getAll();
     }
 
     @Override
-    public ArrayList<Client> research() {
-        return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getClientDAO().getAll();
+    public ArrayList<Client> research(Client clientRecherche) {
+        return DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().research(clientRecherche);
     }
 
     @Override
@@ -47,8 +46,9 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/clientForm.fxml"));
             actionPane = loader.load();
-            ClientManagementControleur controller = loader.getController();
-            controller.setFormMode(objet, bool);
+            ClientManagementControleur controler = loader.getController();
+            controler.setParent(parent);
+            controler.setFormMode(objet, bool);
            } catch (Exception e) {
                e.printStackTrace();
            }
@@ -57,13 +57,19 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
     
 	@Override
 	public Pane getResearchPane() {
-		// TODO Auto-generated method stub
-		return null;
+		Pane researchPane = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheClient.fxml"));
+			researchPane = loader.load();
+			researchControler = loader.getController();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return researchPane;
 	}
 
     @Override
     public boolean delete(Client objet) {
-        return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getClientDAO().delete(objet);
-
+        return DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().delete(objet);
     }
 }

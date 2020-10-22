@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import dao.DAOFactory;
+import dao.Persistance;
 import entities.Categorie;
 import entities.Produit;
 import javafx.beans.value.ChangeListener;
@@ -16,13 +17,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
-import vue.application.HomePage;
 
-public class RechercheProduitControleur implements Initializable{
+public class RechercheProduitControleur implements Initializable, RechercheControleur<Produit>{
 
 	@FXML 
 	private TextField edtNom;
-	
 	@FXML
 	private Label labelPrix;
 	@FXML
@@ -31,8 +30,8 @@ public class RechercheProduitControleur implements Initializable{
 	@FXML
 	private ChoiceBox<Categorie> choicebCategorie;
 	
-	
-	public Produit getResearchParameter() {
+	@Override
+	public Produit getResearchParameters() {
 		String nomProduit = edtNom.getText().trim();		
 		int prixProduit = (int) sliderPrix.getValue();
 		int numeroCategorie = choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie();		
@@ -59,11 +58,11 @@ public class RechercheProduitControleur implements Initializable{
 		sliderPrix.valueProperty().addListener(sliderChangeList);
 		sliderPrix.setValue(sliderPrix.getMax());
 	}
-	
+	//FIXME Il faut faire parvenir la persistance ici
 	private void initializeChoicebCategorie() {
 		ArrayList<Categorie> listeCategorie = new ArrayList<Categorie>();
 		listeCategorie.add(new Categorie(-1, "Non selectionnée", ""));
-		listeCategorie.addAll(DAOFactory.getDAOFactory(HomePage.PERSISTANCE).getCategorieDAO().getAll());
+		listeCategorie.addAll(DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getCategorieDAO().getAll());
 		choicebCategorie.getItems().addAll(listeCategorie);
 		choicebCategorie.setConverter(new StringConverter<Categorie>() {
 			@Override

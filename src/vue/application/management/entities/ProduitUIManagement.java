@@ -3,9 +3,7 @@ package vue.application.management.entities;
 import java.util.ArrayList;
 
 import controleur.entities.ProduitManagementControleur;
-import controleur.research.RechercheProduitControleur;
 import dao.DAOFactory;
-import dao.Persistance;
 import entities.Produit;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
@@ -18,8 +16,6 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	private static ProduitUIManagement instance;
 	private TableView<Produit> table;
-	
-	private RechercheProduitControleur rechercheControleur;
 	
 	private ProduitUIManagement() {}
 	
@@ -36,12 +32,12 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	@Override
 	public ArrayList<Produit> getDatas() {
-		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().getAll();
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().getAll();
 	}
 	
 	@Override
-	public ArrayList<Produit> research() {
-		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().research(rechercheControleur.getResearchParameter());
+	public ArrayList<Produit> research(Produit produitRecherche) {
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().research(produitRecherche);
 	}
 
 	@Override
@@ -51,6 +47,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/produitForm.fxml"));
 			actionPane = loader.load();
 	        ProduitManagementControleur controller = loader.getController();
+	        controller.setParent(parent);
 	        controller.setFormMode(produit, modif);
 	       } catch (Exception e) {
 	           e.printStackTrace();
@@ -64,7 +61,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheProduit.fxml"));
 			researchPane = loader.load();
-			rechercheControleur = loader.getController();
+			researchControler = loader.getController();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,6 +70,6 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	@Override
 	public boolean delete(Produit objet) {
-		return DAOFactory.getDAOFactory(Persistance.LISTEMEMOIRE).getProduitDAO().delete(objet);
+		return DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().delete(objet);
 	}
 }

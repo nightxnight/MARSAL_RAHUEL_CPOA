@@ -148,9 +148,25 @@ private static MySQLClientDAO instance;
 	}
 
 	@Override
-	public ArrayList<Client> research(Client objet) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ArrayList<Client> research(Client clientRecherche) {
+		ArrayList<Client> listeClient = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client WHERE nom_client = '%?%' AND prenom_client = '%?%' ");
+			query.setString(1, clientRecherche.getNom());
+			query.setString(2, clientRecherche.getPrenom());
 
+			ResultSet res = query.executeQuery();
+			
+			listeClient = new ArrayList<Client>();	
+			while(res.next()) {
+				listeClient.add(new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6),
+						res.getString(7), res.getString(8), res.getString(9), res.getString(10)));
+			}
+			return listeClient;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requetete \"MySQLDAOFactory_Client.research");
+			System.out.println("logs : " + sqle.getMessage());
+		}
+		return listeClient;
+	}
 }

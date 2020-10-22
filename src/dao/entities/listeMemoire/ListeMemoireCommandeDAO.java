@@ -81,8 +81,8 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	public ArrayList<Commande> research(Commande commandeRecherchee) {
 		List<Commande> result = listeCommande.stream()
 				.filter(commande -> 
-				((commande.getIdCommande() == commandeRecherchee.getIdCommande()) || commandeRecherchee.getIdCommande() == -1)
-				&& ((commande.getIdClient() == commandeRecherchee.getIdClient()) || commandeRecherchee.getIdClient() == -1)				)
+				((String.valueOf(commande.getIdCommande()).contains(String.valueOf(commandeRecherchee.getIdCommande()))) || commandeRecherchee.getIdCommande() == -1)
+				&& ((String.valueOf(commande.getIdClient()).contains(String.valueOf(commandeRecherchee.getIdClient()))) || commandeRecherchee.getIdClient() == -1)				)
 				.collect(Collectors.toList());
 		return new ArrayList<Commande>(result);
 	}

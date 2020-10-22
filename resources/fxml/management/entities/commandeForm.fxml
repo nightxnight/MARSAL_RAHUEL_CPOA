@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.CommandeManagementControleur">
+   <children>
+      <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <children>
+            <Label text="COMMANDE" />
+         </children>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </FlowPane>
+      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+               <children>
+                  <Label text="Client concerné : " />
+                  <ChoiceBox fx:id="choicebClient" prefWidth="150.0" />
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="300.0" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+               <children>
+                  <Label text="Date de la commande : " />
+                  <DatePicker fx:id="datePckCommande" prefWidth="150.0" />
+               </children>
+            </FlowPane>
+         </children>
+      </GridPane>
+      <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <children>
+            <Label text="DETAIL DE LA COMMANDE" />
+         </children>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </FlowPane>
+      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="165.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="320.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="376.79998779296875" minWidth="10.0" prefWidth="261.599951171875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <FlowPane prefHeight="177.0" prefWidth="300.0">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <TableView fx:id="tableLigneCommande" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="300.0">
+                     <columns>
+                        <TableColumn prefWidth="150.0" resizable="false" text="Produit" />
+                        <TableColumn prefWidth="75.0" resizable="false" sortable="false" text="Quantité" />
+                        <TableColumn prefWidth="75.0" text="Prix" />
+                     </columns>
+                  </TableView>
+               </children>
+            </FlowPane>
+            <GridPane fx:id="gridPaneDetailForm" GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="135.199951171875" minWidth="10.0" prefWidth="115.19998779296876" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="177.60003662109375" minWidth="10.0" prefWidth="165.60001220703126" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Produit : " />
+                  <Label text="Quantité : " GridPane.rowIndex="1" />
+                  <Label text="Prix à l'achat : " GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="choicebProduit" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="edtQuantite" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Button fx:id="boutonDetailAjouter" mnemonicParsing="false" onAction="#ajouterLigneDetail" text="Ajouter" />
+                        <Button fx:id="boutonDetailSupprimer" mnemonicParsing="false" onAction="#supprimerLigneDetail" text="Supprimer">
+                           <FlowPane.margin>
+                              <Insets left="5.0" />
+                           </FlowPane.margin>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+      <StackPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" text="Créer" />
+            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" text="Modifier" />
+         </children>
+      </StackPane>
+      <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="boutonRetour" mnemonicParsing="false" onAction="#retourPage" text="Retour" />
+         </children>
+      </FlowPane>
+   </children>
+</VBox>

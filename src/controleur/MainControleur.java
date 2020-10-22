@@ -1,5 +1,6 @@
 package controleur;
 
+import dao.Persistance;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -8,6 +9,8 @@ import javafx.scene.layout.BorderPane;
 import vue.application.management.Entities;
 
 public class MainControleur {
+	
+	private Persistance persistance = Persistance.LISTEMEMOIRE;
 	
 	//Conteneur principale
 	@FXML
@@ -59,7 +62,13 @@ public class MainControleur {
 	
 	public BorderPane getMainPane() {
 		return mainPane;
-	}
-
+	}	
 	
+	public Persistance getPersistance() {
+		return persistance;
+	}
+	
+	public void setPersistance(Persistance persistance) {
+		this.persistance = persistance;
+	}
 }

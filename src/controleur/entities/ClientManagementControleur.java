@@ -1,18 +1,23 @@
 package controleur.entities;
 
+import java.util.Optional;
+
+import controleur.MainControleur;
 import dao.DAOFactory;
 import entities.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import vue.application.HomePage;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class ClientManagementControleur {
+public class ClientManagementControleur implements ImplManagementControleur<Client>{
 
+	private MainControleur parent;
+	private Client client;
+	
 	@FXML
 	private TextField edtNom;
 	@FXML
@@ -38,130 +43,144 @@ public class ClientManagementControleur {
 	@FXML
 	private Label lblResultat;
 	
-	private Client client;
-	private boolean modif;
-	
-	
 	public void setFormMode(Client client, boolean modif) {
-		this.client = client;
-		this.modif = modif;
 		
-		if(this.client == null) boutonModif.setVisible(false);
+		if(client == null) boutonModif.setVisible(false);
 		else {
 			boutonCreer.setVisible(false);
-			boutonModif.setVisible(this.modif);
+			boutonModif.setVisible(modif);
 			edtNom.setDisable(!modif);
 			edtPrenom.setDisable(!modif);
 			edtIdent.setDisable(!modif);
 			edtMdp.setDisable(!modif);
 			edtNum.setDisable(!modif);
 			edtVoie.setDisable(!modif);
+			edtCP.setDisable(!modif);
+			edtVille.setDisable(!modif);
 			edtPays.setDisable(!modif);
-			loadDatas();
+			fillForm(client);
 		}
+	}
+	
+	@Override
+	public void fillForm(Client objet) {
+		edtNom.setText(objet.getNom());
+		edtPrenom.setText(objet.getPrenom());
+		edtIdent.setText(objet.getIdentifiant());
+		edtMdp.setText(objet.getMotDePasse());
+		edtNum.setText(objet.getAdrNumero());
+		edtVoie.setText(objet.getAdrVoie());
+		edtCP.setText(objet.getAdrCodePostal());
+		edtVille.setText(objet.getAdrVille());
+		edtPays.setText(objet.getAdrPays());
+		this.client = objet;
+	}
 
+	public void create() {
+		if(checkErrors()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Le client va etre ajoute.\nEtes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> confirmation = alert.showAndWait();
+			if(confirmation.get() == ButtonType.YES) {
+				Client nouveauClient = new Client(edtNom.getText().trim(),
+												  edtPrenom.getText().trim(),
+												  edtIdent.getText().trim(),
+												  edtMdp.getText().trim(),
+												  edtNum.getText().trim(),
+												  edtVoie.getText().trim(),
+												  edtVille.getText().trim(),
+												  edtCP.getText().trim(),
+												  edtPays.getText().trim());
+				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
+			}
+		}
 	}
 	
-	private void loadDatas() {
-		edtNom.setText(client.getNom());
-		edtPrenom.setText(client.getPrenom());
-		edtIdent.setText(client.getIdentifiant());
-		edtMdp.setText(client.getMotDePasse());
-		edtNum.setText(client.getAdrNumero());
-		edtVoie.setText(client.getAdrVoie());
-		edtCP.setText(client.getAdrCodePostal());
-		edtVille.setText(client.getAdrVille());
-		edtPays.setText(client.getAdrPays());
+	@Override
+	public void update() {
+		if(checkErrors()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Le client va etre ajoute.\nEtes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> confirmation = alert.showAndWait();
+			if(confirmation.get() == ButtonType.YES) {
+				Client clientModifie = new Client(client.getIdClient(),
+												  edtNom.getText().trim(),
+												  edtPrenom.getText().trim(),
+												  edtIdent.getText().trim(),
+												  edtMdp.getText().trim(),
+												  edtNum.getText().trim(),
+												  edtVoie.getText().trim(),
+												  edtVille.getText().trim(),
+												  edtCP.getText().trim(),
+												  edtPays.getText().trim());
+				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
+			}
+		}
 	}
 	
-	public void creerClient() {
-		lblResultat.setText("");
-		String erreurs = controleErreur();
-		if(erreurs.equals("")) {
-			Client client = new Client(edtNom.getText(), edtPrenom.getText(), edtIdent.getText(), edtMdp.getText(), edtNum.getText(),edtVoie.getText(), edtVille.getText(), edtCP.getText(), edtPays.getText());
-			DAOFactory.getDAOFactory(HomePage.PERSISTANCE).getClientDAO().create(client);
-			
-		} else {
+	@Override
+	public boolean checkErrors() {
+		String erreurs = "";
+		
+		String nom = edtNom.getText().trim();
+		if(!nom.equals("")) {
+			if(!nom.matches("^[a-zA-Z]*$")) erreurs += "Le nom du client ne peut pas être composé de chiffres\n";
+		} else erreurs += "Le nom du client est a renseigner.\n";
+		
+		String prenom = edtPrenom.getText().trim();
+		if(!prenom.equals("")) {
+			if(!prenom.matches("^[a-zA-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres";
+		} else erreurs += "Le prénom du client est a renseigner.\n";
+		
+		//TODO Ajouter verification de l'adresse au bon format : xxx@xxx.xx
+		String identifiant = edtIdent.getText().trim();
+		if(identifiant.equals("")) erreurs += "L'identifiant du client est a renseigner.\n";
+		
+		//TODO Ajouter un deuxieme textfield de confirmation du mdp
+		if(edtMdp.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
+		
+		String num = edtNum.getText().trim();
+		if(!num.equals("")) {
+			try {
+				if(Integer.parseInt(num) <= 0) erreurs += "Un numero d'habitation est positif.\n";
+			} catch(Exception e) {
+				erreurs += "Un numero est un entier.\n";
+			}
+		} else erreurs += "Le numéro d'habitation du client est a renseigner.\n";
+		
+		String voie = edtVoie.getText().trim();
+		if(!voie.equals("")) {
+			if(!voie.matches("^[a-zA-Z][a-zA-Z ]*$")) erreurs += "La voie d'habitation du client ne peut pas être composée de chiffres";
+		} else erreurs += "La voie d'habitation du client est a renseigner.\n";
+		
+		String codePostal = edtCP.getText().trim(); 
+		if(!codePostal.equals("")) {
+				if(Integer.parseInt(codePostal) <= 0) erreurs += "Le code postal doit être composé uniquement de chiffres";
+		} else erreurs += "Le code postal du client est a renseigner.\n";
+		
+		String ville = edtVille.getText().trim();
+		if(!ville.equals("")) {
+			if(!ville.matches("^[a-zA-Z]*$")) erreurs += "La ville du client ne peut pas être composée de chiffres";
+		} else erreurs += "La ville du client est a renseigner.\n";
+		
+		String pays = edtPays.getText().trim();
+		if(!pays.equals("")) {
+			if (!pays.matches("^[a-zA-Z]*$")) erreurs += "Le pays ne peut pas être composé de chiffres";
+		} else erreurs += "Le pays du client est a renseigner.\n";
+		
+		if(!erreurs.isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
 			alert.showAndWait();
 		}
+		
+		return erreurs.isEmpty();
 	}
 	
-	public void modifierClient() {
-		
+	@Override
+	public void retourPage() {
+		parent.showClients();		
 	}
 	
-	private String controleErreur() {
-		String erreurs = "";
-		
-		if(!edtNom.getText().equals("")) {
-			if(!edtPrenom.getText().matches("[a-z]")) {
-				erreurs += "Le nom du client ne peut pas être composé de chiffres";
-			}
-		}
-		else	erreurs += "Le nom du client est a renseigner.\n";
-		
-		
-		if(!edtPrenom.getText().equals("")) {
-			if(!edtPrenom.getText().matches("[a-z]")) {
-				erreurs += "Le prénom du client ne peut pas être composé de chiffres";
-			}
-		}
-		else erreurs += "Le prénom du client est a renseigner.\n";
-		
-		
-		//TODO Ajout verification format adresse mail
-		if(!edtIdent.getText().equals("")) {
-			erreurs += "L'identifiant du client est a renseigner.\n";
-		}
-		
-		if(!edtMdp.getText().equals("")) {
-			
-		}
-		else erreurs += "Le mot de passe du client est a renseigner.\n";
-		if(!edtNum.getText().equals("")) {
-				if(Integer.parseInt(edtNum.getText()) <= 0) {
-			}
-		}
-		else erreurs += "Le numéro d'habitation du client est a renseigner.\n";
-		
-		if(!edtVoie.getText().equals("")) {
-			if(!edtVoie.getText().matches("[a-z]")) {
-				erreurs += "La voie d'habitation du client ne peut pas être composée de chiffres";
-			}
-			erreurs += "La voie d'habitation du client est a renseigner.\n";
-		}
-		if(!edtCP.getText().equals("")) {
-				if(Integer.parseInt(edtCP.getText()) <= 0) {
-					erreurs += "Le code postal doit être composé uniquement de chiffres";
-				}
-			}
-		else erreurs += "Le code postal du client est a renseigner.\n";
-		
-		if(!edtVille.getText().equals("")) {
-			if(!edtVille.getText().matches("[a-z]")) {
-				erreurs += "La ville du client ne peut pas être composée de chiffres";
-			}
-		}
-		else erreurs += "La ville du client est a renseigner.\n";
-		
-		
-		if(!edtPays.getText().equals("")) {
-			if (!edtPays.getText().matches("[a-z]")) {
-				erreurs += "Le pays ne peut pas être composé de chiffres";
-			}
-			erreurs += "Le pays du client est a renseigner.\n";
-		}
-		
-		
-		return erreurs;
+	public void setParent(MainControleur parent) {
+		this.parent = parent;
 	}
 	
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	
-	public void setModif(boolean modif) {
-		this.modif = modif;
-	}
 }
