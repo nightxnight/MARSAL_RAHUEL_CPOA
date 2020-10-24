@@ -8,7 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class CategorieTableView extends TableView<Categorie>{
 	
 	public CategorieTableView() {
-	TableColumn<Categorie, Integer> idCol = new TableColumn<Categorie, Integer>("idCategorie");	
+	TableColumn<Categorie, Integer> idCol = new TableColumn<Categorie, Integer>("numero");	
 	idCol.setCellValueFactory(new PropertyValueFactory<>("idCategorie"));
 	TableColumn<Categorie, String> titreCol = new TableColumn<Categorie, String>("titre");		
 	titreCol.setCellValueFactory(new PropertyValueFactory<>("titre"));

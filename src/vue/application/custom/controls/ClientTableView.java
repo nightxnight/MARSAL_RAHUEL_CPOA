@@ -1,14 +1,26 @@
 package vue.application.custom.controls;
 
+import java.time.LocalDate;
+
+import controleur.MainControleur;
+import controleur.research.RechercheCommandeControleur;
 import entities.Client;
+import entities.Commande;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import vue.application.management.Entities;
+import vue.application.management.UIManagement;
+import vue.application.management.entities.CommandeUIManagement;
 
 public class ClientTableView extends TableView<Client>{
 
-	public ClientTableView() {
-		TableColumn<Client, Integer> idCol = new TableColumn<Client, Integer>("id");	
+	public ClientTableView(MainControleur mainControleur) {
+		TableColumn<Client, Integer> idCol = new TableColumn<Client, Integer>("numero");	
 		idCol.setCellValueFactory(new PropertyValueFactory<>("idClient"));
 		TableColumn<Client, String> nomCol = new TableColumn<Client, String>("nom");		
 		nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -29,7 +41,25 @@ public class ClientTableView extends TableView<Client>{
 		adrVilleCol.setCellValueFactory(new PropertyValueFactory<>("adrVille"));
 		TableColumn<Client, String> adrPaysCol = new TableColumn<Client, String>("pays");		
 		adrPaysCol.setCellValueFactory(new PropertyValueFactory<>("adrPays"));
-
+		
+		TableColumn<Client, Button> commandeCol = new TableColumn<Client, Button>("commandes");
+		commandeCol.setCellValueFactory(Client -> {
+            SimpleObjectProperty<Button> property = new SimpleObjectProperty<Button>();
+            Button boutonCommande = new Button("Voir");
+            boutonCommande.setMaxWidth(Double.MAX_VALUE);
+            boutonCommande.setOnAction(new EventHandler<ActionEvent>() {
+     
+				@Override
+				public void handle(ActionEvent arg0) {
+					mainControleur.showCommandes();
+					mainControleur.getManagementControleur().lancerRecherche(new Commande(-1, LocalDate.of(1, 1, 1), Client.getValue().getIdClient()));
+					((RechercheCommandeControleur)((CommandeUIManagement)UIManagement.getUIManagement(Entities.COMMANDE)).getResearch()).getEdtIdClient().setText(String.valueOf(Client.getValue().getIdClient()));
+				}
+            	
+            });
+            property.setValue(boutonCommande);
+            return property;
+        });
 		
 		idCol.setSortType(TableColumn.SortType.DESCENDING);
 
@@ -42,6 +72,7 @@ public class ClientTableView extends TableView<Client>{
 		adresseCol.getColumns().addAll(adrNumeroCol, adrVoieCol, adrCodePostalCol, adrVilleCol, adrPaysCol);
 		
 		this.getColumns().add(adresseCol);
+		this.getColumns().add(commandeCol);
 		this.getSelectionModel().clearSelection();
 	}
 }

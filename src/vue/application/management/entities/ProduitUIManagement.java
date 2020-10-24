@@ -3,6 +3,7 @@ package vue.application.management.entities;
 import java.util.ArrayList;
 
 import controleur.entities.ProduitManagementControleur;
+import controleur.research.RechercheProduitControleur;
 import dao.DAOFactory;
 import entities.Produit;
 import javafx.fxml.FXMLLoader;
@@ -63,7 +64,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/entities/research/PanelRechercheProduit.fxml"));
 			researchPane = loader.load();
 			researchControler = loader.getController();
-			researchControler.setPersistance(parent.getPersistance());
+			((RechercheProduitControleur)researchControler).setPersistance(parent.getPersistance());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

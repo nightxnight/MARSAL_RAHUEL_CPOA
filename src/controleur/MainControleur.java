@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import vue.application.management.Entities;
 
 public class MainControleur {
@@ -17,7 +18,9 @@ public class MainControleur {
 	private BorderPane mainPane; 
 	
 	//Conteneur enfant
-	private BorderPane managementPane;	
+	private Pane managementPane;
+	private ManagementControleur managementControleur;
+	private Entities entities;
 	
 	@FXML
 	private MenuItem menuItemCategorie;
@@ -32,37 +35,56 @@ public class MainControleur {
 	private Label labelFilAriane;
 	
 	public void showCategories() {
-		showManagementPane(Entities.CATEGORIE);
+		labelFilAriane.setText("> Gestion > Categories");
+		loadManagementPane(Entities.CATEGORIE);
 	}
 	
 	public void showProduits() {
-		showManagementPane(Entities.PRODUIT);
+		labelFilAriane.setText("> Gestion > Produit");
+		loadManagementPane(Entities.PRODUIT);
 	}
 	
 	public void showClients() {
-		showManagementPane(Entities.CLIENT);
+		labelFilAriane.setText("> Gestion > Client");
+		loadManagementPane(Entities.CLIENT);
 	}
 	
 	public void showCommandes() {
-		showManagementPane(Entities.COMMANDE);
+		labelFilAriane.setText("> Gestion > Commande");
+		loadManagementPane(Entities.COMMANDE);
 	}
 	
-	public void showManagementPane(Entities entities) {
+	public void loadManagementPane(Entities entities) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/management/managementPane.fxml"));
 			managementPane = loader.load();
-	        ManagementControleur controller = loader.getController();
-	        controller.setParent(this);
-	        controller.render(entities);
+	        managementControleur = loader.getController();
+	        managementControleur.setParent(this);
+	        managementControleur.render(entities);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		this.entities = entities;
+		showManagementPane();
+	}
+	
+	public void showManagementPane() {
+		if(managementPane == null) return;
 		mainPane.setCenter(managementPane);
+		labelFilAriane.setText("Gestion > " + entities.getLibelle());
 	}
 	
 	public BorderPane getMainPane() {
 		return mainPane;
 	}	
+	
+	public Label getLabelFilAriane() {
+		return labelFilAriane;
+	}
+	
+	public ManagementControleur getManagementControleur() {
+		return managementControleur;
+	}
 	
 	public Persistance getPersistance() {
 		return persistance;

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import dao.entities.CategorieDAO;
 import entities.Categorie;
-import entities.Produit;
 
 public class ListeMemoireCategorieDAO implements CategorieDAO{
 	

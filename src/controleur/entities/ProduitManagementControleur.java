@@ -147,7 +147,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	
 	@Override
 	public void retourPage() {
-		parent.showProduits();
+		parent.showManagementPane();
 	}
 	
 	public void setParent(MainControleur parent) {

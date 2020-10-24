@@ -80,7 +80,6 @@ public class RechercheProduitControleur implements Initializable, RechercheContr
 		choicebCategorie.getSelectionModel().selectFirst();
 	}
 	
-	@Override
 	public void setPersistance(Persistance persistance) {
 		this.persistance = persistance;
 		initializeComponents();

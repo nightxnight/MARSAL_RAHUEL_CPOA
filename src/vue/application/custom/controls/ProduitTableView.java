@@ -14,7 +14,7 @@ public class ProduitTableView extends TableView<Produit>{
 	
 	public ProduitTableView(Persistance persistance) {
 		this.persistance = persistance;
-		TableColumn<Produit, Integer> idCol = new TableColumn<Produit, Integer>("id");	
+		TableColumn<Produit, Integer> idCol = new TableColumn<Produit, Integer>("numero");	
 		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
 		TableColumn<Produit, String> nameCol = new TableColumn<Produit, String>("nom");		
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -28,7 +28,13 @@ public class ProduitTableView extends TableView<Produit>{
 		TableColumn<Produit, String> libelleCategCol = new TableColumn<Produit, String>("categorie");
 		libelleCategCol.setCellValueFactory(Produit -> {
             SimpleObjectProperty<String> property = new SimpleObjectProperty<String>();
-            property.setValue(DAOFactory.getDAOFactory(persistance).getCategorieDAO().getById(Produit.getValue().getIdCategorie()).getTitre());
+            String libelleCateg = ""; 
+            try {
+            	libelleCateg = DAOFactory.getDAOFactory(this.persistance).getCategorieDAO().getById(Produit.getValue().getIdCategorie()).getTitre();
+            } catch(IllegalArgumentException iae) {
+            	libelleCateg = "Introuvable";
+            }
+            property.setValue(libelleCateg);
             return property;
         });
 		

@@ -10,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class CategorieManagementControleur implements ImplManagementControleur<Categorie>{
@@ -31,7 +30,9 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	
 	public void setFormMode(Categorie categorie, boolean modif) {		
 		
-		if(categorie == null) boutonModif.setVisible(false);
+		if(categorie == null)  {
+			boutonModif.setVisible(false);
+		}
 		else {
 			boutonCreer.setVisible(false);
 			boutonModif.setVisible(modif);
@@ -94,7 +95,7 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	}
 	
 	public void retourPage() {
-		parent.showCategories();
+		parent.showManagementPane();
 	}
 
 	public void setParent(MainControleur parent) {

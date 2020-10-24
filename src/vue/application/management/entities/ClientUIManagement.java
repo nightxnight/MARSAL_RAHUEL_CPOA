@@ -26,7 +26,7 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
 
     @Override
     public TableView<Client> getTableModel() {
-        if(table == null) table = new ClientTableView();
+        if(table == null) table = new ClientTableView(parent);
         return table;
     }
 

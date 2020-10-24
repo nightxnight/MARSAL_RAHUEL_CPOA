@@ -26,7 +26,7 @@ public class CommandeUIManagement extends UIManagement implements Management<Com
 
 	@Override
 	public TableView<Commande> getTableModel() {
-		return new CommandeTableView();
+		return new CommandeTableView(parent.getPersistance());
 	}
 
 	@Override

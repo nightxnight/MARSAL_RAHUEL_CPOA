@@ -9,7 +9,10 @@ public class Commande {
 	private LocalDate dateCommande;
 	private int idClient;
 	
-	//Constructor
+	//Constructor	
+	public Commande(int idClient) {
+		this.idClient = idClient;
+	}
 	public Commande(LocalDate dateCommande, int idClient) {
 		this.dateCommande = dateCommande;
 		this.idClient = idClient;

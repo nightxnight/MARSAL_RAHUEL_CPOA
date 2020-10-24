@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -19,7 +18,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import vue.application.management.Entities;
 import vue.application.management.UIManagement;
 
@@ -163,14 +161,17 @@ public class ManagementControleur implements Initializable{
 	
 	public void display() {
 		showActionPane(dataTable.getSelectionModel().getSelectedItem(), false);
+		parent.getLabelFilAriane().setText(parent.getLabelFilAriane().getText() + " > Detail");
 	}
 	
 	public void insert() {
 		showActionPane(null, false);
+		parent.getLabelFilAriane().setText(parent.getLabelFilAriane().getText() + " > Creation");
 	}
 	
 	public void edit() {
 		showActionPane(dataTable.getSelectionModel().getSelectedItem(), true);
+		parent.getLabelFilAriane().setText(parent.getLabelFilAriane().getText() + " > Modification");
 	}
 	
 	private void showActionPane(Object objet, boolean bool) {
@@ -193,8 +194,13 @@ public class ManagementControleur implements Initializable{
 	public void showResearchPane() {
 		panelRecherche.setCenter(UIManagement.getUIManagement(dataModel).getResearchPane());
 	}
-	public void lancerRecherche() {
-		loadDatas(UIManagement.getUIManagement(dataModel).research(((UIManagement) UIManagement.getUIManagement(dataModel)).getResearch().getResearchParameters()));
+	
+	public void boutonRechercheClick() {
+		lancerRecherche(((UIManagement) UIManagement.getUIManagement(dataModel)).getResearch().getResearchParameters());
+	}
+	
+	public void lancerRecherche(Object parameter) {
+		loadDatas(UIManagement.getUIManagement(dataModel).research(parameter));
 		refresh(1);
 	}
 

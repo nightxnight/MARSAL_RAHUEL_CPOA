@@ -2,15 +2,12 @@ package controleur.research;
 
 import java.time.LocalDate;
 
-import dao.Persistance;
 import entities.Commande;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 public class RechercheCommandeControleur implements RechercheControleur<Commande>{
-	
-	private Persistance persistance;
 	
 	@FXML
 	private TextField edtIdCom;
@@ -42,8 +39,7 @@ public class RechercheCommandeControleur implements RechercheControleur<Commande
 		return new Commande(idCom, dateCom, idClient);
 	}
 
-	@Override
-	public void setPersistance(Persistance persistance) {
-		this.persistance = persistance;		
+	public TextField getEdtIdClient() {
+		return edtIdClient;
 	}
 }

@@ -1,6 +1,7 @@
 package controleur.entities;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -27,7 +28,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import vue.application.custom.utils.PrixDoubleStringConverter;
 import vue.application.custom.utils.QuantiteIntegerStringConverter;
 
@@ -94,6 +94,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 		tableLigneCommande.getSelectionModel().selectedItemProperty().addListener((listeLigneCommande, ancienneSelection, nouvelleSelection) -> {
 		    boutonDetailSupprimer.setDisable(nouvelleSelection == null);
 		});
+		datePckCommande.setValue(LocalDate.now());
 	}
 	
 	public void quantiteColEdit(TableColumn.CellEditEvent<LigneCommande, Integer> celluleEdite) {
@@ -310,7 +311,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 
 	@Override
 	public void retourPage() {
-		parent.showCommandes();
+		parent.showManagementPane();
 		
 	}
 

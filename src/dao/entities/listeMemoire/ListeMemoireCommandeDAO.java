@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import dao.entities.CommandeDAO;
-import entities.Categorie;
 import entities.Commande;
 
 public class ListeMemoireCommandeDAO implements CommandeDAO{

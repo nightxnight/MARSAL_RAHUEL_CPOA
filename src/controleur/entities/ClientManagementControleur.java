@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class ClientManagementControleur implements ImplManagementControleur<Client>, Initializable{
@@ -28,13 +29,15 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	@FXML
 	private TextField edtIdent;
 	@FXML
-	private TextField edtMdp;
+	private PasswordField passwMdpClient;
+	@FXML
+	private PasswordField passwConfirmationMdp;
 	@FXML
 	private TextField edtNum;
 	@FXML
 	private TextField edtVoie;
 	@FXML
-	private TextField edtCP;
+	private TextField edtCodePostal;
 	@FXML
 	private TextField edtVille;
 	@FXML
@@ -55,10 +58,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 			edtNom.setDisable(!modif);
 			edtPrenom.setDisable(!modif);
 			edtIdent.setDisable(!modif);
-			edtMdp.setDisable(!modif);
+			passwMdpClient.setDisable(!modif);
+			passwConfirmationMdp.setDisable(!modif);
 			edtNum.setDisable(!modif);
 			edtVoie.setDisable(!modif);
-			edtCP.setDisable(!modif);
+			edtCodePostal.setDisable(!modif);
 			edtVille.setDisable(!modif);
 			edtPays.setDisable(!modif);
 			fillForm(client);
@@ -70,10 +74,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		edtNom.setText(objet.getNom());
 		edtPrenom.setText(objet.getPrenom());
 		edtIdent.setText(objet.getIdentifiant());
-		edtMdp.setText(objet.getMotDePasse());
+		passwMdpClient.setText(objet.getMotDePasse());
+		passwConfirmationMdp.setText(objet.getMotDePasse());
 		edtNum.setText(objet.getAdrNumero());
 		edtVoie.setText(objet.getAdrVoie());
-		edtCP.setText(objet.getAdrCodePostal());
+		edtCodePostal.setText(objet.getAdrCodePostal());
 		edtVille.setText(objet.getAdrVille());
 		edtPays.setText(objet.getAdrPays());
 		this.client = objet;
@@ -87,11 +92,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 				Client nouveauClient = new Client(edtNom.getText().trim(),
 												  edtPrenom.getText().trim(),
 												  edtIdent.getText().trim(),
-												  edtMdp.getText().trim(),
+												  passwMdpClient.getText().trim(),
 												  edtNum.getText().trim(),
 												  edtVoie.getText().trim(),
 												  edtVille.getText().trim(),
-												  edtCP.getText().trim(),
+												  edtCodePostal.getText().trim(),
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
 			}
@@ -108,11 +113,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 												  edtNom.getText().trim(),
 												  edtPrenom.getText().trim(),
 												  edtIdent.getText().trim(),
-												  edtMdp.getText().trim(),
+												  passwMdpClient.getText().trim(),
 												  edtNum.getText().trim(),
 												  edtVoie.getText().trim(),
 												  edtVille.getText().trim(),
-												  edtCP.getText().trim(),
+												  edtCodePostal.getText().trim(),
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
 			}
@@ -137,8 +142,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		String identifiant = edtIdent.getText().trim();
 		if(identifiant.equals("")) erreurs += "L'identifiant du client est a renseigner.\n";
 		
-		//TODO Ajouter un deuxieme textfield de confirmation du mdp
-		if(edtMdp.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
+		if(passwMdpClient.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
+		else {
+			if(passwConfirmationMdp.getText().trim().equals("")) erreurs += "Le mot de passe est a confirmer.\n";
+			else if(!passwMdpClient.getText().trim().equals(passwConfirmationMdp.getText().trim())) erreurs += "La confirmation doit correspondre au mot de passe.\n";
+		}
 		
 		String num = edtNum.getText().trim();
 		if(!num.equals("")) {
@@ -154,7 +162,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 			if(!voie.matches("^[a-zA-Z][a-zA-Z ]*$")) erreurs += "La voie d'habitation du client ne peut pas être composée de chiffres";
 		} else erreurs += "La voie d'habitation du client est a renseigner.\n";
 		
-		String codePostal = edtCP.getText().trim(); 
+		String codePostal = edtCodePostal.getText().trim(); 
 		if(!codePostal.equals("")) {
 				if(Integer.parseInt(codePostal) <= 0) erreurs += "Le code postal doit être composé uniquement de chiffres";
 		} else erreurs += "Le code postal du client est a renseigner.\n";
@@ -179,7 +187,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	
 	@Override
 	public void retourPage() {
-		parent.showClients();		
+		parent.showManagementPane();	
 	}
 	
 	public void setParent(MainControleur parent) {
