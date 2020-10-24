@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Auteurs : MARSAL Remi, RAHUEL Victor - 2021" underline="true" />
+      <Label text="Application developpee dans le cadre d'un projet scolaire." textAlignment="CENTER" wrapText="true" />
+      <Label text="Interface developpee grace a JavaFX a l'aide de SceneBuilder" textAlignment="CENTER" wrapText="true" />
+      <Label text="Utilisation d'une base de donnees a l'aide du SGBD MySQL" textAlignment="CENTER" wrapText="true" />
+   </children>
+</VBox>

@@ -151,9 +151,9 @@ private static MySQLClientDAO instance;
 	public ArrayList<Client> research(Client clientRecherche) {
 		ArrayList<Client> listeClient = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client WHERE nom_client = '%?%' AND prenom_client = '%?%' ");
-			query.setString(1, clientRecherche.getNom());
-			query.setString(2, clientRecherche.getPrenom());
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Client WHERE nom LIKE ? AND prenom LIKE ? ");
+			query.setString(1, "%" + clientRecherche.getNom() + "%");
+			query.setString(2, "%" + clientRecherche.getPrenom() + "%");
 
 			ResultSet res = query.executeQuery();
 			

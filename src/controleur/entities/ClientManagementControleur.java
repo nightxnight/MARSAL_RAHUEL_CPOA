@@ -135,12 +135,15 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		
 		String prenom = edtPrenom.getText().trim();
 		if(!prenom.equals("")) {
-			if(!prenom.matches("^[A-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres\n";
+			if(!prenom.matches("^[a-zA-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres\n";
 		} else erreurs += "Le prénom du client est a renseigner.\n";
 		
 		//TODO Ajouter verification de l'adresse au bon format : xxx@xxx.xx
 		String identifiant = edtIdent.getText().trim();
 		if(identifiant.equals("")) erreurs += "L'identifiant du client est a renseigner.\n";
+		else {
+			if(identifiant.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")) erreurs += "Mauvais format de l'addresse mail.\n";
+		}
 		
 		if(passwMdpClient.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
 		else {

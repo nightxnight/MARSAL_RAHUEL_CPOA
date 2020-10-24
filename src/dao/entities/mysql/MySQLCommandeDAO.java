@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dao.entities.CommandeDAO;
@@ -138,12 +139,15 @@ public class MySQLCommandeDAO implements CommandeDAO{
 	public ArrayList<Commande> research(Commande commandeRecherchee) {
 		ArrayList<Commande> listeCommande = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande WHERE id_commande LIKE '%?%' AND id_client LIKE '%?%'");
-			String idCommandeStr = (commandeRecherchee.getIdCommande() != -1) ? String.valueOf(commandeRecherchee.getIdCommande()) : "";
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Commande WHERE id_commande LIKE ? AND date_commande LIKE ? AND id_client LIKE ?");
+			
+			String idCommandeStr = (commandeRecherchee.getIdCommande() != -1) ? String.valueOf(commandeRecherchee.getIdCommande()) : ""; 
+			String dateCommande = (commandeRecherchee.getDateCommande().equals(LocalDate.of(1, 1, 1))) ? "" : Date.valueOf(commandeRecherchee.getDateCommande()).toString();
 			String idClientStr = (commandeRecherchee.getIdClient() != -1) ? String.valueOf(commandeRecherchee.getDateCommande()) : "";
 
-			query.setString(1, idCommandeStr);
-			query.setString(2, idClientStr);
+			query.setString(1, "%" + idCommandeStr + "%");
+			query.setString(2, "%" + dateCommande + "%");
+			query.setString(3, "%" + idClientStr + "%");
 			
 			ResultSet res = query.executeQuery();
 			
@@ -153,7 +157,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			}
 			return listeCommande;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Commande.getAll");
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Commande.research");
 		}
 		return listeCommande;
 	}

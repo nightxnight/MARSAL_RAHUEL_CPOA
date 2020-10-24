@@ -11,10 +11,11 @@ public class HomePage extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//FIXME Gestion de l'affichage de categorie, client, produit supprime dans les ManagementControleur
-		//TODO accueil
-		//TODO changement de la persistance
+	
+		//TODO Trier les resultats
 		//TODO css + bouton pour changer le theme
 		//TODO xml de config (sauvegarde la derniere persistance choisis et du theme
+		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Accueil.fxml"));
 			Scene scene = new Scene(root,900,700);

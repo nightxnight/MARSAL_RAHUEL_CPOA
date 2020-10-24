@@ -134,8 +134,8 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	public ArrayList<Categorie> research(Categorie categorieRecherchee) {
 		ArrayList<Categorie> listeCategorie = null;
 		try {
-			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie WHERE titre LIKE '%?%'");
-			query.setString(1, categorieRecherchee.getTitre());
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Categorie WHERE titre LIKE ?");
+			query.setString(1, "%" + categorieRecherchee.getTitre() + "%");
 			ResultSet res = query.executeQuery();
 			
 			listeCategorie = new ArrayList<Categorie>();	
@@ -144,7 +144,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			}
 			return listeCategorie;
 		} catch (SQLException sqle) {
-			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Categorie.getAll");
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Categorie.research");
 			System.out.println("Logs : " + sqle.getMessage());
 		}
 		return listeCategorie;

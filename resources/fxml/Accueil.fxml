@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -19,7 +21,7 @@
             <MenuBar>
               <menus>
                 <Menu mnemonicParsing="false" text="Accueil" />
-                <Menu mnemonicParsing="false" text="Listes">
+                <Menu mnemonicParsing="false" text="Gestion">
                      <items>
                         <MenuItem fx:id="menuItemCategorie" mnemonicParsing="false" onAction="#showCategories" text="Categorie" />
                         <MenuItem fx:id="menuItemProduit" mnemonicParsing="false" onAction="#showProduits" text="Produit" />
@@ -27,7 +29,26 @@
                         <MenuItem fx:id="menuItemCommande" mnemonicParsing="false" onAction="#showCommandes" text="Commande" />
                      </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Quitter" />
+                  <Menu mnemonicParsing="false" text="Autres">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Theme" />
+                        <Menu mnemonicParsing="false" text="Persistance">
+                          <items>
+                              <RadioMenuItem fx:id="radioMenuListeMemoire" mnemonicParsing="false" text="Liste memoire">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="groupPersistanceMenu" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem fx:id="radioMenuMySQL" mnemonicParsing="false" text="MySQL" toggleGroup="$groupPersistanceMenu" />
+                          </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" onAction="#showAbout" text="A propos" />
+                     </items></Menu>
+                <Menu mnemonicParsing="false">
+                	<graphic>
+		                <Label text="Quitter" onMouseClicked="#quitterAppli"/>
+		            </graphic>
+                </Menu>
               </menus>
             </MenuBar>
          </children>

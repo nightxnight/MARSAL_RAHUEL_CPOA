@@ -139,9 +139,28 @@ public class MySQLProduitDAO implements ProduitDAO{
 	}
 
 	@Override
-	public ArrayList<Produit> research(Produit objet) {
-		
-		return null;
+	public ArrayList<Produit> research(Produit produitRecherche) {
+		ArrayList<Produit> listeProduit = null;
+		try {
+			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("SELECT * FROM Produit WHERE nom LIKE ? AND tarif <= ? AND id_categorie LIKE ?");
+			String idCategorie = (produitRecherche.getIdCategorie() == -1) ? "" : String.valueOf(produitRecherche.getIdCategorie());
+			
+			query.setString(1, "%" + produitRecherche.getNom() + "%");
+			query.setDouble(2, produitRecherche.getTarif());
+			query.setString(3, "%" + idCategorie + "%");
+			
+			ResultSet res = query.executeQuery();
+			
+			listeProduit = new ArrayList<Produit>();	
+			while(res.next()) {
+				listeProduit.add(new Produit(res.getInt(1), res.getString(2), res.getString(3), res.getDouble(4), res.getString(5), res.getInt(6)));
+			}
+			return listeProduit;
+		} catch (SQLException sqle) {
+			System.out.println("Erreur lors de la requete \"MySQLDAOFactory_Produit.research\".");
+			System.out.println("Logs : " + sqle.getMessage());
+		}
+		return listeProduit;
 	}
 
 }
