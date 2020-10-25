@@ -1,7 +1,7 @@
-package vue.application.custom.controls;
+package vue.application.custom.controls.tableview;
 
+import controleur.MainControleur;
 import dao.DAOFactory;
-import dao.Persistance;
 import entities.Produit;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TableColumn;
@@ -9,11 +9,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ProduitTableView extends TableView<Produit>{
-
-	private Persistance persistance;
 	
-	public ProduitTableView(Persistance persistance) {
-		this.persistance = persistance;
+	public ProduitTableView(MainControleur mainControleur) {
 		TableColumn<Produit, Integer> idCol = new TableColumn<Produit, Integer>("numero");	
 		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
 		TableColumn<Produit, String> nameCol = new TableColumn<Produit, String>("nom");		
@@ -30,7 +27,7 @@ public class ProduitTableView extends TableView<Produit>{
             SimpleObjectProperty<String> property = new SimpleObjectProperty<String>();
             String libelleCateg = ""; 
             try {
-            	libelleCateg = DAOFactory.getDAOFactory(this.persistance).getCategorieDAO().getById(Produit.getValue().getIdCategorie()).getTitre();
+            	libelleCateg = DAOFactory.getDAOFactory(mainControleur.getPersistance()).getCategorieDAO().getById(Produit.getValue().getIdCategorie()).getTitre();
             } catch(IllegalArgumentException iae) {
             	libelleCateg = "Introuvable";
             }

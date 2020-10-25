@@ -28,8 +28,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
-import vue.application.custom.utils.PrixDoubleStringConverter;
-import vue.application.custom.utils.QuantiteIntegerStringConverter;
+import utils.stringConverter.PrixDoubleStringConverter;
+import utils.stringConverter.QuantiteIntegerStringConverter;
+import vue.application.custom.alert.ConfirmationAlert;
 
 public class CommandeManagementControleur implements ImplManagementControleur<Commande>, Initializable{
 	
@@ -74,8 +75,12 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 		tableLigneCommande.setEditable(true);
 		produitCol.setCellValueFactory(LigneCommande -> {
             SimpleObjectProperty<String> property = new SimpleObjectProperty<String>();
-            property.setValue(DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO()
-            				  .getById(LigneCommande.getValue().getIdProduit()).getNom());
+            try {
+	            property.setValue(DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO()
+	            				  .getById(LigneCommande.getValue().getIdProduit()).getNom());
+            } catch(IllegalArgumentException iae) {
+            	property.setValue("inconnu");
+            }
             return property;
         });
 		produitCol.setPrefWidth(150);
@@ -188,7 +193,11 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 
 	@Override
 	public void fillForm(Commande commande) {
-		choicebClient.getSelectionModel().select(new Client(commande.getIdClient(), "", "", "", "", "", "", "", "", ""));
+		Client clientConcerne = new Client(commande.getIdClient(), "", "Introuvable", "", "", "", "", "", "", "");
+		if(!choicebClient.getItems().stream().anyMatch(Client -> Client.getIdClient() == clientConcerne.getIdClient())) {
+			choicebClient.getItems().add(clientConcerne);
+		}
+		choicebClient.getSelectionModel().select(clientConcerne);
 		datePckCommande.setValue(commande.getDateCommande());
 		
 		ArrayList<LigneCommande> listeLigneCommande = new ArrayList<LigneCommande>(DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().getById(commande.getIdCommande()));
@@ -199,9 +208,9 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	@Override
 	public void create() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "La commande va etre ajoutee.\netes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une commande", "La commande va etre creee, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Commande nouvelleCommande = new Commande(datePckCommande.getValue(),
 														 choicebClient.getSelectionModel().getSelectedItem().getIdClient());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getCommandeDAO().create(nouvelleCommande);
@@ -210,6 +219,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 					tableLigneCommande.getItems().get(i).setIdCommande(nouvelleCommande.getIdCommande());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(tableLigneCommande.getItems().get(i));
 				}
+				retourPage();
 			}
 		}
 	}
@@ -217,32 +227,29 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	@Override
 	public void update() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "La commande va etre ajoutee.\netes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une commande", "La commande va etre modifiee, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Commande commandeModifie = new Commande(commande.getIdCommande(), datePckCommande.getValue(),
 														 choicebClient.getSelectionModel().getSelectedItem().getIdClient());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getCommandeDAO().update(commandeModifie);
 			
 				ArrayList<LigneCommande> ancienneLigneCommandes = new ArrayList<LigneCommande>(DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().getById(commande.getIdCommande()));
 				ArrayList<LigneCommande> nouvelleLigneCommande = new ArrayList<LigneCommande>(tableLigneCommande.getItems());
-				System.out.println("Element dans ancienne liste : " + ancienneLigneCommandes.size());
 				for(int i = 0; i < nouvelleLigneCommande.size(); i++) {
 					nouvelleLigneCommande.get(i).setIdCommande(commandeModifie.getIdCommande());
 					if(ancienneLigneCommandes.contains(nouvelleLigneCommande.get(i))) {
 						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().update(nouvelleLigneCommande.get(i));
 						ancienneLigneCommandes.remove(nouvelleLigneCommande.get(i));
-						System.out.println("Modif");
 					} else {
-						System.out.println("Ajout");
 						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(nouvelleLigneCommande.get(i));
 					}			
 				}
 				
-				System.out.println("Element restant ancienne liste : " + ancienneLigneCommandes.size());
 				for(LigneCommande elementRestant : ancienneLigneCommandes) {
 					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().delete(elementRestant);
 				}
+				retourPage();
 			}
 		}
 	}
@@ -254,6 +261,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 		if(choicebClient.getSelectionModel().getSelectedIndex() == -1) erreurs += "Le client concerne par la commande doit etre selectionner.\n";
 		
 		if(datePckCommande.getValue() == null) erreurs += "La date de la commande doit etre indiquer.\n";
+		else if(datePckCommande.getValue().isAfter(LocalDate.now())) erreurs += "La date de la commande ne peut pas etre superieur a celle d'aujourd'hui.\n";
 		
 		if(tableLigneCommande.getItems().size()==0) erreurs += "La commande doit au moins concerner un produit dans son detail.\n";
 		

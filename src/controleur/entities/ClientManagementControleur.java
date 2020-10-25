@@ -3,6 +3,8 @@ package controleur.entities;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import controleur.MainControleur;
 import dao.DAOFactory;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import vue.application.custom.alert.ConfirmationAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -49,6 +52,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	@FXML
 	private Label lblResultat;
 	
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	
 	public void setFormMode(Client client, boolean modif) {
 		
 		if(client == null) boutonModif.setVisible(false);
@@ -86,9 +91,9 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 
 	public void create() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Le client va etre ajoute.\nEtes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un client", "Le client va etre cree, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Client nouveauClient = new Client(edtNom.getText().trim(),
 												  edtPrenom.getText().trim(),
 												  edtIdent.getText().trim(),
@@ -99,6 +104,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 												  edtCodePostal.getText().trim(),
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
+				retourPage();
 			}
 		}
 	}
@@ -106,9 +112,9 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	@Override
 	public void update() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Le client va etre ajoute.\nEtes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un client", "Le client va etre modifie, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Client clientModifie = new Client(client.getIdClient(),
 												  edtNom.getText().trim(),
 												  edtPrenom.getText().trim(),
@@ -120,6 +126,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 												  edtCodePostal.getText().trim(),
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
+				retourPage();
 			}
 		}
 	}
@@ -138,12 +145,10 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 			if(!prenom.matches("^[a-zA-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres\n";
 		} else erreurs += "Le prénom du client est a renseigner.\n";
 		
-		//TODO Ajouter verification de l'adresse au bon format : xxx@xxx.xx
 		String identifiant = edtIdent.getText().trim();
 		if(identifiant.equals("")) erreurs += "L'identifiant du client est a renseigner.\n";
-		else {
-			if(identifiant.matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")) erreurs += "Mauvais format de l'addresse mail.\n";
-		}
+		else if(!isMailAdress(identifiant)) erreurs += "Mauvais format de l'addresse mail.\n";
+
 		
 		if(passwMdpClient.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
 		else {
@@ -186,6 +191,11 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		}
 		
 		return erreurs.isEmpty();
+	}
+	
+	public static boolean isMailAdress(String email) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.find();
 	}
 	
 	@Override

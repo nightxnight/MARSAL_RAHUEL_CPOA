@@ -1,4 +1,4 @@
-package vue.application.custom.controls;
+package vue.application.custom.controls.tableview;
 
 import entities.Categorie;
 import javafx.scene.control.TableColumn;

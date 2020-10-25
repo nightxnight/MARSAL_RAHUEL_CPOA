@@ -18,7 +18,7 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 		listeCategorie = new ArrayList<Categorie>();
 		listeCategorie.add(new Categorie(1, "Pulls", "lespulls.png"));
 		listeCategorie.add(new Categorie(2, "Bonnets", "lesbonnets.png"));
-		listeCategorie.add(new Categorie(3, "Chaussettes", "leschaussettes.png"));
+		listeCategorie.add(new Categorie(3, "Polaires", "lespolaires.png"));
 		
 		autoIncrementedId = 3;
 	}

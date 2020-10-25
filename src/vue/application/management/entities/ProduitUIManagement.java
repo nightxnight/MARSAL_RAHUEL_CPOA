@@ -9,7 +9,7 @@ import entities.Produit;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import vue.application.custom.controls.ProduitTableView;
+import vue.application.custom.controls.tableview.ProduitTableView;
 import vue.application.management.Management;
 import vue.application.management.UIManagement;
 
@@ -27,7 +27,7 @@ public class ProduitUIManagement extends UIManagement implements Management<Prod
 
 	@Override
 	public TableView<Produit> getTableModel() {
-		if(table == null) table = new ProduitTableView(parent.getPersistance());
+		if(table == null) table = new ProduitTableView(parent);
 		return table;
 	}
 

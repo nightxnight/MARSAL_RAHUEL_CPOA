@@ -70,7 +70,11 @@ public class ManagementControleur implements Initializable{
 		refresh(1);
 	}
 	
-	private void refresh(int refreshedPage) {
+	public void refresh() {
+		refresh(pageCourante);
+	}
+	
+	public void refresh(int refreshedPage) {
 		pageCourante = refreshedPage;
 		updateLinesDisplayed();
 		disableButtonsIfNoRowSelected();
@@ -82,7 +86,7 @@ public class ManagementControleur implements Initializable{
 	}
 	
 	public void loadDatas(ArrayList<Object> datas) {
-		this.datas = datas;
+		this.datas = new ArrayList<Object>(datas);
 		labelNombreRes.setText(String.valueOf(this.datas.size()));
 	}
 	
@@ -184,10 +188,12 @@ public class ManagementControleur implements Initializable{
 		Alert alert = new Alert(AlertType.CONFIRMATION, "Confirmer la suppression ?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> confirmation = alert.showAndWait();
 		if(confirmation.get() == ButtonType.YES) {
-			UIManagement.getUIManagement(dataModel).delete(dataTable.getSelectionModel().getSelectedItem());
+			Object donneeSupprime = dataTable.getSelectionModel().getSelectedItem();
+			UIManagement.getUIManagement(dataModel).delete(donneeSupprime);
+			datas.remove(donneeSupprime);
 			labelNombreRes.setText(String.valueOf(datas.size()));
 			if((pageCourante >= nombreDePage) && (datas.size()%spinnerNombreLigne.getValue() == 0)) pageCourante = nombreDePage;;
-			refresh(pageCourante);
+			refresh();
 		}
 	}	
 	

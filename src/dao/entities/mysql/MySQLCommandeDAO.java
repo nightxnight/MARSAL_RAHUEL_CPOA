@@ -143,7 +143,7 @@ public class MySQLCommandeDAO implements CommandeDAO{
 			
 			String idCommandeStr = (commandeRecherchee.getIdCommande() != -1) ? String.valueOf(commandeRecherchee.getIdCommande()) : ""; 
 			String dateCommande = (commandeRecherchee.getDateCommande().equals(LocalDate.of(1, 1, 1))) ? "" : Date.valueOf(commandeRecherchee.getDateCommande()).toString();
-			String idClientStr = (commandeRecherchee.getIdClient() != -1) ? String.valueOf(commandeRecherchee.getDateCommande()) : "";
+			String idClientStr = (commandeRecherchee.getIdClient() != -1) ? String.valueOf(commandeRecherchee.getIdClient()) : "";
 
 			query.setString(1, "%" + idCommandeStr + "%");
 			query.setString(2, "%" + dateCommande + "%");

@@ -8,7 +8,7 @@ import entities.Categorie;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import vue.application.custom.controls.CategorieTableView;
+import vue.application.custom.controls.tableview.CategorieTableView;
 import vue.application.management.Management;
 import vue.application.management.UIManagement;
 

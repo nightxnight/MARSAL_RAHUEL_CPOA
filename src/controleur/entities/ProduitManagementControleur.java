@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import vue.application.custom.alert.ConfirmationAlert;
 
 public class ProduitManagementControleur implements ImplManagementControleur<Produit>{
 
@@ -41,7 +42,6 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	private MainControleur parent;
 	
 	public void initializeComponents() {	
-		choicebCategorie.getItems().add(new Categorie(-1, "Non selectionnée", ""));
 		choicebCategorie.getItems().addAll(DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getAll());
 		choicebCategorie.setConverter(new StringConverter<Categorie>() {
 			@Override
@@ -54,7 +54,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 				return objet.getTitre();
 			}
 		});
-		choicebCategorie.getSelectionModel().selectFirst();
+		choicebCategorie.getSelectionModel().clearSelection();
 	}
 	
 	@Override
@@ -78,22 +78,27 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 		edtNom.setText(produit.getNom());
 		txtDescription.setText(produit.getDescription());
 		edtTarif.setText(String.valueOf(produit.getTarif()));
-		choicebCategorie.getSelectionModel().select(new Categorie(produit.getIdCategorie(), "", ""));
+		Categorie categorieConcernee = new Categorie(produit.getIdCategorie(), "Introuvable", "");
+		if(!choicebCategorie.getItems().stream().anyMatch(Categorie -> Categorie.getIdCategorie() == categorieConcernee.getIdCategorie())) {
+			choicebCategorie.getItems().add(categorieConcernee);
+		}
+		choicebCategorie.getSelectionModel().select(categorieConcernee);
 		this.produit = produit;
 	}
 	
 	@Override
 	public void create() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Le produit va etre modifie.\netes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un produit", "Le produit va etre cree, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Produit nouveauProduit = new Produit(edtNom.getText(),
 											 		 txtDescription.getText(),
 											 		 Double.parseDouble(edtTarif.getText()),
 											 		 "",
 											 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
+				retourPage();
 			}
 		}
 	}
@@ -101,9 +106,9 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	@Override
 	public void update() {
 		if(checkErrors()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Le produit va etre modifie.\netes-vous sur ?\n", ButtonType.YES, ButtonType.NO);
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un produit", "Le produit va etre modifie, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
-			if(confirmation.get() == ButtonType.YES) {
+			if(confirmation.get() == alert.getValider()) {
 				Produit produitModifie = new Produit(produit.getId(), 
 											 edtNom.getText(),
 											 txtDescription.getText(),
@@ -111,6 +116,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 											 "",
 											 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
+				retourPage();
 			}
 		}
 	}
@@ -133,7 +139,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 			erreurs += "Le prix du produit est a renseigner.\n";
 		}
 		
-		if(choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie()== -1) {
+		if(choicebCategorie.getSelectionModel().getSelectedIndex() == -1) {
 			erreurs += "La categorie du produit doit etre selectionner.\n";
 		}
 		

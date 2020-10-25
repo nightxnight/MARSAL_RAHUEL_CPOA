@@ -1,9 +1,10 @@
-package vue.application.custom.controls;
+package vue.application.custom.controls.tableview;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+
+import controleur.MainControleur;
 import dao.DAOFactory;
-import dao.Persistance;
 import entities.Client;
 import entities.Commande;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,11 +13,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CommandeTableView extends TableView<Commande> {
-
-	private Persistance persistance;
 	
-	public CommandeTableView(Persistance persistance) {
-		this.persistance = persistance;
+	public CommandeTableView(MainControleur mainControleur) {
 		TableColumn<Commande, Integer> idComCol = new TableColumn<Commande, Integer>("numero");	
 		idComCol.setCellValueFactory(new PropertyValueFactory<>("idCommande"));
 		TableColumn<Commande, String> dateCol = new TableColumn<Commande, String>("date commande");		
@@ -31,7 +29,7 @@ public class CommandeTableView extends TableView<Commande> {
             SimpleObjectProperty<String> property = new SimpleObjectProperty<String>();
             String libelleClient = "";
             try {
-            	Client clientConcerne = DAOFactory.getDAOFactory(this.persistance).getClientDAO().getById(Commande.getValue().getIdClient());
+            	Client clientConcerne = DAOFactory.getDAOFactory(mainControleur.getPersistance()).getClientDAO().getById(Commande.getValue().getIdClient());
             	libelleClient = clientConcerne.getIdClient() + " - " + clientConcerne.getNom() + " " + clientConcerne.getPrenom();
             } catch(IllegalArgumentException iae) {
             	libelleClient = "introuvable";

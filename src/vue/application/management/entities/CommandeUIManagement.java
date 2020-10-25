@@ -8,7 +8,7 @@ import entities.Commande;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import vue.application.custom.controls.CommandeTableView;
+import vue.application.custom.controls.tableview.CommandeTableView;
 import vue.application.management.Management;
 import vue.application.management.UIManagement;
 
@@ -26,7 +26,7 @@ public class CommandeUIManagement extends UIManagement implements Management<Com
 
 	@Override
 	public TableView<Commande> getTableModel() {
-		return new CommandeTableView(parent.getPersistance());
+		return new CommandeTableView(parent);
 	}
 
 	@Override

@@ -62,7 +62,6 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO{
 	public boolean delete(LigneCommande objet) throws IllegalArgumentException {
 		int key = objet.getIdCommande();
 		if(mapLigneCommande.containsKey(key)) {
-			System.out.println(mapLigneCommande.get(key));
 			int idx = mapLigneCommande.get(key).indexOf(objet);
 			if(idx == -1) throw new IllegalArgumentException("Il n'y a aucune ligne de commande concernant ce produit pour cette commande.");
 			else {

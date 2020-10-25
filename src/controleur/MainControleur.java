@@ -12,18 +12,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.management.Entities;
 
 public class MainControleur implements Initializable{
@@ -49,6 +48,13 @@ public class MainControleur implements Initializable{
 	private MenuItem menuItemCommande;
 	
 	@FXML
+	private RadioMenuItem radioThemeClair;
+	@FXML
+	private RadioMenuItem radioThemeSombre;
+	@FXML
+	private ToggleGroup groupTheme;
+	
+	@FXML
 	private RadioMenuItem radioMenuListeMemoire;
 	@FXML 
 	private RadioMenuItem radioMenuMySQL;
@@ -57,7 +63,8 @@ public class MainControleur implements Initializable{
 	
 	@FXML
 	private Label labelFilAriane;
-	
+	@FXML
+	private Label labelPersistance;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -67,12 +74,34 @@ public class MainControleur implements Initializable{
 				RadioMenuItem selectedRadioButton = (RadioMenuItem) newToggle;
 				if(selectedRadioButton.equals(radioMenuListeMemoire)) {
 					persistance = Persistance.LISTEMEMOIRE;
+					labelPersistance.setText("Mode liste memoire (hors ligne)");
 				} else if(selectedRadioButton.equals(radioMenuMySQL)) {
-					persistance = persistance.MYSQL;
+					persistance = Persistance.MYSQL;
+					labelPersistance.setText("Mode base de donnees MySQL");
+				}
+				reloadManagementPane();
+			}
+		});
+		
+		groupTheme.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+			@Override
+			public void changed(ObservableValue<? extends Toggle> listeRadioButton, Toggle oldToggle, Toggle newToggle) {
+				RadioMenuItem selectedRadioButton = (RadioMenuItem) newToggle;
+				if(selectedRadioButton.equals(radioThemeClair)) {
+					//THEME CLAIR
+				} else if (selectedRadioButton.equals(radioThemeSombre)) {
+					//THEME SOMBRE;
 				}
 			}
 		});
+		
+		groupTheme.selectToggle(radioThemeClair);
 		groupPersistanceMenu.selectToggle(radioMenuMySQL);
+	}
+	
+	public void reloadManagementPane() {
+		if(managementPane == null) return;
+		loadManagementPane(entities);
 	}
 	
 	public void showCategories() {
@@ -132,9 +161,9 @@ public class MainControleur implements Initializable{
 	}
 	
 	public void quitterAppli() {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Confirmer la suppression ?", ButtonType.YES, ButtonType.NO);
+		ConfirmationAlert alert = new ConfirmationAlert("Quitter l'application", "Voulez vous quitter l'application ?");
 		Optional<ButtonType> confirmation = alert.showAndWait();
-		if(confirmation.get() == ButtonType.YES) System.exit(0);
+		if(confirmation.get() == alert.getValider()) System.exit(0);
 	}
 	
 	public BorderPane getMainPane() {

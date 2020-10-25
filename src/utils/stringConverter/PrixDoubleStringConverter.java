@@ -1,4 +1,4 @@
-package vue.application.custom.utils;
+package utils.stringConverter;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -6,8 +6,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.util.converter.DoubleStringConverter;
 
 public class PrixDoubleStringConverter extends DoubleStringConverter{
-
-	 private final DoubleStringConverter converter = new DoubleStringConverter();
 	 
 	 @Override
 	    public String toString(Double object) {

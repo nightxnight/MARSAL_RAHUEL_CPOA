@@ -31,7 +31,16 @@
                 </Menu>
                   <Menu mnemonicParsing="false" text="Autres">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Theme" />
+                        <Menu mnemonicParsing="false" text="Theme">
+                          <items>
+                              <RadioMenuItem fx:id="radioThemeClair" mnemonicParsing="false" text="Clair">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="groupTheme" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem fx:id="radioThemeSombre" mnemonicParsing="false" text="Sombre" toggleGroup="$groupTheme" />
+                          </items>
+                        </Menu>
                         <Menu mnemonicParsing="false" text="Persistance">
                           <items>
                               <RadioMenuItem fx:id="radioMenuListeMemoire" mnemonicParsing="false" text="Liste memoire">
@@ -46,7 +55,7 @@
                      </items></Menu>
                 <Menu mnemonicParsing="false">
                 	<graphic>
-		                <Label text="Quitter" onMouseClicked="#quitterAppli"/>
+		                <Label onMouseClicked="#quitterAppli" text="Quitter" />
 		            </graphic>
                 </Menu>
               </menus>
@@ -81,7 +90,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="Persistance">
+                  <Label fx:id="labelPersistance" text="Persistance">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

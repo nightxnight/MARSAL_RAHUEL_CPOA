@@ -9,12 +9,11 @@ import javafx.stage.Stage;
 public class HomePage extends Application {
 
 	@Override
-	public void start(Stage primaryStage) {
-		//FIXME Gestion de l'affichage de categorie, client, produit supprime dans les ManagementControleur
-	
+	public void start(Stage primaryStage) {	
 		//TODO Trier les resultats
-		//TODO css + bouton pour changer le theme
+		//TODO css
 		//TODO xml de config (sauvegarde la derniere persistance choisis et du theme
+		//FIXME actualisation des donnees apres retour a la page d'affichage
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Accueil.fxml"));
