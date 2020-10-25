@@ -10,10 +10,9 @@ public class HomePage extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {	
-		//TODO Trier les resultats
 		//TODO css
-		//TODO xml de config (sauvegarde la derniere persistance choisis et du theme
-		//FIXME actualisation des donnees apres retour a la page d'affichage
+		//TODO ajouter des labels d'erreur si le temps car vazy un peu la flemme + TextField nom fichier
+		//TODO eviter les doublons -> a mettre dans la methode create, trigger en mysql puis verif en liste memoire -> catch illegalArgument Exception ("x similaire")
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Accueil.fxml"));

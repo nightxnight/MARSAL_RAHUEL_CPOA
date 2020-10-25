@@ -73,6 +73,10 @@ public class ClientTableView extends TableView<Client>{
 		
 		this.getColumns().add(adresseCol);
 		this.getColumns().add(commandeCol);
+		
+		for(int i = 0; i < this.getColumns().size(); i++) {
+			this.getColumns().get(i).setSortable(false);
+		}
 		this.getSelectionModel().clearSelection();
 	}
 }

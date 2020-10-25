@@ -99,6 +99,9 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 											 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
 				retourPage();
+				//XXX Si on a effectuer une recherche le produit s'affichera malgré les contraintes, mais du coup comment on sait que le prod a ete creer ?
+				parent.getManagementControleur().getDatas().add(nouveauProduit);
+				parent.getManagementControleur().refresh(-1);
 			}
 		}
 	}
@@ -117,6 +120,8 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 											 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
 				retourPage();
+				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(produitModifie), produitModifie);
+				parent.getManagementControleur().refresh();
 			}
 		}
 	}

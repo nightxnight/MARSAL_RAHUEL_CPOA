@@ -1,6 +1,7 @@
 package vue.application.management.entities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import controleur.entities.ClientManagementControleur;
 import dao.DAOFactory;
@@ -32,12 +33,16 @@ public class ClientUIManagement extends UIManagement implements Management<Clien
 
     @Override
     public ArrayList<Client> getDatas() {
-        return DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().getAll();
+       ArrayList<Client> result = new ArrayList<Client>(DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().getAll());
+       Collections.sort(result);
+       return result;
     }
 
     @Override
     public ArrayList<Client> research(Client clientRecherche) {
-        return DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().research(clientRecherche);
+        ArrayList<Client> result = new ArrayList<Client>(DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().research(clientRecherche));
+        Collections.sort(result);
+        return result;
     }
 
     @Override

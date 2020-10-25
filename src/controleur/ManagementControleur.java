@@ -75,6 +75,7 @@ public class ManagementControleur implements Initializable{
 	}
 	
 	public void refresh(int refreshedPage) {
+		if(refreshedPage == -1) refreshedPage = nombreDePage;
 		pageCourante = refreshedPage;
 		updateLinesDisplayed();
 		disableButtonsIfNoRowSelected();
@@ -88,6 +89,10 @@ public class ManagementControleur implements Initializable{
 	public void loadDatas(ArrayList<Object> datas) {
 		this.datas = new ArrayList<Object>(datas);
 		labelNombreRes.setText(String.valueOf(this.datas.size()));
+	}
+	
+	public ArrayList<Object> getDatas() {
+		return datas;
 	}
 	
 	public void showDatas(int pageNumber) {

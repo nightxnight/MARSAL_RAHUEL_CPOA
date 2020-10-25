@@ -220,6 +220,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(tableLigneCommande.getItems().get(i));
 				}
 				retourPage();
+				parent.getManagementControleur().getDatas().add(nouvelleCommande);
+				parent.getManagementControleur().refresh(-1);
 			}
 		}
 	}
@@ -250,6 +252,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().delete(elementRestant);
 				}
 				retourPage();
+				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(commandeModifie), commandeModifie);
+				parent.getManagementControleur().refresh();
 			}
 		}
 	}

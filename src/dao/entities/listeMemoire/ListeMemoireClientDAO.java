@@ -19,7 +19,7 @@ public class ListeMemoireClientDAO implements ClientDAO{
 		listeClient.add(new Client(1, "LAROCHE", "Pierre", "pl@ul.fr", "toto", "12", "rue des etudiants", "57990", "Metz", "France"));
 		listeClient.add(new Client(2, "CHAMPION", "Nico", "nico@lechampion.fr", "niconico78", "17", "rue de la muscu", "68952", "Epinal", "France"));
 		listeClient.add(new Client(4, "LEVIKING", "Victor", "victorleM@gmail.com", "carole", "51", "rue des berserk", "41256", "Vent sur flamme", "Valhalla"));
-		autoIncrementedId = 1;
+		autoIncrementedId = 4;
 	}
 	
 	public static ListeMemoireClientDAO getInstance() {

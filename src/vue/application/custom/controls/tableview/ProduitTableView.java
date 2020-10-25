@@ -18,7 +18,7 @@ public class ProduitTableView extends TableView<Produit>{
 		TableColumn<Produit, String> descCol = new TableColumn<Produit, String>("description");
 		descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
 		TableColumn<Produit, Double> priceCol = new TableColumn<Produit, Double>("prix");
-		descCol.setMaxWidth(200);
+		descCol.setPrefWidth(200);
 		priceCol.setCellValueFactory(new PropertyValueFactory<>("tarif"));
 		TableColumn<Produit, String> visuelCol = new TableColumn<Produit, String>("visuel");
 		visuelCol.setCellValueFactory(new PropertyValueFactory<>("visuel"));
@@ -34,6 +34,14 @@ public class ProduitTableView extends TableView<Produit>{
             property.setValue(libelleCateg);
             return property;
         });
+		TableColumn<Produit, Integer> venteCol = new TableColumn<Produit, Integer>("ventes");
+		venteCol.setCellValueFactory(Produit -> {
+			SimpleObjectProperty<Integer> property = new SimpleObjectProperty<Integer>();
+			int nbVente = (int) DAOFactory.getDAOFactory(mainControleur.getPersistance()).getLigneCommandeDAO().getAll()
+									.stream().filter(LigneCommande -> LigneCommande.getIdProduit() == Produit.getValue().getId()).count();
+			property.setValue(nbVente);
+			return property;
+		});
 		
 		idCol.setSortType(TableColumn.SortType.DESCENDING);
 
@@ -44,6 +52,12 @@ public class ProduitTableView extends TableView<Produit>{
 		this.getColumns().add(priceCol);
 		this.getColumns().add(visuelCol);
 		this.getColumns().add(libelleCategCol);
+		this.getColumns().add(venteCol);
+		
+		for(int i = 0; i < this.getColumns().size(); i++) {
+			this.getColumns().get(i).setSortable(false);
+		}
+		
 		this.getSelectionModel().clearSelection();
 	}
 }

@@ -23,7 +23,7 @@ public class ListeMemoireCommandeDAO implements CommandeDAO{
 	    listeCommande.add(new Commande(1, LocalDate.parse("02/09/2020", formatage), 1));
 	    listeCommande.add(new Commande(2, LocalDate.parse("30/08/2020", formatage), 1));
 	    listeCommande.add(new Commande(3, LocalDate.parse("05/10/2020", formatage), 4));
-	    autoIncrementedId = 2;
+	    autoIncrementedId = 3;
 	}
 	
 	public static ListeMemoireCommandeDAO getInstance() {

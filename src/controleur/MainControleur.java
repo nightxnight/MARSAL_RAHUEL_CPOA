@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import dao.Persistance;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,6 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import utils.xml.XMLBuilder;
+import utils.xml.XMLLoader;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.management.Entities;
 
@@ -71,14 +76,21 @@ public class MainControleur implements Initializable{
 		groupPersistanceMenu.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> listeRadioButton, Toggle oldToggle, Toggle newToggle) {
+				
+				XMLLoader xmlLoader = new XMLLoader("config");
+				Document document = xmlLoader.getDocument();
+				
 				RadioMenuItem selectedRadioButton = (RadioMenuItem) newToggle;
 				if(selectedRadioButton.equals(radioMenuListeMemoire)) {
 					persistance = Persistance.LISTEMEMOIRE;
 					labelPersistance.setText("Mode liste memoire (hors ligne)");
+					xmlLoader.updateElement("persistance", "listeMemoire");
 				} else if(selectedRadioButton.equals(radioMenuMySQL)) {
 					persistance = Persistance.MYSQL;
 					labelPersistance.setText("Mode base de donnees MySQL");
+					xmlLoader.updateElement("persistance", "mySQL");
 				}
+				xmlLoader.saveChanges(document, "config");
 				reloadManagementPane();
 			}
 		});
@@ -86,22 +98,63 @@ public class MainControleur implements Initializable{
 		groupTheme.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> listeRadioButton, Toggle oldToggle, Toggle newToggle) {
+				
+				XMLLoader xmlLoader = new XMLLoader("config");
+				Document document = xmlLoader.getDocument();
+				
 				RadioMenuItem selectedRadioButton = (RadioMenuItem) newToggle;
 				if(selectedRadioButton.equals(radioThemeClair)) {
 					//THEME CLAIR
+					xmlLoader.updateElement("theme", "clair");
 				} else if (selectedRadioButton.equals(radioThemeSombre)) {
 					//THEME SOMBRE;
+					xmlLoader.updateElement("theme", "sombre");
 				}
+				
+				xmlLoader.saveChanges(document, "config");
 			}
 		});
-		
-		groupTheme.selectToggle(radioThemeClair);
-		groupPersistanceMenu.selectToggle(radioMenuMySQL);
+		loadUserConfig();
 	}
 	
-	public void reloadManagementPane() {
-		if(managementPane == null) return;
-		loadManagementPane(entities);
+	private void loadUserConfig() {
+		XMLLoader xmlLoader = new XMLLoader("config");
+		Document document = null;
+		
+		try {
+			document = xmlLoader.getDocument();
+		} catch(Exception e) {
+			System.out.println("Config introuvable");
+		} finally {
+			if(document == null)  {
+				createNewUserConfig();
+				return;
+			}
+		}
+		
+		Element confTheme = (Element) document.getElementsByTagName("theme").item(0);
+		switch(confTheme.getTextContent()) {
+		case "clair" : groupTheme.selectToggle(radioThemeClair); break;
+		case "sombre" : groupTheme.selectToggle(radioThemeSombre); break;
+		default : groupTheme.selectToggle(radioThemeClair);
+		}
+		
+		Element confPersistance = (Element) document.getElementsByTagName("persistance").item(0);
+		switch(confPersistance.getTextContent()) {
+		case "listeMemoire" : groupPersistanceMenu.selectToggle(radioMenuListeMemoire); break;
+		case "mySQL" : groupPersistanceMenu.selectToggle(radioMenuMySQL); break;
+		default : groupPersistanceMenu.selectToggle(radioMenuListeMemoire);
+		}
+	}
+	
+	private void createNewUserConfig() {
+		System.out.println("Creation d'une nouvelle configuration utilisateur");
+		XMLBuilder xmlBuilder = new XMLBuilder();
+		xmlBuilder.setRoot("config");
+		xmlBuilder.createElement("theme", "clair");
+		xmlBuilder.createElement("persistance", "listeMemoire");
+		xmlBuilder.createXMLFile("config");
+		loadUserConfig();
 	}
 	
 	public void showCategories() {
@@ -136,6 +189,11 @@ public class MainControleur implements Initializable{
 		}
 		this.entities = entities;
 		showManagementPane();
+	}
+	
+	public void reloadManagementPane() {
+		if(managementPane == null) return;
+		loadManagementPane(entities);
 	}
 	
 	public void showManagementPane() {

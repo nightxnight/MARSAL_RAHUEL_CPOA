@@ -105,6 +105,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
 				retourPage();
+				parent.getManagementControleur().getDatas().add(nouveauClient);
+				parent.getManagementControleur().refresh(-1);
 			}
 		}
 	}
@@ -127,6 +129,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 												  edtPays.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
 				retourPage();
+				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(clientModifie), clientModifie);
+				parent.getManagementControleur().refresh();
 			}
 		}
 	}

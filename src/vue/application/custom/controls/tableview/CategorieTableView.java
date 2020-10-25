@@ -21,6 +21,10 @@ public class CategorieTableView extends TableView<Categorie>{
 	this.getColumns().add(idCol);
 	this.getColumns().add(titreCol);
 	this.getColumns().add(visuelCol);
+	
+	for(int i = 0; i < this.getColumns().size(); i++) {
+		this.getColumns().get(i).setSortable(false);
+	}
 
 	this.getSelectionModel().clearSelection();
 	}

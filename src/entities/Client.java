@@ -1,6 +1,6 @@
 package entities;
 
-public class Client {
+public class Client implements Comparable<Client> {
 	
 	private int idClient;
 	private String nom;
@@ -115,7 +115,6 @@ public class Client {
 		this.adrPays = adrPays;
 	}
 	
-	//ToString
 	@Override
 	public String toString() {
 		return "Client [idClient=" + idClient + ", nom=" + nom + ", prenom=" + prenom + ", identifiant=" + identifiant
@@ -123,7 +122,6 @@ public class Client {
 				+ ", adrCodePostal=" + adrCodePostal + ", adrVille=" + adrVille + ", adrPays=" + adrPays + "]";
 	}
 
-	//Equals
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -137,6 +135,15 @@ public class Client {
 			return false;
 		}
 		return true;
-	}	
-	
+	}
+
+	@Override
+	public int compareTo(Client objet) {
+		int comparaisonNom = nom.toLowerCase().compareTo(objet.getNom().toLowerCase());
+		if(comparaisonNom == 0) {
+			int comparaisonPrenom = prenom.toLowerCase().compareTo(objet.getPrenom().toLowerCase());
+			if(comparaisonPrenom == 0) return adrCodePostal.toLowerCase().compareTo(objet.getAdrVille().toLowerCase());
+			else return comparaisonPrenom;
+		} else return comparaisonNom;
+	}
 }

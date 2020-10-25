@@ -63,6 +63,8 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 				Categorie nouvelleCategorie = new Categorie(edtNom.getText().trim(), edtVisuel.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().create(nouvelleCategorie);
 				retourPage();
+				parent.getManagementControleur().getDatas().add(nouvelleCategorie);
+				parent.getManagementControleur().refresh(-1);
 			}
 		}
 	}
@@ -76,6 +78,8 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 				Categorie categorieModifiee = new Categorie(categorie.getIdCategorie(), edtNom.getText().trim(), edtVisuel.getText().trim());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().update(categorieModifiee);
 				retourPage();
+				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(categorieModifiee), categorieModifiee);
+				parent.getManagementControleur().refresh();
 			}
 		}
 	}

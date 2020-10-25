@@ -44,6 +44,10 @@ public class CommandeTableView extends TableView<Commande> {
 		this.getColumns().add(idComCol);
 		this.getColumns().add(idClientCol);
 		this.getColumns().add(dateCol);
+		
+		for(int i = 0; i < this.getColumns().size(); i++) {
+			this.getColumns().get(i).setSortable(false);
+		}
 
 		this.getSelectionModel().clearSelection();
 	}
