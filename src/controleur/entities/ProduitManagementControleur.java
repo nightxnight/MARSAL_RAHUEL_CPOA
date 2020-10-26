@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import utils.regex.ImageFileFormat;
 import vue.application.custom.alert.ConfirmationAlert;
 
 public class ProduitManagementControleur implements ImplManagementControleur<Produit>{
@@ -23,13 +24,13 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	@FXML
 	private TextField edtNom;
 	@FXML
-	private TextField edtTarif;
-	@FXML
 	private TextArea txtDescription;
 	@FXML
-	private ChoiceBox<Categorie> choicebCategorie;
+	private TextField edtTarif;
 	@FXML
-	private Label lblResultat;
+	private TextField edtVisuel;
+	@FXML
+	private ChoiceBox<Categorie> choicebCategorie;
 	
 	@FXML
 	private Button boutonCreer;
@@ -37,6 +38,15 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	private Button boutonModif;
 	@FXML
 	private Button boutonRetour;
+	
+	@FXML
+	private Label labelNomErreur;
+	@FXML
+	private Label labelPrixErreur;
+	@FXML
+	private Label labelVisuelErreur;
+	@FXML
+	private Label labelCategErreur;
 	
 	private Produit produit;
 	private MainControleur parent;
@@ -88,14 +98,14 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	
 	@Override
 	public void create() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un produit", "Le produit va etre cree, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Produit nouveauProduit = new Produit(edtNom.getText(),
-											 		 txtDescription.getText(),
-											 		 Double.parseDouble(edtTarif.getText()),
-											 		 "",
+				Produit nouveauProduit = new Produit(edtNom.getText().trim(),
+											 		 txtDescription.getText().trim(),
+											 		 Double.parseDouble(edtTarif.getText().trim()),
+											 		 edtVisuel.getText().trim(),
 											 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
 				retourPage();
@@ -108,15 +118,15 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	
 	@Override
 	public void update() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un produit", "Le produit va etre modifie, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
 				Produit produitModifie = new Produit(produit.getId(), 
-											 edtNom.getText(),
-											 txtDescription.getText(),
-											 Double.parseDouble(edtTarif.getText()),
-											 "",
+											 edtNom.getText().trim(),
+											 txtDescription.getText().trim(),
+											 Double.parseDouble(edtTarif.getText().trim()),
+											 edtVisuel.getText().trim(),
 											 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
 				retourPage();
@@ -128,32 +138,56 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	
 	@Override
 	public boolean checkErrors() {
-		String erreurs = "";
+		boolean erreur = false;
 		
-		if(edtNom.getText().equals("")) {
-			erreurs += "Le nom du produit est a renseigner.\n";
+		labelNomErreur.setText("");
+		String nom = edtNom.getText().trim();
+		if(nom.equals("")) {
+			labelNomErreur.setText("a saisir.");
+			erreur = true;
 		}
 		
-		if(!edtTarif.getText().equals("")) {
+		labelPrixErreur.setText("");
+		String tarif = edtTarif.getText().trim();
+		if(!tarif.equals("")) {
 			try {
-				if(Double.parseDouble(edtTarif.getText()) <= 0) erreurs += "Le prix du produit est strictement superieur a 0.\n";
+				if(Double.parseDouble(tarif) <= 0) {
+					labelPrixErreur.setText("un prix est positif.");
+					erreur = true;
+				}
 			} catch (Exception e) {
-				erreurs += "Le prix du produit est un reel.\n";
+				labelPrixErreur.setText("un prix est un reels.");
+				erreur = true;
 			}
 		} else {
-			erreurs += "Le prix du produit est a renseigner.\n";
+			labelPrixErreur.setText("a saisir.");
+			erreur = true;
 		}
 		
+		labelVisuelErreur.setText("");
+		String visuel = edtVisuel.getText().trim();
+		if(!visuel.equals("")) {
+			if(!ImageFileFormat.check(visuel)) {
+				labelVisuelErreur.setText("Le visuel est un fichier .png, .gif, .jpg ou .bmp.");
+				erreur = true;
+			}
+		} else {
+			labelVisuelErreur.setText("a saisir.");
+			erreur = true;
+		}
+		
+		labelCategErreur.setText("");
 		if(choicebCategorie.getSelectionModel().getSelectedIndex() == -1) {
-			erreurs += "La categorie du produit doit etre selectionner.\n";
+			labelCategErreur.setText("a selectionner.");
+			erreur = true;
 		}
 		
-		if(!erreurs.isEmpty()) {
-			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
+		if(erreur) {
+			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
 			alert.showAndWait();
 		}
 		
-		return erreurs.isEmpty();
+		return erreur;
 	}
 	
 	@Override

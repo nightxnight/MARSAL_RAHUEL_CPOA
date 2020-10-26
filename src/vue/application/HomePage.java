@@ -11,7 +11,6 @@ public class HomePage extends Application {
 	@Override
 	public void start(Stage primaryStage) {	
 		//TODO css
-		//TODO ajouter des labels d'erreur si le temps car vazy un peu la flemme + TextField nom fichier
 		//TODO eviter les doublons -> a mettre dans la methode create, trigger en mysql puis verif en liste memoire -> catch illegalArgument Exception ("x similaire")
 		
 		try {

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.ClientManagementControleur">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.ClientManagementControleur">
    <children>
       <FlowPane alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="596.0">
          <children>
@@ -27,10 +27,10 @@
       </FlowPane>
       <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0">
         <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="250.0" />
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="250.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.0" minWidth="10.0" prefWidth="350.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="148.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="260.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="109.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.0" minWidth="10.0" prefWidth="287.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,14 +40,55 @@
          <children>
             <Label text="Nom : " />
             <Label text="Prenom : " GridPane.columnIndex="2" />
-            <TextField fx:id="edtNom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="1" />
-            <TextField fx:id="edtPrenom" maxWidth="-Infinity" minHeight="-Infinity" prefWidth="100.0" GridPane.columnIndex="3" />
-            <TextField fx:id="edtIdent" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Identifiant : " GridPane.rowIndex="1" />
             <Label text="Mot de passe : " GridPane.rowIndex="2" />
             <Label text="Confirmation : " GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <PasswordField fx:id="passwMdpClient" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <PasswordField fx:id="passwConfirmationMdp" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="edtNom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                  <Label fx:id="labelNomErreur" maxWidth="200.0" wrapText="true" />
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="edtIdent" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                  <Label fx:id="labelIdentErreur" maxWidth="200.0" wrapText="true">
+                     <FlowPane.margin>
+                        <Insets left="3.0" />
+                     </FlowPane.margin>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="3">
+               <children>
+                  <TextField fx:id="edtPrenom" maxWidth="-Infinity" minHeight="-Infinity" prefWidth="100.0" />
+                  <Label fx:id="labelPrenomErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <PasswordField fx:id="passwMdpClient" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                  <Label fx:id="labelMdpErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <PasswordField fx:id="passwConfirmationMdp" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                  <Label fx:id="labelConfirmMdpErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
          </children>
       </GridPane>
       <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
@@ -61,9 +102,9 @@
       <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="127.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="122.0" />
-            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="103.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0" minWidth="10.0" prefWidth="244.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="316.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="244.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -76,11 +117,59 @@
             <Label text="Code postal : " GridPane.rowIndex="1" />
             <Label text="Ville : " GridPane.rowIndex="2" />
             <Label text="Pays : " GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextField fx:id="edtNum" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" />
-            <TextField fx:id="edtVoie" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="3" />
-            <TextField fx:id="edtCodePostal" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="edtVille" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="edtPays" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="edtNum" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                  <Label fx:id="labelNumErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="edtCodePostal" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                  <Label fx:id="labelCodePostalErreur" maxWidth="200.0" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="3">
+               <children>
+                  <TextField fx:id="edtVoie" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                  <Label fx:id="labelVoieErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <TextField fx:id="edtVille" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+                  <Label fx:id="labelVilleErreur" maxWidth="200.0" wrapText="true">
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <TextField fx:id="edtPays" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                  <Label fx:id="labelPaysErreur" maxWidth="200.0" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
          </children>
       </GridPane>
       <StackPane prefHeight="50.0" prefWidth="200.0">

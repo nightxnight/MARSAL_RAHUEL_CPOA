@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.ProduitManagementControleur">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.ProduitManagementControleur">
    <children>
       <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
          <padding>
@@ -23,7 +23,7 @@
             <Label text="PRODUIT" />
          </children>
       </FlowPane>
-      <GridPane prefHeight="300.0" prefWidth="600.0">
+      <GridPane prefHeight="340.0" prefWidth="600.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="294.4000244140625" minWidth="10.0" prefWidth="186.39996337890625" />
           <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="414.4000366210937" minWidth="10.0" prefWidth="414.4000366210937" />
@@ -33,21 +33,56 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Nom : " />
             <Label text="Description : " GridPane.rowIndex="1" />
             <Label text="Tarif : " GridPane.rowIndex="2" />
-            <Label text="Catégorie : " GridPane.rowIndex="3" />
-            <TextField fx:id="edtNom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" GridPane.columnIndex="1" />
+            <Label text="Catégorie : " GridPane.rowIndex="4" />
             <TextArea fx:id="txtDescription" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <TextField fx:id="edtTarif" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="50.0" />
                   <Label text=" euros à l'unité." />
+                  <Label fx:id="labelPrixErreur" maxWidth="200.0" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
                </children>
             </FlowPane>
-            <ChoiceBox fx:id="choicebCategorie" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Visuel : " GridPane.rowIndex="3" />
+            <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <TextField fx:id="edtVisuel" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="edtNom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" />
+                  <Label fx:id="labelNomErreur">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <ChoiceBox fx:id="choicebCategorie" prefWidth="150.0" />
+                  <Label fx:id="labelCategErreur">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -62,7 +97,6 @@
       <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
          <children>
             <Button fx:id="boutonRetour" mnemonicParsing="false" onAction="#retourPage" text="Retour" />
-            <Label fx:id="lblResultat" />
          </children>
       </FlowPane>
    </children>

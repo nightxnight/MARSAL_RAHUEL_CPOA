@@ -3,8 +3,6 @@ package controleur.entities;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import controleur.MainControleur;
 import dao.DAOFactory;
@@ -13,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import utils.regex.MailAddressFormat;
 import vue.application.custom.alert.ConfirmationAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -50,9 +49,29 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	@FXML
 	private Button boutonModif;
 	@FXML
-	private Label lblResultat;
+	private Button boutonRetour;
 	
-	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	@FXML
+	private Label labelNomErreur;
+	@FXML
+	private Label labelPrenomErreur;
+	@FXML
+	private Label labelIdentErreur;
+	@FXML
+	private Label labelMdpErreur;
+	@FXML
+	private Label labelConfirmMdpErreur;
+	
+	@FXML
+	private Label labelNumErreur;
+	@FXML
+	private Label labelVoieErreur;
+	@FXML
+	private Label labelCodePostalErreur;
+	@FXML
+	private Label labelVilleErreur;
+	@FXML
+	private Label labelPaysErreur;
 	
 	public void setFormMode(Client client, boolean modif) {
 		
@@ -90,7 +109,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	}
 
 	public void create() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un client", "Le client va etre cree, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
@@ -113,7 +132,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	
 	@Override
 	public void update() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un client", "Le client va etre modifie, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
@@ -137,69 +156,136 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	
 	@Override
 	public boolean checkErrors() {
-		String erreurs = "";
+		boolean erreur = false;
 		
+		labelNomErreur.setText("");
 		String nom = edtNom.getText().trim();
 		if(!nom.equals("")) {
-			if(!nom.matches("^[A-Z]*$")) erreurs += "Le nom du client ne peut pas être composé de chiffres\n";
-		} else erreurs += "Le nom du client est a renseigner.\n";
-		
-		String prenom = edtPrenom.getText().trim();
-		if(!prenom.equals("")) {
-			if(!prenom.matches("^[a-zA-Z]*$")) erreurs += "Le prénom du client ne peut pas être composé de chiffres\n";
-		} else erreurs += "Le prénom du client est a renseigner.\n";
-		
-		String identifiant = edtIdent.getText().trim();
-		if(identifiant.equals("")) erreurs += "L'identifiant du client est a renseigner.\n";
-		else if(!isMailAdress(identifiant)) erreurs += "Mauvais format de l'addresse mail.\n";
-
-		
-		if(passwMdpClient.getText().trim().equals("")) erreurs += "Le mot de passe du client est a renseigner.\n";
-		else {
-			if(passwConfirmationMdp.getText().trim().equals("")) erreurs += "Le mot de passe est a confirmer.\n";
-			else if(!passwMdpClient.getText().trim().equals(passwConfirmationMdp.getText().trim())) erreurs += "La confirmation doit correspondre au mot de passe.\n";
+			if(!nom.matches("^[A-Z]*$")) {
+				labelNomErreur.setText("pas de chiffres.");
+				erreur = true;
+			}
+		} else {
+			labelNomErreur.setText("a saisir.");
+			erreur = true;
 		}
 		
+		labelPrenomErreur.setText("");
+		String prenom = edtPrenom.getText().trim();
+		if(!prenom.equals("")) {
+			if(!prenom.matches("^[a-zA-Z]*$")) {
+				labelPrenomErreur.setText("pas de chiffres.");
+				erreur = true;
+			}
+		} else {
+			labelPrenomErreur.setText("a saisir.");
+			erreur = true;
+		}
+		
+		labelIdentErreur.setText("");
+		String identifiant = edtIdent.getText().trim();
+		if(identifiant.equals("")) {
+			labelIdentErreur.setText("a saisir");
+			erreur = true;
+		}
+		else if(!MailAddressFormat.check(identifiant)) {
+			labelIdentErreur.setText("mauvais format.");
+			erreur = true;
+		}
+
+		labelMdpErreur.setText("");
+		labelConfirmMdpErreur.setText("");
+		if(passwMdpClient.getText().trim().equals("")) {
+			labelMdpErreur.setText("a saisir");
+			erreur = true;
+		}
+		else {
+			if(passwConfirmationMdp.getText().trim().equals("")) {
+				labelConfirmMdpErreur.setText("a confirmer.");
+				erreur = true;
+			}
+			else if(!passwMdpClient.getText().trim().equals(passwConfirmationMdp.getText().trim())) {
+				labelConfirmMdpErreur.setText("incorrect.");
+				erreur = true;
+			}
+		}
+		
+		labelNumErreur.setText("");
 		String num = edtNum.getText().trim();
 		if(!num.equals("")) {
 			try {
-				if(Integer.parseInt(num) <= 0) erreurs += "Un numero d'habitation est positif.\n";
+				if(Integer.parseInt(num) <= 0) {
+					labelNumErreur.setText("nombre positif.");
+					erreur = true;
+				}
 			} catch(Exception e) {
-				erreurs += "Un numero est un entier.\n";
+				labelNumErreur.setText("nombre entier.");
+				erreur = true;
 			}
-		} else erreurs += "Le numéro d'habitation du client est a renseigner.\n";
+		} else {
+			labelNumErreur.setText("a saisir.");
+			erreur = true;
+		}
 		
+		labelVoieErreur.setText("");
 		String voie = edtVoie.getText().trim();
 		if(!voie.equals("")) {
-			if(!voie.matches("^[a-zA-Z][a-zA-Z ]*$")) erreurs += "La voie d'habitation du client ne peut pas être composée de chiffres";
-		} else erreurs += "La voie d'habitation du client est a renseigner.\n";
+			if(!voie.matches("^[a-zA-Z][a-zA-Z ]*$")) {
+				labelVoieErreur.setText("pas de chiffre.");
+				erreur = true;
+			}
+		} else {
+			labelVoieErreur.setText("a saisir.");
+			erreur = true;
+		}
 		
+		labelCodePostalErreur.setText("");
 		String codePostal = edtCodePostal.getText().trim(); 
 		if(!codePostal.equals("")) {
-				if(Integer.parseInt(codePostal) <= 0) erreurs += "Le code postal doit être composé uniquement de chiffres";
-		} else erreurs += "Le code postal du client est a renseigner.\n";
+			try {
+				if(Integer.parseInt(codePostal) <= 0) {
+					labelCodePostalErreur.setText("uniquement positif.");
+					erreur = true;
+				}
+			} catch(Exception e) {
+				labelCodePostalErreur.setText("uniquement des chiffres.");
+				erreur = true;
+			}
+		} else {
+			labelCodePostalErreur.setText("a saisir");
+			erreur = true;
+		}
 		
+		labelVilleErreur.setText("");
 		String ville = edtVille.getText().trim();
 		if(!ville.equals("")) {
-			if(!ville.matches("^[a-zA-Z]*$")) erreurs += "La ville du client ne peut pas être composée de chiffres";
-		} else erreurs += "La ville du client est a renseigner.\n";
+			if(!ville.matches("^[a-zA-Z]*$")) {
+				labelVilleErreur.setText("pas de chiffres.");
+				erreur = true;
+			}
+		} else {
+			labelVilleErreur.setText("a saisir");
+			erreur = true;
+		}
 		
+		labelPaysErreur.setText("");
 		String pays = edtPays.getText().trim();
 		if(!pays.equals("")) {
-			if (!pays.matches("^[a-zA-Z]*$")) erreurs += "Le pays ne peut pas être composé de chiffres";
-		} else erreurs += "Le pays du client est a renseigner.\n";
+			if (!pays.matches("^[a-zA-Z]*$")) {
+				labelPaysErreur.setText("pas de chiffres.");
+				erreur = true;
+			}
+		} else {
+			labelPaysErreur.setText("a saisir");
+			erreur = true;
+		}
 		
-		if(!erreurs.isEmpty()) {
-			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
+		if(erreur) {
+			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
 			alert.showAndWait();
 		}
 		
-		return erreurs.isEmpty();
-	}
-	
-	public static boolean isMailAdress(String email) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
+		return erreur;
 	}
 	
 	@Override

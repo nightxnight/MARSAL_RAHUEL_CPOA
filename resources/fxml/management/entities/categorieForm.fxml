@@ -34,10 +34,28 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="edtNom" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" GridPane.columnIndex="1" />
-            <TextField fx:id="edtVisuel" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Titre : " />
             <Label text="Fichier correspondant : " GridPane.rowIndex="1" />
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="edtNom" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" />
+                  <Label fx:id="labelNomErreur" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="edtVisuel" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" />
+                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" wrapText="true">
+                     <padding>
+                        <Insets left="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </FlowPane>
          </children>
       </GridPane>
       <StackPane prefHeight="50.0" prefWidth="200.0">

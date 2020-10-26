@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -69,6 +70,18 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	private Button boutonModif;
 	@FXML
 	private Button boutonRetour;	
+	
+	@FXML
+	private Label labelClientErreur;
+	@FXML
+	private Label labelDateErreur;
+	
+	@FXML
+	private Label labelProduitErreur;
+	@FXML
+	private Label labelQuantiteErreur;
+	@FXML
+	private Label labelTarifErreur;
 	
 	@Override 
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -207,7 +220,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 
 	@Override
 	public void create() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une commande", "La commande va etre creee, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
@@ -228,7 +241,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 
 	@Override
 	public void update() {
-		if(checkErrors()) {
+		if(!checkErrors()) {
 			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une commande", "La commande va etre modifiee, etes-vous sur ?");
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
@@ -260,24 +273,35 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 
 	@Override
 	public boolean checkErrors() {
-		String erreurs = "";
+		boolean erreur = false;
 		
-		if(choicebClient.getSelectionModel().getSelectedIndex() == -1) erreurs += "Le client concerne par la commande doit etre selectionner.\n";
+		labelClientErreur.setText("");
+		if(choicebClient.getSelectionModel().getSelectedIndex() == -1) {
+			labelClientErreur.setText("a selectionner.");
+			erreur = true;
+		}
 		
-		if(datePckCommande.getValue() == null) erreurs += "La date de la commande doit etre indiquer.\n";
-		else if(datePckCommande.getValue().isAfter(LocalDate.now())) erreurs += "La date de la commande ne peut pas etre superieur a celle d'aujourd'hui.\n";
+		labelDateErreur.setText("");
+		if(datePckCommande.getValue() == null) {
+			labelDateErreur.setText("a selectionner.");
+			erreur = true;
+		}
+		else if(datePckCommande.getValue().isAfter(LocalDate.now())) {
+			labelDateErreur.setText("date inferieur ou egale a celle d'aujourd'hui");
+			erreur = true;
+		}
 		
-		if(tableLigneCommande.getItems().size()==0) erreurs += "La commande doit au moins concerner un produit dans son detail.\n";
+		//if(tableLigneCommande.getItems().size()==0)  "La commande doit au moins concerner un produit dans son detail.\n";
 		
-		if(!erreurs.isEmpty()) {
-			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
+		if(erreur) {
+			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide", ButtonType.OK);
 			alert.showAndWait();
 		}
-		return erreurs.isEmpty();
+		return erreur;
 	}
 	
 	public void ajouterLigneDetail() {
-		if(checkDetailsErrors()) {
+		if(!checkDetailsErrors()) {
 			tableLigneCommande.getItems().add(new LigneCommande(0, choicebProduit.getSelectionModel().getSelectedItem().getId(), 
 																Integer.parseInt(edtQuantite.getText()),
 																Double.parseDouble(edtPrix.getText())));
@@ -290,35 +314,59 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	}
 	
 	public boolean checkDetailsErrors() {
-		String erreurs = "";
-		if(choicebProduit.getSelectionModel().getSelectedIndex() == -1) erreurs += "Un produit doit etre selectionner pour ajouter un detail.\n";
-		if(tableLigneCommande.getItems().stream()
-										.anyMatch(ligneCommande -> ligneCommande.getIdProduit() == choicebProduit.getSelectionModel().getSelectedItem().getId()))
-			erreurs += "On ne peut pas ajouter deux fois un meme produit à la commande.\n";
-		if(edtQuantite.getText().trim().equals("")) erreurs += "La quantite doit etre preciser.\n";
-		else {
+		boolean erreur = false;
+		
+		labelProduitErreur.setText("");
+		if(choicebProduit.getSelectionModel().getSelectedIndex() == -1) {
+			labelProduitErreur.setText("a selectionner.");
+			erreur = true;
+		} else if(tableLigneCommande.getItems().stream()
+											   .anyMatch(ligneCommande -> ligneCommande.getIdProduit() 
+													   					  == choicebProduit.getSelectionModel().getSelectedItem().getId())
+				 ) {
+			labelProduitErreur.setText("deja concerne.");
+			erreur = true;
+		}
+			
+		labelQuantiteErreur.setText("");
+		if(edtQuantite.getText().trim().equals("")) {
+			labelQuantiteErreur.setText("a saisir.");
+			erreur = true;
+		} else {
 			try {
-				if(Integer.parseInt(edtQuantite.getText().trim()) <= 0) erreurs += "La quantite est strictement superieur a 0.\n";
+				if(Integer.parseInt(edtQuantite.getText().trim()) <= 0) {
+					labelQuantiteErreur.setText("strictement superieur a 0.");;
+					erreur = true;
+				}
 			} catch (Exception e) {
-				erreurs += "Le quantite commandee est un entier.\n";
+				labelQuantiteErreur.setText("nombre entier.");
+				erreur = true;
 			}
 		}
 		
-		if(edtPrix.getText().trim().equals("")) erreurs += "Le prix doit etre preciser.\n";
+		labelTarifErreur.setText("");
+		if(edtPrix.getText().trim().equals("")) {
+			labelTarifErreur.setText("a saisir.");
+			erreur = true;
+		}
 		else {
 			try {
-				if(Double.parseDouble(edtPrix.getText().trim()) <= 0) erreurs += "Le prix est strictement superieur a 0.\n";
+				if(Double.parseDouble(edtPrix.getText().trim()) <= 0) {
+					labelTarifErreur.setText("strictement superieur a 0.");
+					erreur = true;
+				}
 			} catch(Exception e) {
-				erreurs += "Le prix a l'achat est un reel.\n";
+				labelTarifErreur.setText("nombre reel.");
+				erreur = true;
 			}
 		}
 		
-		if(!erreurs.isEmpty()) {
-			Alert alert = new Alert(AlertType.ERROR, erreurs, ButtonType.OK);
+		if(erreur) {
+			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
 			alert.showAndWait();
 		}
 		
-		return erreurs.isEmpty();
+		return erreur;
 	}
 
 	@Override
