@@ -28,7 +28,9 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 
 	@Override
-	public boolean create(Client objet) {		
+	public boolean create(Client objet) throws IllegalArgumentException {	
+		if(listeClient.stream().anyMatch(Client -> Client.getIdentifiant().equalsIgnoreCase(objet.getIdentifiant())))
+			throw new IllegalArgumentException("Cette adresse mail est deja utilisee.");
 		++autoIncrementedId;
 		while(listeClient.indexOf(objet) != -1) {
 			++autoIncrementedId;

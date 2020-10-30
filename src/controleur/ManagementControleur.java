@@ -18,6 +18,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.management.Entities;
 import vue.application.management.UIManagement;
 
@@ -190,9 +191,9 @@ public class ManagementControleur implements Initializable{
 
 	public void delete() {
 		if(dataTable.getSelectionModel().getSelectedIndex() == -1) return;
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Confirmer la suppression ?", ButtonType.YES, ButtonType.NO);
+		ConfirmationAlert alert = new ConfirmationAlert("Suppression", "La ligne selectionne va etre supprimee,\netes-vous sur ?", parent);
 		Optional<ButtonType> confirmation = alert.showAndWait();
-		if(confirmation.get() == ButtonType.YES) {
+		if(confirmation.get() == alert.getValider()) {
 			Object donneeSupprime = dataTable.getSelectionModel().getSelectedItem();
 			UIManagement.getUIManagement(dataModel).delete(donneeSupprime);
 			datas.remove(donneeSupprime);

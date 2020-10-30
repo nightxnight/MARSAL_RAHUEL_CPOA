@@ -27,20 +27,17 @@ public class ListeMemoireProduitDAO  implements ProduitDAO{
 		listeProduit.add(new Produit(12, "Dall", "Joyeux Noel avec nos petits lutins dansants !",
 				35, "bonnet1.png", 2));
 		autoIncrementedId = 12;
-		
-		for(int i = 0; i < 20; i++) {
-			create(new Produit("test", "desText", 10, "visuel.png", 1));
-		}
-		create(new Produit("testSpeciale", "desText", 10, "visuel.png", 1));
 	}
-	
+
 	public static ListeMemoireProduitDAO getInstance() {
 		if(instance==null) instance = new ListeMemoireProduitDAO();
 		return instance;
 	}
 
 	@Override
-	public boolean create(Produit objet) {		
+	public boolean create(Produit objet) throws IllegalArgumentException {		
+		if(listeProduit.stream().anyMatch(Produit -> Produit.getNom().equalsIgnoreCase(objet.getNom())))
+			throw new IllegalArgumentException("Un produit similaire existe deja.");
 		++autoIncrementedId;
 		while(listeProduit.indexOf(objet) != -1) {
 			++autoIncrementedId;

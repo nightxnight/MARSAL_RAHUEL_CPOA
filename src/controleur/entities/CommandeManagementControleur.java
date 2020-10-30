@@ -15,7 +15,6 @@ import entities.Produit;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -24,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
@@ -32,6 +30,7 @@ import javafx.util.StringConverter;
 import utils.stringConverter.PrixDoubleStringConverter;
 import utils.stringConverter.QuantiteIntegerStringConverter;
 import vue.application.custom.alert.ConfirmationAlert;
+import vue.application.custom.alert.ErrorAlert;
 
 public class CommandeManagementControleur implements ImplManagementControleur<Commande>, Initializable{
 	
@@ -75,6 +74,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	private Label labelClientErreur;
 	@FXML
 	private Label labelDateErreur;
+	@FXML 
+	private Label labelErreurDetail;
 	
 	@FXML
 	private Label labelProduitErreur;
@@ -125,12 +126,12 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 				valeur = celluleEdite.getNewValue();
 				if(valeur <= 0) {
 					valeur = celluleEdite.getOldValue();
-					Alert alert = new Alert(AlertType.ERROR, "Une quantite est strictement positive", ButtonType.OK);
-					alert.showAndWait();
+					ErrorAlert errorAlert = new ErrorAlert("Quantite invalide", "Une quantite est postive.", parent);
+					errorAlert.showAndWait();
 				}
 			} catch(NumberFormatException e) {
-				Alert alert = new Alert(AlertType.ERROR, "Une quantite est un entier", ButtonType.OK);
-				alert.showAndWait();
+				ErrorAlert errorAlert = new ErrorAlert("Quantite invalide", "La quantite est un entier.", parent);
+				errorAlert.showAndWait();
 			}
 			ligneCommande.setQuantite(valeur);
 		}
@@ -147,12 +148,12 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 				valeur = celluleEdite.getNewValue();
 				if(valeur <= 0) {
 					valeur = celluleEdite.getOldValue();
-					Alert alert = new Alert(AlertType.ERROR, "Un prix est strictement positif.", ButtonType.OK);
-					alert.showAndWait();
+					ErrorAlert errorAlert = new ErrorAlert("Prix invalide", "Un prix est positif.", parent);
+					errorAlert.showAndWait();
 				}
 			} catch(NumberFormatException e) {
-				Alert alert = new Alert(AlertType.ERROR, "Un prix est un reel", ButtonType.OK);
-				alert.showAndWait();
+				ErrorAlert errorAlert = new ErrorAlert("Prix invalide", "Un prix est un reel.", parent);
+				errorAlert.showAndWait();
 			}
 			ligneCommande.setTarifUnitaire(valeur);
 		}
@@ -221,7 +222,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	@Override
 	public void create() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une commande", "La commande va etre creee, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une commande", "La commande va etre creee, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
 				Commande nouvelleCommande = new Commande(datePckCommande.getValue(),
@@ -242,31 +243,36 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	@Override
 	public void update() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une commande", "La commande va etre modifiee, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une commande", "La commande va etre modifiee, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Commande commandeModifie = new Commande(commande.getIdCommande(), datePckCommande.getValue(),
-														 choicebClient.getSelectionModel().getSelectedItem().getIdClient());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getCommandeDAO().update(commandeModifie);
-			
-				ArrayList<LigneCommande> ancienneLigneCommandes = new ArrayList<LigneCommande>(DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().getById(commande.getIdCommande()));
-				ArrayList<LigneCommande> nouvelleLigneCommande = new ArrayList<LigneCommande>(tableLigneCommande.getItems());
-				for(int i = 0; i < nouvelleLigneCommande.size(); i++) {
-					nouvelleLigneCommande.get(i).setIdCommande(commandeModifie.getIdCommande());
-					if(ancienneLigneCommandes.contains(nouvelleLigneCommande.get(i))) {
-						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().update(nouvelleLigneCommande.get(i));
-						ancienneLigneCommandes.remove(nouvelleLigneCommande.get(i));
-					} else {
-						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(nouvelleLigneCommande.get(i));
-					}			
-				}
+				try {
+					Commande commandeModifie = new Commande(commande.getIdCommande(), datePckCommande.getValue(),
+															 choicebClient.getSelectionModel().getSelectedItem().getIdClient());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getCommandeDAO().update(commandeModifie);
 				
-				for(LigneCommande elementRestant : ancienneLigneCommandes) {
-					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().delete(elementRestant);
+					ArrayList<LigneCommande> ancienneLigneCommandes = new ArrayList<LigneCommande>(DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().getById(commande.getIdCommande()));
+					ArrayList<LigneCommande> nouvelleLigneCommande = new ArrayList<LigneCommande>(tableLigneCommande.getItems());
+					for(int i = 0; i < nouvelleLigneCommande.size(); i++) {
+						nouvelleLigneCommande.get(i).setIdCommande(commandeModifie.getIdCommande());
+						if(ancienneLigneCommandes.contains(nouvelleLigneCommande.get(i))) {
+							DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().update(nouvelleLigneCommande.get(i));
+							ancienneLigneCommandes.remove(nouvelleLigneCommande.get(i));
+						} else {
+							DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(nouvelleLigneCommande.get(i));
+						}			
+					}
+					
+					for(LigneCommande elementRestant : ancienneLigneCommandes) {
+						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().delete(elementRestant);
+					}
+					retourPage();
+					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(commandeModifie), commandeModifie);
+					parent.getManagementControleur().refresh();
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la modification", iae.getMessage(), parent);
+					errorAlert.showAndWait();
 				}
-				retourPage();
-				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(commandeModifie), commandeModifie);
-				parent.getManagementControleur().refresh();
 			}
 		}
 	}
@@ -291,11 +297,15 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 			erreur = true;
 		}
 		
-		//if(tableLigneCommande.getItems().size()==0)  "La commande doit au moins concerner un produit dans son detail.\n";
+		labelErreurDetail.setText("");
+		if(tableLigneCommande.getItems().size()==0) {
+			labelErreurDetail.setText("La commande doit concerner au moins un produit.");
+			erreur = true;
+		}
 		
 		if(erreur) {
-			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide", ButtonType.OK);
-			alert.showAndWait();
+			ErrorAlert errorAlert = new ErrorAlert("Formulaire invalide", "Certains champs sont invalides,\nveuillez les corriger.", parent);
+			errorAlert.showAndWait();
 		}
 		return erreur;
 	}
@@ -305,6 +315,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 			tableLigneCommande.getItems().add(new LigneCommande(0, choicebProduit.getSelectionModel().getSelectedItem().getId(), 
 																Integer.parseInt(edtQuantite.getText()),
 																Double.parseDouble(edtPrix.getText())));
+			labelErreurDetail.setText("");
 		}
 	}
 	
@@ -362,8 +373,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 		}
 		
 		if(erreur) {
-			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
-			alert.showAndWait();
+			ErrorAlert errorAlert = new ErrorAlert("Formulaire invalide", "Certains champs sont invalides,\nveuillez les corriger.", parent);
+			errorAlert.showAndWait();
 		}
 		
 		return erreur;

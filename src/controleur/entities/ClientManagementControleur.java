@@ -9,10 +9,9 @@ import dao.DAOFactory;
 import entities.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import utils.regex.MailAddressFormat;
 import vue.application.custom.alert.ConfirmationAlert;
+import vue.application.custom.alert.ErrorAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -110,22 +109,27 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 
 	public void create() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un client", "Le client va etre cree, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un client", "Le client va etre cree, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Client nouveauClient = new Client(edtNom.getText().trim(),
-												  edtPrenom.getText().trim(),
-												  edtIdent.getText().trim(),
-												  passwMdpClient.getText().trim(),
-												  edtNum.getText().trim(),
-												  edtVoie.getText().trim(),
-												  edtVille.getText().trim(),
-												  edtCodePostal.getText().trim(),
-												  edtPays.getText().trim());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
-				retourPage();
-				parent.getManagementControleur().getDatas().add(nouveauClient);
-				parent.getManagementControleur().refresh(-1);
+				try {
+					Client nouveauClient = new Client(edtNom.getText().trim(),
+													  edtPrenom.getText().trim(),
+													  edtIdent.getText().trim(),
+													  passwMdpClient.getText().trim(),
+													  edtNum.getText().trim(),
+													  edtVoie.getText().trim(),
+													  edtVille.getText().trim(),
+													  edtCodePostal.getText().trim(),
+													  edtPays.getText().trim());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
+					retourPage();
+					parent.getManagementControleur().getDatas().add(nouveauClient);
+					parent.getManagementControleur().refresh(-1);
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -133,23 +137,28 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 	@Override
 	public void update() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un client", "Le client va etre modifie, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un client", "Le client va etre modifie, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Client clientModifie = new Client(client.getIdClient(),
-												  edtNom.getText().trim(),
-												  edtPrenom.getText().trim(),
-												  edtIdent.getText().trim(),
-												  passwMdpClient.getText().trim(),
-												  edtNum.getText().trim(),
-												  edtVoie.getText().trim(),
-												  edtVille.getText().trim(),
-												  edtCodePostal.getText().trim(),
-												  edtPays.getText().trim());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
-				retourPage();
-				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(clientModifie), clientModifie);
-				parent.getManagementControleur().refresh();
+				try {
+					Client clientModifie = new Client(client.getIdClient(),
+													  edtNom.getText().trim(),
+													  edtPrenom.getText().trim(),
+													  edtIdent.getText().trim(),
+													  passwMdpClient.getText().trim(),
+													  edtNum.getText().trim(),
+													  edtVoie.getText().trim(),
+													  edtVille.getText().trim(),
+													  edtCodePostal.getText().trim(),
+													  edtPays.getText().trim());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
+					retourPage();
+					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(clientModifie), clientModifie);
+					parent.getManagementControleur().refresh();
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la modification", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -259,7 +268,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		labelVilleErreur.setText("");
 		String ville = edtVille.getText().trim();
 		if(!ville.equals("")) {
-			if(!ville.matches("^[a-zA-Z]*$")) {
+			if(!ville.matches("^[a-zA-Z][a-zA-Z ]*$")) {
 				labelVilleErreur.setText("pas de chiffres.");
 				erreur = true;
 			}
@@ -281,8 +290,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		}
 		
 		if(erreur) {
-			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
-			alert.showAndWait();
+			ErrorAlert errorAlert = new ErrorAlert("Formulaire invalide", "Certains champs sont invalides,\nveuillez les corriger.", parent);
+			errorAlert.showAndWait();
 		}
 		
 		return erreur;

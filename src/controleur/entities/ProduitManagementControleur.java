@@ -7,8 +7,6 @@ import dao.DAOFactory;
 import entities.Categorie;
 import entities.Produit;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -18,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import utils.regex.ImageFileFormat;
 import vue.application.custom.alert.ConfirmationAlert;
+import vue.application.custom.alert.ErrorAlert;
 
 public class ProduitManagementControleur implements ImplManagementControleur<Produit>{
 
@@ -77,6 +76,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 			edtNom.setDisable(!modif);
 			txtDescription.setDisable(!modif);
 			edtTarif.setDisable(!modif);
+			edtVisuel.setDisable(!modif);
 			choicebCategorie.setDisable(!modif);
 			fillForm(produit);
 		}
@@ -99,19 +99,24 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	@Override
 	public void create() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un produit", "Le produit va etre cree, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'un produit", "Le produit va etre cree, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Produit nouveauProduit = new Produit(edtNom.getText().trim(),
-											 		 txtDescription.getText().trim(),
-											 		 Double.parseDouble(edtTarif.getText().trim()),
-											 		 edtVisuel.getText().trim(),
-											 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
-				retourPage();
-				//XXX Si on a effectuer une recherche le produit s'affichera malgré les contraintes, mais du coup comment on sait que le prod a ete creer ?
-				parent.getManagementControleur().getDatas().add(nouveauProduit);
-				parent.getManagementControleur().refresh(-1);
+				try {
+					Produit nouveauProduit = new Produit(edtNom.getText().trim(),
+												 		 txtDescription.getText().trim(),
+												 		 Double.parseDouble(edtTarif.getText().trim()),
+												 		 edtVisuel.getText().trim(),
+												 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
+					retourPage();
+					//XXX Si on a effectuer une recherche le produit s'affichera malgré les contraintes, mais du coup comment on sait que le prod a ete creer ?
+					parent.getManagementControleur().getDatas().add(nouveauProduit);
+					parent.getManagementControleur().refresh(-1);
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -119,19 +124,24 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 	@Override
 	public void update() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un produit", "Le produit va etre modifie, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'un produit", "Le produit va etre modifie, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Produit produitModifie = new Produit(produit.getId(), 
-											 edtNom.getText().trim(),
-											 txtDescription.getText().trim(),
-											 Double.parseDouble(edtTarif.getText().trim()),
-											 edtVisuel.getText().trim(),
-											 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
-				retourPage();
-				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(produitModifie), produitModifie);
-				parent.getManagementControleur().refresh();
+				try {
+					Produit produitModifie = new Produit(produit.getId(), 
+												 edtNom.getText().trim(),
+												 txtDescription.getText().trim(),
+												 Double.parseDouble(edtTarif.getText().trim()),
+												 edtVisuel.getText().trim(),
+												 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
+					retourPage();
+					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(produitModifie), produitModifie);
+					parent.getManagementControleur().refresh();
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la modification", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -183,8 +193,8 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 		}
 		
 		if(erreur) {
-			Alert alert = new Alert(AlertType.ERROR, "Formulaire invalide.\n", ButtonType.OK);
-			alert.showAndWait();
+			ErrorAlert errorAlert = new ErrorAlert("Formulaire invalide", "Certains champs sont invalides,\nveuillez les corriger.", parent);
+			errorAlert.showAndWait();
 		}
 		
 		return erreur;

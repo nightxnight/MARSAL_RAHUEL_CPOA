@@ -50,6 +50,7 @@ private static MySQLClientDAO instance;
 			return nbLigne ==1;
 			
 			} catch (SQLException sqle) {
+				if(sqle.getSQLState().equals("45000")) throw new IllegalArgumentException(sqle.getMessage());
 				System.out.println("Erreur lors de la requete \"ajouterClient\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		

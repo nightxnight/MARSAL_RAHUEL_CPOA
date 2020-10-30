@@ -6,9 +6,8 @@ import controleur.MainControleur;
 import dao.DAOFactory;
 import entities.Categorie;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import vue.application.custom.alert.ConfirmationAlert;
+import vue.application.custom.alert.ErrorAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -60,14 +59,19 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	@Override
 	public void create() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une categorie", "La categorie va etre creee, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Creation d'une categorie", "La categorie va etre creee, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Categorie nouvelleCategorie = new Categorie(edtNom.getText().trim(), edtVisuel.getText().trim());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().create(nouvelleCategorie);
-				retourPage();
-				parent.getManagementControleur().getDatas().add(nouvelleCategorie);
-				parent.getManagementControleur().refresh(-1);
+				try {
+					Categorie nouvelleCategorie = new Categorie(edtNom.getText().trim(), edtVisuel.getText().trim());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().create(nouvelleCategorie);
+					retourPage();
+					parent.getManagementControleur().getDatas().add(nouvelleCategorie);
+					parent.getManagementControleur().refresh(-1);
+				} catch (IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -75,14 +79,19 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	@Override
 	public void update() {
 		if(!checkErrors()) {
-			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une categorie", "La categorie va etre modifiee, etes-vous sur ?");
+			ConfirmationAlert alert = new ConfirmationAlert("Modification d'une categorie", "La categorie va etre modifiee, etes-vous sur ?", parent);
 			Optional<ButtonType> confirmation = alert.showAndWait();
 			if(confirmation.get() == alert.getValider()) {
-				Categorie categorieModifiee = new Categorie(categorie.getIdCategorie(), edtNom.getText().trim(), edtVisuel.getText().trim());
-				DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().update(categorieModifiee);
-				retourPage();
-				parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(categorieModifiee), categorieModifiee);
-				parent.getManagementControleur().refresh();
+				try {
+					Categorie categorieModifiee = new Categorie(categorie.getIdCategorie(), edtNom.getText().trim(), edtVisuel.getText().trim());
+					DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().update(categorieModifiee);
+					retourPage();
+					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(categorieModifiee), categorieModifiee);
+					parent.getManagementControleur().refresh();
+				} catch(IllegalArgumentException iae) {
+					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la modification", iae.getMessage(), parent);
+					errorAlert.showAndWait();
+				}
 			}
 		}
 	}
@@ -115,8 +124,8 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 		}
 		
 		if(erreur) {
-			Alert alert = new Alert(AlertType.ERROR, "formulaire invalide\n.", ButtonType.OK);
-			alert.showAndWait();
+			ErrorAlert errorAlert = new ErrorAlert("Formulaire invalide", "Certains champs sont invalides,\nveuillez les corriger.", parent);
+			errorAlert.showAndWait();
 		}
 		
 		return erreur;

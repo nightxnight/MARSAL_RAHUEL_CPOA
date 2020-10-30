@@ -29,7 +29,9 @@ public class ListeMemoireCategorieDAO implements CategorieDAO{
 	}
 
 	@Override
-	public boolean create(Categorie objet)  {	
+	public boolean create(Categorie objet) throws IllegalArgumentException {	
+		if(listeCategorie.stream().anyMatch(Categorie -> Categorie.getTitre().toLowerCase().equals(objet.getTitre().toLowerCase())))
+			throw new IllegalArgumentException("Une categorie similaire existe deja.");
 		++autoIncrementedId;
 		while (listeCategorie.indexOf(objet) != -1){
 			++autoIncrementedId;

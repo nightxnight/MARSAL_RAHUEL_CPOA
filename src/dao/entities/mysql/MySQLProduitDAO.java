@@ -21,7 +21,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 	}
 
 	@Override
-	public boolean create(Produit objet) {
+	public boolean create(Produit objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Produit (nom, description, tarif, visuel, id_categorie) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getNom());
@@ -45,6 +45,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			
 			
 		} catch (SQLException sqle) {
+			if(sqle.getSQLState().equals("45000")) throw new IllegalArgumentException(sqle.getMessage());
 			System.out.println("Erreur lors de la requete \"ajouterProduit\".");
 			System.out.println("logs : " + sqle.getMessage());
 		}		

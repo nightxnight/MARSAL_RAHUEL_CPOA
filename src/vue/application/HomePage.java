@@ -1,9 +1,11 @@
 package vue.application;
 
+import controleur.MainControleur;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class HomePage extends Application {
@@ -11,14 +13,21 @@ public class HomePage extends Application {
 	@Override
 	public void start(Stage primaryStage) {	
 		//TODO css
-		//TODO eviter les doublons -> a mettre dans la methode create, trigger en mysql puis verif en liste memoire -> catch illegalArgument Exception ("x similaire")
 		
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Accueil.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Accueil.fxml"));
+			Parent root = loader.load();			
 			Scene scene = new Scene(root,900,700);
+			scene.getStylesheets().add(getClass().getResource("/css/themeSombre.css").toExternalForm());
 			primaryStage.setTitle("Boutique de pulls moche");
+			primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			primaryStage.centerOnScreen();
+			
+			MainControleur controler = loader.getController();
+			controler.setScene(scene);
+			controler.loadUserConfig();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

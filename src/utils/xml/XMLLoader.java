@@ -41,14 +41,15 @@ public class XMLLoader {
 	
 	public void saveChanges(Document doc, String fileName) {
 		try {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new File("resources/" + fileName + ".xml"));
-        
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(source, result);
+			doc.normalize();
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        
+	        DOMSource source = new DOMSource(doc);
+	        StreamResult result = new StreamResult(new File("resources/" + fileName + ".xml"));
+	        
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.transform(source, result);
         
 		} catch (Exception e) {
 			System.out.println("Echec lors de la sauvegarde des modification de " + fileName + ".xml");

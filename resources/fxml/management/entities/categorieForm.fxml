@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.CategorieManagementControleur">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.CategorieManagementControleur">
    <children>
-      <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="600.0">
+      <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="600.0" styleClass="title-pane">
          <children>
             <Label text="CATEGORIE" />
          </children>
@@ -39,7 +39,7 @@
             <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
                <children>
                   <TextField fx:id="edtNom" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" />
-                  <Label fx:id="labelNomErreur" wrapText="true">
+                  <Label fx:id="labelNomErreur" styleClass="labelErreur" wrapText="true">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -49,7 +49,7 @@
             <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <TextField fx:id="edtVisuel" maxWidth="150.0" prefHeight="25.0" prefWidth="146.0" />
-                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" wrapText="true">
+                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" styleClass="labelErreur" wrapText="true">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -58,10 +58,15 @@
             </FlowPane>
          </children>
       </GridPane>
+      <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="600.0" styleClass="title-pane">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </FlowPane>
       <StackPane prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" text="Modifier" />
-            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" text="Créer" />
+            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" styleClass="submit-button" text="Modifier" />
+            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" styleClass="submit-button" text="Créer" />
          </children>
       </StackPane>
       <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="609.0">

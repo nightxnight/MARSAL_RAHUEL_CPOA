@@ -45,7 +45,7 @@
                <children>
                   <TextField fx:id="edtTarif" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="50.0" />
                   <Label text=" euros à l'unité." />
-                  <Label fx:id="labelPrixErreur" maxWidth="200.0" wrapText="true">
+                  <Label fx:id="labelPrixErreur" maxWidth="200.0" styleClass="labelErreur" wrapText="true">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -56,7 +56,7 @@
             <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
                   <TextField fx:id="edtVisuel" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
-                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" wrapText="true">
+                  <Label fx:id="labelVisuelErreur" maxWidth="200.0" styleClass="labelErreur" wrapText="true">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -66,7 +66,7 @@
             <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1">
                <children>
                   <TextField fx:id="edtNom" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" />
-                  <Label fx:id="labelNomErreur">
+                  <Label fx:id="labelNomErreur" styleClass="labelErreur">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -76,7 +76,7 @@
             <FlowPane alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
                   <ChoiceBox fx:id="choicebCategorie" prefWidth="150.0" />
-                  <Label fx:id="labelCategErreur">
+                  <Label fx:id="labelCategErreur" styleClass="labelErreur">
                      <padding>
                         <Insets left="3.0" />
                      </padding>
@@ -90,8 +90,8 @@
       </GridPane>
       <StackPane prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" text="Créer" />
-            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" text="Modifier" />
+            <Button fx:id="boutonCreer" mnemonicParsing="false" onAction="#create" styleClass="submit-button" text="Créer" />
+            <Button fx:id="boutonModif" mnemonicParsing="false" onAction="#update" styleClass="submit-button" text="Modifier" />
          </children>
       </StackPane>
       <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="200.0">

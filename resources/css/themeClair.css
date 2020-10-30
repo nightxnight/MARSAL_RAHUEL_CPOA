@@ -1,0 +1,42 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.button {
+	-fx-background-color:#CEE3F6;
+}
+
+.button:hover {
+	-fx-background-color:#CECFF6;
+}
+
+.submit-button {
+	-fx-background-color:#A4B5C4;
+}
+
+.menu-bar {
+	-fx-border-color:#58ACFA;
+	-fx-background-color:#CEE3F6;
+}
+
+.menu:hover {
+	-fx-background-color:#a3caee;
+}
+
+.footer{
+	-fx-background-color:#CEE3F6;
+}
+
+.table-view .column-header-background .filler {
+	-fx-background-color:#CEE3F6;
+}
+
+.table-view .column-header-background .label {
+	-fx-background-color:#CEE3F6;
+}
+
+.title-pane {
+	-fx-background-color:#CEE3F9;
+}
+
+.labelErreur {
+	-fx-text-fill:#FF0000;
+}

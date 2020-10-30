@@ -8,13 +8,7 @@ public class Produit {
 	private double tarif;
 	private String visuel;
 	private int idCategorie;
-	
-	/*
-	 * Constructor :
-	 * On en a deux puisqu'il y a 2 cas :
-	 * 		- Soit on cr�e un nouveau produit et alors dans ce cas il n'y a pas encore d'id attribu�
-	 * 		- Soit le produit existe d�j� et par cons�quent un id lui est d�j� attribu�
-	 */
+
 	public Produit(String nom, String description, double tarif, String visuel, int idCategorie) {
 		this.nom = nom;
 		this.description = description;

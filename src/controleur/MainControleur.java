@@ -21,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -31,6 +32,8 @@ import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.management.Entities;
 
 public class MainControleur implements Initializable{
+	
+	private Scene scene;
 	
 	private Persistance persistance = Persistance.LISTEMEMOIRE;
 	
@@ -99,25 +102,27 @@ public class MainControleur implements Initializable{
 			@Override
 			public void changed(ObservableValue<? extends Toggle> listeRadioButton, Toggle oldToggle, Toggle newToggle) {
 				
+				scene.getStylesheets().clear();
+				
 				XMLLoader xmlLoader = new XMLLoader("config");
 				Document document = xmlLoader.getDocument();
 				
 				RadioMenuItem selectedRadioButton = (RadioMenuItem) newToggle;
 				if(selectedRadioButton.equals(radioThemeClair)) {
-					//THEME CLAIR
+					scene.getStylesheets().add(getClass().getResource("/css/themeClair.css").toExternalForm());
 					xmlLoader.updateElement("theme", "clair");
 				} else if (selectedRadioButton.equals(radioThemeSombre)) {
-					//THEME SOMBRE;
+					scene.getStylesheets().add(getClass().getResource("/css/themeSombre.css").toExternalForm());
 					xmlLoader.updateElement("theme", "sombre");
 				}
 				
 				xmlLoader.saveChanges(document, "config");
 			}
 		});
-		loadUserConfig();
+		
 	}
 	
-	private void loadUserConfig() {
+	public void loadUserConfig() {
 		XMLLoader xmlLoader = new XMLLoader("config");
 		Document document = null;
 		
@@ -158,22 +163,18 @@ public class MainControleur implements Initializable{
 	}
 	
 	public void showCategories() {
-		labelFilAriane.setText("> Gestion > Categories");
 		loadManagementPane(Entities.CATEGORIE);
 	}
 	
 	public void showProduits() {
-		labelFilAriane.setText("> Gestion > Produit");
 		loadManagementPane(Entities.PRODUIT);
 	}
 	
 	public void showClients() {
-		labelFilAriane.setText("> Gestion > Client");
 		loadManagementPane(Entities.CLIENT);
 	}
 	
 	public void showCommandes() {
-		labelFilAriane.setText("> Gestion > Commande");
 		loadManagementPane(Entities.COMMANDE);
 	}
 	
@@ -205,11 +206,15 @@ public class MainControleur implements Initializable{
 	public void showAbout() {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/aPropos.fxml"));
-	        Scene scene = new Scene(root, 300, 150);
+	        Scene sceneAbout = new Scene(root, 300, 150);
+	     
+	        sceneAbout.getStylesheets().add(scene.getStylesheets().get(0)); 
+
 	        Stage stage = new Stage();
 
 	        stage.setTitle("A propos");
-	        stage.setScene(scene);
+	        stage.getIcons().add(new Image("file:resources/images/about.png"));
+	        stage.setScene(sceneAbout);
 	        stage.setResizable(false);
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.show();
@@ -219,7 +224,7 @@ public class MainControleur implements Initializable{
 	}
 	
 	public void quitterAppli() {
-		ConfirmationAlert alert = new ConfirmationAlert("Quitter l'application", "Voulez vous quitter l'application ?");
+		ConfirmationAlert alert = new ConfirmationAlert("Quitter l'application", "Voulez vous quitter l'application ?", this);
 		Optional<ButtonType> confirmation = alert.showAndWait();
 		if(confirmation.get() == alert.getValider()) System.exit(0);
 	}
@@ -242,5 +247,13 @@ public class MainControleur implements Initializable{
 	
 	public void setPersistance(Persistance persistance) {
 		this.persistance = persistance;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+	
+	public void setScene(Scene scene) {
+		this.scene = scene;		
 	}
 }

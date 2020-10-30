@@ -1,0 +1,232 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root {
+	-fx-background-color:#222629;
+}
+
+/* MENUBAR */
+
+.menu-bar {
+	-fx-background-color:#191C1E;
+}
+
+	.menu {
+		-fx-background-color:#191C1E;
+	}	
+	
+	.context-menu {
+		-fx-background-color:#191C1E;
+		-fx-padding: 0 0 0 0;
+	}
+		
+		.menu:hover {
+			-fx-background-color:#26547C;
+		}
+		
+		.menu .label {
+			-fx-text-fill:#999999;
+		}
+	
+			.menu-item:focused {
+			   -fx-background-color:#26547C;
+			}
+			
+			.menu-item:hover{
+				-fx-background-color:#26547C;
+			}
+
+/* NODES */
+
+	/* LABEL */
+	.label {
+		-fx-text-fill:white;
+	}
+	
+		.labelErreur {
+			-fx-text-fill:#FF0000;
+		}
+	
+	/* BOUTON */
+	.button {
+		-fx-background-color:#041623;
+		-fx-border-color:transparent;
+		-fx-border-width : 0 0 0 0;
+		-fx-text-fill:white;
+	}
+	
+		.button:hover{
+			-fx-background-color:#1D2D38;
+		}
+		
+	/* TEXTE */
+	.text-field {
+		-fx-background-color:#191C1E;
+		-fx-text-fill:white;
+	}
+	
+	.text-area {
+		-fx-text-fill:white;
+	}
+		
+		.text-area {
+			-fx-faint-focus-color: transparent;
+	    	-fx-focus-color:white;
+		}
+		.text-area .content{
+			-fx-background-color:#191C1E;
+			-fx-text-fill:white;
+		}
+		
+	/* DATE PICKER */
+	
+	.date-picker {
+		-fx-faint-focus-color: transparent;
+		-fx-focus-color: white;
+	}
+	
+	.date-picker-popup > * {
+		-fx-background-color:#191C1E;
+	}
+	
+	.date-picker-popup .month-year-pane{
+		-fx-background-color:#222629;
+		-fx-text-fill:white;
+	}
+	
+	.date-picker-popup .day-name-cell {
+		-fx-background-color:#191C1E;
+		-fx-text-fill:white;
+	}
+	
+	.date-picker-popup .week-number-cell {
+		-fx-background-color:#191C1E;
+		-fx-text-fill:white;
+		-fx-border-color:transparent;
+	}
+	
+	.date-picker-popup .day-cell {
+		-fx-background-color:#222629;
+		-fx-text-fill:white;
+		-fx-border-color:#999999;
+	}
+	
+	.date-picker-popup .day-cell:hover {
+		-fx-background-color:#0B1925;
+	}
+	
+	.date-picker-popup .day-cell:focused {
+		-fx-background-color:#132A3E;
+	}
+	
+	/* CHOICE BOX */
+	.choice-box { 
+		-fx-background-color:#191C1E;
+		-fx-mark-color:#26547C;
+	}
+	
+	/* SPINNER */
+	
+	.spinner {
+		-fx-faint-focus-color: transparent;
+		-fx-focus-color: white;
+		-fx-border-color:white;
+	}
+		
+		.spinner .increment-arrow-button,
+		.spinner .decrement-arrow-button {
+			-fx-body-color:#191C1E;
+			-fx-body-border-color:transparent;
+			-fx-mark-color:#26547C;
+		}
+		
+	/* SLIDER */
+	
+	.slider{
+	    -fx-body-color:#191C1E;
+	    -fx-faint-focus-color: transparent;
+		-fx-focus-color: white;
+	}
+
+/* TABLE VIEW */
+
+.table-view {
+	-fx-background-color: #1d1d1d;
+	-fx-border-color:white;
+}
+
+	.table-view .column-header-background {
+		-fx-background-color:#2E3338;
+	}
+	
+	.table-view .column-header, .table-view .filler {
+		-fx-background-color: transparent;
+		-fx-border-width: 0 0 0 0;
+	}
+	
+	.table-view .column-header-background .label {
+	    -fx-text-fill:#999999;
+	}
+	
+	.table-view .table-cell {
+		-fx-background-color: transparent;
+		-fx-text-fill:white;
+		-fx-border-color:transparent;
+	}
+	
+	.table-row-cell{
+    	-fx-background-color: #1d1d1d;
+	}	
+	
+		.table-row-cell:hover {
+	    -fx-background-color:#0B1925;
+    	-fx-table-cell-border-color: white;
+		}	
+	
+		.table-row-cell:selected {
+	    -fx-background-color:#132A3E;
+    	-fx-table-cell-border-color: white;
+		}	
+
+/* ALERT */
+
+.dialog-pane{
+  -fx-border-color:black;
+  -fx-border-width:1px;
+ }
+ 
+	 .dialog-pane .content.label {
+	   -fx-background-color: #222629;
+	   -fx-text-fill:white;
+	}
+	
+	.dialog-pane:header .header-panel {
+	  -fx-background-color: #222629;
+	}
+	
+	.dialog-pane:header .header-panel .label{
+	  -fx-background-color: #222629;
+	  -fx-background-radius:10px;
+	  -fx-text-fill:white;
+	}
+	
+	.dialog-pane .button{
+	   -fx-background-color:#041623;
+	   -fx-text-fill:white;
+	   -fx-wrap-text: true;
+	   -fx-cursor:hand;
+	 }
+	
+	.dialog-pane .button:hover{     
+	  -fx-background-color:#1D2D38;
+	  -fx-text-fill:white;
+	 }
+
+/* FOOTER */
+
+.footer{
+	-fx-background-color:#191C1E;
+}
+
+	.footer .label {
+		-fx-text-fill:#999999;
+	}

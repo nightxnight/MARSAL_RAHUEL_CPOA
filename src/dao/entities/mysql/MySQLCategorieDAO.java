@@ -21,7 +21,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 	}
 	
 	@Override
-	public boolean create(Categorie objet) {
+	public boolean create(Categorie objet) throws IllegalArgumentException {
 		try {
 			PreparedStatement query = MySQLDAOFactory.getConnexion().prepareStatement("INSERT INTO Categorie (titre, visuel) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			query.setString(1, objet.getTitre());
@@ -41,6 +41,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			return nbLigne == 1;
 			
 			} catch (SQLException sqle) {
+				if(sqle.getSQLState().equals("45000")) throw new IllegalArgumentException(sqle.getMessage());
 				System.out.println("Erreur lors de la requete \"ajouterCategorie\".");
 				System.out.println("logs : " + sqle.getMessage());
 			}		
