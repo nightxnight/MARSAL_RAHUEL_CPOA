@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.MainControleur">
    <top>
@@ -20,7 +21,11 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="Accueil" />
+                <Menu mnemonicParsing="false">
+                     <graphic>
+                        <Label onMouseClicked="#afficheAccueil" text="Accueil" />
+                     </graphic>
+               </Menu>
                 <Menu mnemonicParsing="false" text="Gestion">
                      <items>
                         <MenuItem fx:id="menuItemCategorie" mnemonicParsing="false" onAction="#showCategories" text="Categorie" />
@@ -103,4 +108,14 @@
          </children>
       </GridPane>
    </bottom>
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblMessage" prefHeight="159.0" prefWidth="762.0" text="Bienvenue dans l'application de gestion de la &quot;Boutique de pulls moches&quot;. Ici vous pourrez gérer toute la boutique en mode administrateur. Vous aurez accès aux différents produits et leur catégorie ainsi qu'aux clients et leurs différentes commandes" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+         </children>
+      </VBox>
+   </center>
 </BorderPane>

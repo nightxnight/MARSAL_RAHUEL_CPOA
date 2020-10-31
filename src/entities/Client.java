@@ -136,7 +136,7 @@ public class Client implements Comparable<Client> {
 		}
 		return true;
 	}
-
+	
 	@Override
 	public int compareTo(Client objet) {
 		int comparaisonNom = nom.toLowerCase().compareTo(objet.getNom().toLowerCase());
@@ -145,5 +145,9 @@ public class Client implements Comparable<Client> {
 			if(comparaisonPrenom == 0) return adrCodePostal.toLowerCase().compareTo(objet.getAdrVille().toLowerCase());
 			else return comparaisonPrenom;
 		} else return comparaisonNom;
+	}
+	
+	public Client clone() {
+		return new Client(idClient, nom, prenom, identifiant, motDePasse, adrNumero, adrVoie, adrCodePostal, adrVille, adrPays);
 	}
 }

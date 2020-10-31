@@ -65,6 +65,10 @@ public class Categorie {
 		return true;
 	}
 	
+	public Categorie clone() {
+		return new Categorie(idCategorie, titre, visuel);
+	}
+	
 	
 	
 	

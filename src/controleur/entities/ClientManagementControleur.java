@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import utils.regex.MailAddressFormat;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.custom.alert.ErrorAlert;
+import vue.application.custom.alert.InfoAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -104,7 +105,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		edtCodePostal.setText(objet.getAdrCodePostal());
 		edtVille.setText(objet.getAdrVille());
 		edtPays.setText(objet.getAdrPays());
-		this.client = objet;
+		this.client = objet.clone();
 	}
 
 	public void create() {
@@ -123,12 +124,16 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 													  edtCodePostal.getText().trim(),
 													  edtPays.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
+					InfoAlert infoAlert = new InfoAlert("Client cree!", "Le client : \n\"" + nouveauClient.getNom() + " " + nouveauClient.getPrenom() + "\"\n a ete ajoute."
+							+ "\n\nVous allez retourner sur la liste des clients.", parent);
+					infoAlert.showAndWait();
 					retourPage();
 					parent.getManagementControleur().getDatas().add(nouveauClient);
 					parent.getManagementControleur().refresh(-1);
 				} catch(IllegalArgumentException iae) {
 					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
 					errorAlert.showAndWait();
+					labelIdentErreur.setText("deja utilisee.");
 				}
 			}
 		}
@@ -152,6 +157,9 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 													  edtCodePostal.getText().trim(),
 													  edtPays.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
+					InfoAlert infoAlert = new InfoAlert("Client modifie!", "Le client : \n\"" + client.getNom() + " " + client.getPrenom() + "\"\n a ete modifie pour : \n\"" + clientModifie.getNom() + " " + clientModifie.getPrenom() + "\"."
+							+ "\n\nVous allez retourner sur la liste des clients.", parent);
+					infoAlert.showAndWait();
 					retourPage();
 					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(clientModifie), clientModifie);
 					parent.getManagementControleur().refresh();

@@ -8,16 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class HomePage extends Application {
+public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {	
-		//TODO css
-		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Accueil.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Application.fxml"));
 			Parent root = loader.load();			
-			Scene scene = new Scene(root,900,700);
+			Scene scene = new Scene(root,1200,900);
 			scene.getStylesheets().add(getClass().getResource("/css/themeSombre.css").toExternalForm());
 			primaryStage.setTitle("Boutique de pulls moche");
 			primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));

@@ -31,6 +31,7 @@ import utils.stringConverter.PrixDoubleStringConverter;
 import utils.stringConverter.QuantiteIntegerStringConverter;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.custom.alert.ErrorAlert;
+import vue.application.custom.alert.InfoAlert;
 
 public class CommandeManagementControleur implements ImplManagementControleur<Commande>, Initializable{
 	
@@ -200,6 +201,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 			choicebClient.setDisable(!modif);
 			datePckCommande.setDisable(!modif);
 			choicebProduit.setDisable(!modif);
+			tableLigneCommande.getColumns().get(1).setEditable(modif);
+			tableLigneCommande.getColumns().get(2).setEditable(modif);
 			gridPaneDetailForm.setVisible(modif);
 			fillForm(commande);
 		}
@@ -216,7 +219,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 		
 		ArrayList<LigneCommande> listeLigneCommande = new ArrayList<LigneCommande>(DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().getById(commande.getIdCommande()));
 		tableLigneCommande.getItems().addAll(listeLigneCommande);
-		this.commande = commande;
+		this.commande = commande.clone();
 	}
 
 	@Override
@@ -233,6 +236,9 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 					tableLigneCommande.getItems().get(i).setIdCommande(nouvelleCommande.getIdCommande());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().create(tableLigneCommande.getItems().get(i));
 				}
+				InfoAlert infoAlert = new InfoAlert("Commande creee!", "La commande de reference : \n\"" + nouvelleCommande.getIdCommande() +"\"\na ete ajoutee."
+						+ "\n\nVous allez retourner sur la liste des commandes.", parent);
+				infoAlert.showAndWait();
 				retourPage();
 				parent.getManagementControleur().getDatas().add(nouvelleCommande);
 				parent.getManagementControleur().refresh(-1);
@@ -266,6 +272,9 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 					for(LigneCommande elementRestant : ancienneLigneCommandes) {
 						DAOFactory.getDAOFactory(parent.getPersistance()).getLigneCommandeDAO().delete(elementRestant);
 					}
+					InfoAlert infoAlert = new InfoAlert("Commande modifiee!", "La commande de reference : \n\"" + commandeModifie.getIdCommande() +"\"\na ete modifiee."
+							+ "\n\nVous allez retourner sur la liste des commandes.", parent);
+					infoAlert.showAndWait();
 					retourPage();
 					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(commandeModifie), commandeModifie);
 					parent.getManagementControleur().refresh();

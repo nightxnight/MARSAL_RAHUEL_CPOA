@@ -75,4 +75,8 @@ public class Commande {
 			return false;
 		return true;
 	}	
+	
+	public Commande clone() {
+		return new Commande(idCommande, dateCommande, idClient);
+	}
 }

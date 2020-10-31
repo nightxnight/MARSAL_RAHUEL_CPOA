@@ -8,6 +8,7 @@ import entities.Categorie;
 import javafx.fxml.FXML;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.custom.alert.ErrorAlert;
+import vue.application.custom.alert.InfoAlert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -53,7 +54,7 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 	public void fillForm(Categorie objet) {
 		edtNom.setText(objet.getTitre());
 		edtVisuel.setText(objet.getVisuel());
-		this.categorie = objet;
+		this.categorie = objet.clone();
 	}
 	
 	@Override
@@ -65,12 +66,16 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 				try {
 					Categorie nouvelleCategorie = new Categorie(edtNom.getText().trim(), edtVisuel.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().create(nouvelleCategorie);
+					InfoAlert infoAlert = new InfoAlert("Categorie creee!", "La categorie : \n\"" + nouvelleCategorie.getTitre() + "\"\na ete ajoutee."
+							+ "\n\nVous allez retourner sur la liste des categories.", parent);
+					infoAlert.showAndWait();
 					retourPage();
 					parent.getManagementControleur().getDatas().add(nouvelleCategorie);
 					parent.getManagementControleur().refresh(-1);
 				} catch (IllegalArgumentException iae) {
 					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
 					errorAlert.showAndWait();
+					labelNomErreur.setText("existe deja.");
 				}
 			}
 		}
@@ -85,6 +90,9 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 				try {
 					Categorie categorieModifiee = new Categorie(categorie.getIdCategorie(), edtNom.getText().trim(), edtVisuel.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().update(categorieModifiee);
+					InfoAlert infoAlert = new InfoAlert("Categorie modifiee!", "La categorie : \n\"" + categorie.getTitre() + "\"\na ete modifiee pour : \n\"" + categorieModifiee.getTitre() + "\""
+							+ ".\n\nVous allez retourner sur la liste des categories.", parent);
+					infoAlert.showAndWait();
 					retourPage();
 					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(categorieModifiee), categorieModifiee);
 					parent.getManagementControleur().refresh();

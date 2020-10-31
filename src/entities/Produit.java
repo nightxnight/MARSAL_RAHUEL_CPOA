@@ -94,10 +94,8 @@ public class Produit {
 		return true;
 	}
 	
-	
-	
-	
-	
-	
+	public Produit clone() {
+		return new Produit(id, nom, description, tarif, visuel, idCategorie);
+	}
 	
 }

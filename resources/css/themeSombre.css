@@ -190,9 +190,11 @@
 /* ALERT */
 
 .dialog-pane{
-  -fx-border-color:black;
-  -fx-border-width:1px;
- }
+	-fx-background-color:#282A2C;
+  	-fx-border-color:black;
+  	-fx-border-width:1px;
+  	-fx-padding: 0 0 0 0;
+}
  
 	 .dialog-pane .content.label {
 	   -fx-background-color: #222629;
@@ -204,9 +206,10 @@
 	}
 	
 	.dialog-pane:header .header-panel .label{
-	  -fx-background-color: #222629;
+	  -fx-background-color: #191C1E;
 	  -fx-background-radius:10px;
 	  -fx-text-fill:white;
+	  -fx-padding: 5 5 5 5;
 	}
 	
 	.dialog-pane .button{

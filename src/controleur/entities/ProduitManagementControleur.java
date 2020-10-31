@@ -17,6 +17,7 @@ import javafx.util.StringConverter;
 import utils.regex.ImageFileFormat;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.custom.alert.ErrorAlert;
+import vue.application.custom.alert.InfoAlert;
 
 public class ProduitManagementControleur implements ImplManagementControleur<Produit>{
 
@@ -93,7 +94,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 			choicebCategorie.getItems().add(categorieConcernee);
 		}
 		choicebCategorie.getSelectionModel().select(categorieConcernee);
-		this.produit = produit;
+		this.produit = produit.clone();
 	}
 	
 	@Override
@@ -109,13 +110,17 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 												 		 edtVisuel.getText().trim(),
 												 		 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().create(nouveauProduit);
+					String categorieProduit = DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getById(nouveauProduit.getIdCategorie()).getTitre();
+					InfoAlert infoAlert = new InfoAlert("Produit cree!", "Le produit : \n" + nouveauProduit.getNom() + "(" + categorieProduit + "), " + nouveauProduit.getTarif() + " euros, a ete ajoute."
+							+ "\n\nVous allez retourner sur la liste des produits.", parent);
+					infoAlert.showAndWait();
 					retourPage();
-					//XXX Si on a effectuer une recherche le produit s'affichera malgré les contraintes, mais du coup comment on sait que le prod a ete creer ?
 					parent.getManagementControleur().getDatas().add(nouveauProduit);
 					parent.getManagementControleur().refresh(-1);
 				} catch(IllegalArgumentException iae) {
 					ErrorAlert errorAlert = new ErrorAlert("Erreur lors de la creation", iae.getMessage(), parent);
 					errorAlert.showAndWait();
+					labelNomErreur.setText("existe deja.");
 				}
 			}
 		}
@@ -135,6 +140,14 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 												 edtVisuel.getText().trim(),
 												 choicebCategorie.getSelectionModel().getSelectedItem().getIdCategorie());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getProduitDAO().update(produitModifie);
+					
+					String categorieAncienProduit = DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getById(produit.getIdCategorie()).getTitre();
+					String categorieProduitModifie = DAOFactory.getDAOFactory(parent.getPersistance()).getCategorieDAO().getById(produitModifie.getIdCategorie()).getTitre();
+					InfoAlert infoAlert = new InfoAlert("Produit modifie!", "Le produit : \n\"" + produit.getNom() + "(" + categorieAncienProduit + "), " + produit.getTarif() + " euros.\""
+							+ "\n a ete modifie pour : \n\"" + produitModifie.getNom() + "(" + categorieProduitModifie + "), " + produitModifie.getTarif() + " euros.\""
+							+ "\n\nVous allez retourner sur la liste des produits.", parent);
+					infoAlert.showAndWait();
+					
 					retourPage();
 					parent.getManagementControleur().getDatas().set(parent.getManagementControleur().getDatas().indexOf(produitModifie), produitModifie);
 					parent.getManagementControleur().refresh();

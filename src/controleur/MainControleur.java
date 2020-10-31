@@ -73,6 +73,8 @@ public class MainControleur implements Initializable{
 	private Label labelFilAriane;
 	@FXML
 	private Label labelPersistance;
+	@FXML
+	private Label lblMessage;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -221,6 +223,12 @@ public class MainControleur implements Initializable{
 		} catch (Exception ioe) {
 			System.out.println("Erreur d'ouverture");
 		}
+	}
+	
+	public void afficheAccueil() {
+		managementPane = null;
+		mainPane.setCenter(lblMessage);
+		labelFilAriane.setText("Accueil");
 	}
 	
 	public void quitterAppli() {
