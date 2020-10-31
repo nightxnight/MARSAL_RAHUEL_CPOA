@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import utils.regex.ImageFileFormat;
+import utils.regex.TextFormat;
 
 public class CategorieManagementControleur implements ImplManagementControleur<Categorie>{
 
@@ -111,19 +112,19 @@ public class CategorieManagementControleur implements ImplManagementControleur<C
 		labelNomErreur.setText("");
 		String nom = edtNom.getText().trim();
 		if(!nom.equals("")) {
-			if(nom.matches("^[A-Z]*$")) {
-				labelNomErreur.setText("Le nom de la categorie ne peut pas etre compose de chiffres.");
+			if(!TextFormat.checkSentence(nom)) {
+				labelNomErreur.setText("pas de chiffre.");
 				erreur = true;
 			}
 		} else {
-			labelNomErreur.setText("Le nom de la categorie est a renseigner.");
+			labelNomErreur.setText("a saisir.");
 			erreur = true;
 		}
 		
 		labelVisuelErreur.setText("");
 		String visuel = edtVisuel.getText().trim();
 		if(visuel.equals("")) {
-			labelVisuelErreur.setText("Le visuel de la Categorie est a renseigner.");
+			labelVisuelErreur.setText("a saisir.");
 			erreur = true;
 		}
 		else if(!ImageFileFormat.check(visuel)) {

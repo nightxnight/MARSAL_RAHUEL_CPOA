@@ -33,6 +33,7 @@ public class MySQLCategorieDAO implements CategorieDAO {
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
 				System.out.println("Cle generee : " + res.getInt(1));
+				objet.setIdCategorie(res.getInt(1));
 			}
 			
 			if(res != null) res.close();

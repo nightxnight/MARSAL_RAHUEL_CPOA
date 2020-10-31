@@ -41,7 +41,8 @@ private static MySQLClientDAO instance;
 			
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
-				System.out.println("Cle generee(s) : " + res.getInt(1));
+				System.out.println("Cle generee : " + res.getInt(1));
+				objet.setIdClient(res.getInt(1));
 			}
 			
 			if(res != null) res.close();

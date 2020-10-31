@@ -36,6 +36,7 @@ public class MySQLProduitDAO implements ProduitDAO{
 			ResultSet res = query.getGeneratedKeys();
 			while(res.next()) {
 				System.out.println("Cle generee(s) : " + res.getInt(1));
+				objet.setId(res.getInt(1));
 			}
 			
 			if(res != null) res.close();

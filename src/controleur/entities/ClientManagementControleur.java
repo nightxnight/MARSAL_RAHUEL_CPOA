@@ -10,6 +10,7 @@ import entities.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import utils.regex.MailAddressFormat;
+import utils.regex.TextFormat;
 import vue.application.custom.alert.ConfirmationAlert;
 import vue.application.custom.alert.ErrorAlert;
 import vue.application.custom.alert.InfoAlert;
@@ -120,8 +121,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 													  passwMdpClient.getText().trim(),
 													  edtNum.getText().trim(),
 													  edtVoie.getText().trim(),
-													  edtVille.getText().trim(),
 													  edtCodePostal.getText().trim(),
+													  edtVille.getText().trim(),
 													  edtPays.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().create(nouveauClient);
 					InfoAlert infoAlert = new InfoAlert("Client cree!", "Le client : \n\"" + nouveauClient.getNom() + " " + nouveauClient.getPrenom() + "\"\n a ete ajoute."
@@ -153,8 +154,8 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 													  passwMdpClient.getText().trim(),
 													  edtNum.getText().trim(),
 													  edtVoie.getText().trim(),
-													  edtVille.getText().trim(),
 													  edtCodePostal.getText().trim(),
+													  edtVille.getText().trim(),
 													  edtPays.getText().trim());
 					DAOFactory.getDAOFactory(parent.getPersistance()).getClientDAO().update(clientModifie);
 					InfoAlert infoAlert = new InfoAlert("Client modifie!", "Le client : \n\"" + client.getNom() + " " + client.getPrenom() + "\"\n a ete modifie pour : \n\"" + clientModifie.getNom() + " " + clientModifie.getPrenom() + "\"."
@@ -179,7 +180,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		String nom = edtNom.getText().trim();
 		if(!nom.equals("")) {
 			if(!nom.matches("^[A-Z]*$")) {
-				labelNomErreur.setText("pas de chiffres.");
+				labelNomErreur.setText("pas de chiffres ou d'accents.");
 				erreur = true;
 			}
 		} else {
@@ -190,7 +191,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		labelPrenomErreur.setText("");
 		String prenom = edtPrenom.getText().trim();
 		if(!prenom.equals("")) {
-			if(!prenom.matches("^[a-zA-Z]*$")) {
+			if(!TextFormat.checkWord(prenom)) {
 				labelPrenomErreur.setText("pas de chiffres.");
 				erreur = true;
 			}
@@ -215,8 +216,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		if(passwMdpClient.getText().trim().equals("")) {
 			labelMdpErreur.setText("a saisir");
 			erreur = true;
-		}
-		else {
+		} else {
 			if(passwConfirmationMdp.getText().trim().equals("")) {
 				labelConfirmMdpErreur.setText("a confirmer.");
 				erreur = true;
@@ -247,7 +247,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		labelVoieErreur.setText("");
 		String voie = edtVoie.getText().trim();
 		if(!voie.equals("")) {
-			if(!voie.matches("^[a-zA-Z][a-zA-Z ]*$")) {
+			if(!TextFormat.checkSentence(voie)) {
 				labelVoieErreur.setText("pas de chiffre.");
 				erreur = true;
 			}
@@ -276,7 +276,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		labelVilleErreur.setText("");
 		String ville = edtVille.getText().trim();
 		if(!ville.equals("")) {
-			if(!ville.matches("^[a-zA-Z][a-zA-Z ]*$")) {
+			if(!TextFormat.checkSentence(ville)) {
 				labelVilleErreur.setText("pas de chiffres.");
 				erreur = true;
 			}
@@ -288,7 +288,7 @@ public class ClientManagementControleur implements ImplManagementControleur<Clie
 		labelPaysErreur.setText("");
 		String pays = edtPays.getText().trim();
 		if(!pays.equals("")) {
-			if (!pays.matches("^[a-zA-Z]*$")) {
+			if (!TextFormat.checkWord(pays)) {
 				labelPaysErreur.setText("pas de chiffres.");
 				erreur = true;
 			}

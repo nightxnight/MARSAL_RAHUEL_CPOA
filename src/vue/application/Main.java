@@ -15,17 +15,22 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Application.fxml"));
 			Parent root = loader.load();			
-			Scene scene = new Scene(root,1200,900);
-			scene.getStylesheets().add(getClass().getResource("/css/themeSombre.css").toExternalForm());
+			Scene scene = new Scene(root);
+			
 			primaryStage.setTitle("Boutique de pulls moche");
 			primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			primaryStage.setMinWidth(1200);
+			primaryStage.setMinHeight(900);
+			primaryStage.setMaximized(true);
 			primaryStage.centerOnScreen();
 			
+			primaryStage.setScene(scene);
 			MainControleur controler = loader.getController();
 			controler.setScene(scene);
 			controler.loadUserConfig();
+			
+			primaryStage.show();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

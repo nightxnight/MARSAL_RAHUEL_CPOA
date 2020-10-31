@@ -219,6 +219,7 @@ public class MainControleur implements Initializable{
 	        stage.setScene(sceneAbout);
 	        stage.setResizable(false);
 	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.centerOnScreen();
 	        stage.show();
 		} catch (Exception ioe) {
 			System.out.println("Erreur d'ouverture");

@@ -23,6 +23,7 @@ public class InfoAlert extends Alert {
 	    
 	    Stage stage = (Stage) this.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("file:resources/images/infoIcon.png"));
+        stage.centerOnScreen();
         
         DialogPane dialogPane = this.getDialogPane();
         dialogPane.getStylesheets().add(parent.getScene().getStylesheets().get(0));

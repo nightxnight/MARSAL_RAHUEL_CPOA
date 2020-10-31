@@ -22,6 +22,7 @@ public class ConfirmationAlert extends Alert{
         
         Stage stage = (Stage) this.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("file:resources/images/confirmIcon.png"));
+        stage.centerOnScreen();
         
         DialogPane dialogPane = this.getDialogPane();
         dialogPane.getStylesheets().add(parent.getScene().getStylesheets().get(0));

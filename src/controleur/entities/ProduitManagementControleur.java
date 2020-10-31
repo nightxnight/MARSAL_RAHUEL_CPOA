@@ -93,6 +93,7 @@ public class ProduitManagementControleur implements ImplManagementControleur<Pro
 		if(!choicebCategorie.getItems().stream().anyMatch(Categorie -> Categorie.getIdCategorie() == categorieConcernee.getIdCategorie())) {
 			choicebCategorie.getItems().add(categorieConcernee);
 		}
+		edtVisuel.setText(produit.getVisuel());
 		choicebCategorie.getSelectionModel().select(categorieConcernee);
 		this.produit = produit.clone();
 	}

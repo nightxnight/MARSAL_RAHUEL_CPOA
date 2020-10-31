@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.CommandeManagementControleur">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.entities.CommandeManagementControleur">
    <children>
       <FlowPane alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
          <opaqueInsets>
@@ -83,7 +83,7 @@
             <Insets left="10.0" />
          </padding>
       </FlowPane>
-      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="165.0">
+      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="195.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="316.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="498.0" minWidth="10.0" prefWidth="484.0" />
@@ -107,6 +107,7 @@
                         <TableColumn fx:id="prixAchatCol" onEditCommit="#prixColEdit" prefWidth="75.0" text="Prix" />
                      </columns>
                   </TableView>
+                  <Label fx:id="labelInfoModifDetail" text="La quantite et le prix sont modifiables depuis le tableau." />
                </children>
             </FlowPane>
             <GridPane fx:id="gridPaneDetailForm" GridPane.columnIndex="1">

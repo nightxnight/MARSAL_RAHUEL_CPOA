@@ -63,6 +63,8 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 	private Button boutonDetailAjouter;
 	@FXML
 	private Button boutonDetailSupprimer;
+	@FXML
+	private Label labelInfoModifDetail;
 	
 	@FXML
 	private Button boutonCreer;
@@ -204,6 +206,7 @@ public class CommandeManagementControleur implements ImplManagementControleur<Co
 			tableLigneCommande.getColumns().get(1).setEditable(modif);
 			tableLigneCommande.getColumns().get(2).setEditable(modif);
 			gridPaneDetailForm.setVisible(modif);
+			labelInfoModifDetail.setVisible(modif);
 			fillForm(commande);
 		}
 	}
