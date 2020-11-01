@@ -54,5 +54,5 @@ ADDONS : MARSAL Rémi
 Tests de l'application : MARSAL Rémi et Victor RAHUEL
 
 Investissements en % dans le projet :
-  MARSAL Rémi 60%
-  RAHUEL Victor 40%
+  MARSAL Rémi 55%
+  RAHUEL Victor 45%
